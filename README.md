@@ -1,4 +1,3 @@
-# SnapFit
 Commande git :
 git clone #url
 git status
