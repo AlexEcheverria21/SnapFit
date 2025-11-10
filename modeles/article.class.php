@@ -1,5 +1,5 @@
 <?php
-class Categorie {
+class Article {
     private int|null $id;
     private int|null $indice_pertinence; // 1 = le plus pertinent, celui que Google affiche en premier
     private string|null $titre_site;
