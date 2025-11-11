@@ -20,7 +20,7 @@ class favori {
     /**
      * Get the value of id_favori
      */ 
-    public function getId_favori()
+    public function getId_favori(): ?int
     {
         return $this->id_favori;
     }
@@ -30,17 +30,16 @@ class favori {
      *
      * @return  self
      */ 
-    public function setId_favori(?int $id_favori)
+    public function setId_favori(?int $id_favori): void
     {
         $this->id_favori = $id_favori;
 
-        return $this;
     }
 
     /**
      * Get the value of url
      */ 
-    public function getUrl()
+    public function getUrl(): ?string
     {
         return $this->url;
     }
@@ -50,17 +49,16 @@ class favori {
      *
      * @return  self
      */ 
-    public function setUrl(?string $url)
+    public function setUrl(?string $url): void
     {
         $this->url = $url;
 
-        return $this;
     }
 
     /**
      * Get the value of image
      */ 
-    public function getImage()
+    public function getImage(): ?string
     {
         return $this->image;
     }
@@ -70,17 +68,16 @@ class favori {
      *
      * @return  self
      */ 
-    public function setImage(?string $image)
+    public function setImage(?string $image): void
     {
         $this->image = $image;
 
-        return $this;
     }
 
     /**
      * Get the value of categorie
      */ 
-    public function getCategorie()
+    public function getCategorie(): ?string
     {
         return $this->categorie;
     }
@@ -90,17 +87,16 @@ class favori {
      *
      * @return  self
      */ 
-    public function setCategorie(?string $categorie)
+    public function setCategorie(?string $categorie): void
     {
         $this->categorie = $categorie;
 
-        return $this;
     }
 
     /**
      * Get the value of marque
      */ 
-    public function getMarque()
+    public function getMarque(): ?string
     {
         return $this->marque;
     }
@@ -110,17 +106,16 @@ class favori {
      *
      * @return  self
      */ 
-    public function setMarque(?string $marque)
+    public function setMarque(?string $marque): void
     {
         $this->marque = $marque;
 
-        return $this;
     }
 
     /**
      * Get the value of date_fav
      */ 
-    public function getDate_fav()
+    public function getDate_fav(): ?string
     {
         return $this->date_fav;
     }
@@ -130,11 +125,10 @@ class favori {
      *
      * @return  self
      */ 
-    public function setDate_fav(?string $date_fav)
+    public function setDate_fav(?string $date_fav): void
     {
         $this->date_fav = $date_fav;
 
-        return $this;
     }
 }
 
