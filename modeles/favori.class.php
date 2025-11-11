@@ -28,7 +28,6 @@ class favori {
     /**
      * Set the value of id_favori
      *
-     * @return  self
      */ 
     public function setId_favori(?int $id_favori): void
     {
@@ -47,7 +46,6 @@ class favori {
     /**
      * Set the value of url
      *
-     * @return  self
      */ 
     public function setUrl(?string $url): void
     {
@@ -66,7 +64,6 @@ class favori {
     /**
      * Set the value of image
      *
-     * @return  self
      */ 
     public function setImage(?string $image): void
     {
@@ -85,7 +82,6 @@ class favori {
     /**
      * Set the value of categorie
      *
-     * @return  self
      */ 
     public function setCategorie(?string $categorie): void
     {
@@ -104,7 +100,6 @@ class favori {
     /**
      * Set the value of marque
      *
-     * @return  self
      */ 
     public function setMarque(?string $marque): void
     {
@@ -123,7 +118,6 @@ class favori {
     /**
      * Set the value of date_fav
      *
-     * @return  self
      */ 
     public function setDate_fav(?string $date_fav): void
     {
