@@ -8,12 +8,12 @@ class favori {
     private string|null $date_fav;
     
     public function __construct(?int $id_favori, ?string $url, ?string $image, ?string $categorie, ?string $marque, ?string $date_fav) {
-       $this->id = $id_favori;
+       $this->id_favori = $id_favori;
        $this->url = $url;
        $this->image = $image;
        $this->categorie = $categorie;
        $this->marque = $marque;
-       $this->date = $date_fav;
+       $this->date_fav = $date_fav;
     }
 
 }
