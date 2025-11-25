@@ -3,7 +3,7 @@
 //Charge les constantes depuis le fichier YAML
 $config = yaml_parse_file('config.yaml');
 
-echo "Bienvenue sur " . $config['bdd'];
+//echo "Bienvenue sur " . $config['bdd'];
 
 class Controller {
     private PDO $pdo;
