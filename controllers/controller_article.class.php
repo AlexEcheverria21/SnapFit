@@ -1,5 +1,5 @@
 <?php
-class ControllerFavori extends controller{
+class ControllerArticle extends controller{
     public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader){
         parent::__construct($twig, $loader);
     }
