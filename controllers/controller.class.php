@@ -1,5 +1,10 @@
 <?php
 
+//Charge les constantes depuis le fichier YAML
+$config = yaml_parse_file('config.yaml');
+
+echo "Bienvenue sur " . $config['bdd'];
+
 class Controller {
     private PDO $pdo;
     private Twig\Loader\FilesystemLoader $loader;
@@ -7,8 +12,8 @@ class Controller {
     private ?array $get = null;
     private ?array $post = null;
 
-    public function __construct(Twig\Loader\FilesystemLoader $loader ,Twig\Environment $twig) {
-        $db = Bd::getInstance();
+    public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader) {
+        $db = $config['bdd'];
         $this->pdo = $db->getConnection();
 
         $this->loader = $loader;

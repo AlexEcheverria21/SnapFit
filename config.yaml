@@ -1,0 +1,6 @@
+#Connection à la base de données
+bdd:
+  host: "lakartxela.iutbayonne.univ-pau.fr"
+  nom: "aecheverria_pro"
+  user: "aecheverria_pro"
+  password: "aecheverria_pro"
