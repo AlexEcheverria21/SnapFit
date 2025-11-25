@@ -1,12 +1,9 @@
 <?php
 
-// EN PARTANT DU DIAGRAMME UML SUR LE DRIVE C4
-// VERSION MODIFIÉE AVEC COMMENTAIRES
-
 require_once 'Recherche.class.php';
 
 class RechercheDAO {
-    private PDO $db;
+    private ?PDO $pdo;
 
     /**
      * @brief Constructeur de la classe
@@ -15,6 +12,24 @@ class RechercheDAO {
      */
     public function __construct(PDO $db) {
         $this->db = $db;
+    }
+
+    /**
+     * @brief Récupère l'objet PDO
+     * @details Retourne l'instance de connexion actuelle.
+     * @throws Aucun
+     */
+    public function getPdo(): ?PDO {
+        return $this->pdo;
+    }
+
+    /**
+     * @brief Définit l'objet PDO
+     * @details Met à jour l'instance de connexion à la base de données.
+     * @throws Aucun
+     */
+    public function setPdo($pdo): void {
+        $this->pdo = $pdo;
     }
 
     /**
