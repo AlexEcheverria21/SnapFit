@@ -34,3 +34,5 @@ git diff → se renseigner
 git switch master
 git diff nomDeLaBranche
 git merge nomDeLaBranche
+
+git push --set-upstream origin nomDeLaBranche
