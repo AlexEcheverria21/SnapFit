@@ -25,11 +25,129 @@ class favoriDao{
 
     }
 
-    public function find($id){
+    /**
+    * @brief Récupère un favori par son ID
+    * @details Sélectionne une ligne dans la table FAVORI via son identifiant unique
+    * @param int $id ID du favori à rechercher
+    * @return Favori|null Instance de Favori ou null si non trouvé
+    * @throws PDOException En cas d'erreur lors de la requête SQL
+    */
+    public function find(int $id): ?Favori {
+        $sql = "SELECT * FROM FAVORI WHERE id_favori = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
 
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Si une ligne correspondante est trouvée, on instancie l'objet
+        if ($row) {
+            return new Favori(
+                $row['id_favori'],
+                $row['url'],
+                $row['image'],
+                $row['categorie'],
+                $row['marque'],
+                $row['date_fav']
+            );
+        }
+        return null;
+    }
+    /**
+    * @brief Récupère tous les favoris
+    * @details Retourne tous les favoris présents en base de données, triés par date décroissante
+    * @return array Tableau d'objets Favori
+    * @throws PDOException En cas d'erreur lors de la requête SQL
+    */
+     public function findAll(): array {
+        $sql = "SELECT * FROM FAVORI ORDER BY date_fav DESC";
+        $stmt = $this->pdo->query($sql);
+
+        $favoris = [];
+
+        // Boucle sur chaque ligne de résultat pour remplir le tableau d'objets
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $favoris[] = new Favori(
+                $row['id_favori'],
+                $row['url'],
+                $row['image'],
+                $row['categorie'],
+                $row['marque'],
+                $row['date_fav']
+            );
+        }
+        return $favoris;
     }
 
-    public function findAll(){
-        
+    public function add(Favori $favori): bool {
+        $sql = "INSERT INTO FAVORI (url, image, categorie, marque, date_fav) 
+                VALUES (:url, :image, :categorie, :marque, :date_fav)";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $result = $stmt->execute([
+            ':url'       => $favori->getUrl(),
+            ':image'     => $favori->getImage(),
+            ':categorie' => $favori->getCategorie(),
+            ':marque'    => $favori->getMarque(),
+            ':date_fav'  => $favori->getDate_fav()
+        ]);
+
+        // Vérification du succès de l'insertion pour hydrater l'ID de l'objet
+        if ($result) {
+            $favori->setId_favori((int)$this->pdo->lastInsertId());
+        }
+
+        return $result;
+    }
+    /**
+    * @brief Met à jour un favori
+    * @details Modifie les informations d'un favori existant
+    * @param Favori $favori Objet favori avec les nouvelles valeurs
+    * @return bool True si la mise à jour a réussi, false sinon
+    * @throws PDOException En cas d'erreur lors de l'exécution de la requête
+    */
+    public function modifier(Favori $favori): bool {
+        $sql = "UPDATE FAVORI 
+                SET url = :url,
+                    image = :image,
+                    categorie = :categorie,
+                    marque = :marque,
+                    date_fav = :date_fav
+                WHERE id_favori = :id";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        return $stmt->execute([
+            ':url'       => $favori->getUrl(),
+            ':image'     => $favori->getImage(),
+            ':categorie' => $favori->getCategorie(),
+            ':marque'    => $favori->getMarque(),
+            ':date_fav'  => $favori->getDate_fav(),
+            ':id'        => $favori->getId_favori()
+        ]);
+    }
+    /**
+    * @brief Supprime un favori
+    * @details Efface l'entrée correspondante à l'ID fourni dans la table FAVORI
+    * @param int $idFavori ID du favori à supprimer
+    * @return bool True si la suppression a réussi, false sinon
+    * @throws PDOException En cas d'erreur lors de l'exécution de la suppression
+    */
+    public function delete(int $idFavori): bool {
+        $sql = "DELETE FROM FAVORI WHERE id_favori = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([':id' => $idFavori]);
+    }
+
+    /**
+     * @brief Compte le nombre total de favoris
+     * @details Utile pour afficher des statistiques
+     * @return int Nombre total de favoris
+     * @throws PDOException En cas d'erreur lors de la requête SQL
+     */
+    public function countFavoris(): int {
+        $sql = "SELECT COUNT(*) FROM FAVORI";
+        $stmt = $this->pdo->query($sql);
+        return (int)$stmt->fetchColumn();
     }
 }
