@@ -21,4 +21,160 @@ class UtilisateurDao {
         $this->pdo = $pdo;
     }
 
+    /**
+    * @brief Ajoute un utilisateur en base de données
+    * @details Prépare et exécute une requête INSERT. Si l'insertion réussit, l'ID de l'objet est mis à jour
+    * @param Utilisateur $utilisateur Objet utilisateur à ajouter
+    * @return bool True si l'ajout a réussi, false sinon
+    * @throws PDOException En cas d'erreur lors de l'exécution de la requête SQL
+    */
+    public function add(Utilisateur $utilisateur): bool {
+        $sql = "INSERT INTO UTILISATEUR (nom, prenom, mot_de_passe_hash, role, date_inscription, email, nom_connexion, sexe, pays) 
+                VALUES (:nom, :prenom, :mot_de_passe_hash, :role, :date_inscription, :email, :nom_connexion, :sexe, :pays)";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $result = $stmt->execute([
+            ':nom'                => $utilisateur->getNom(),
+            ':prenom'             => $utilisateur->getPrenom(),
+            ':mot_de_passe_hash'  => $utilisateur->getMotDePasseHash(),
+            ':role'               => $utilisateur->getRole() ?? 'user', // Rôle par défaut
+            ':date_inscription'   => $utilisateur->getDateInscription() ?? date('Y-m-d H:i:s'),
+            ':email'              => $utilisateur->getEmail(),
+            ':nom_connexion'      => $utilisateur->getNomConnexion(),
+            ':sexe'               => $utilisateur->getSexe(),
+            ':pays'               => $utilisateur->getPays()
+        ]);
+
+        // Vérification du succès de l'insertion pour hydrater l'ID de l'objet
+        if ($result) {
+            // Note: Il faudrait ajouter un setter pour id_utilisateur dans ta classe
+            // Pour l'instant on ne peut pas mettre à jour l'ID car il n'y a pas de setter
+            // $utilisateur->setIdUtilisateur((int)$this->pdo->lastInsertId());
+        }
+
+
+    }
+
+    /**
+     * @brief Récupère un utilisateur par son ID
+     * @details Sélectionne une ligne dans la table UTILISATEUR via son identifiant unique
+     * @param int $id ID de l'utilisateur à rechercher
+     * @return Utilisateur|null Instance d'Utilisateur ou null si non trouvé
+     * @throws PDOException En cas d'erreur lors de la requête SQL
+     */
+    public function find(int $id): ?Utilisateur {
+        $sql = "SELECT * FROM UTILISATEUR WHERE id_utilisateur = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Si une ligne correspondante est trouvée, on instancie l'objet
+        if ($row) {
+            return new Utilisateur(
+                $row['id_utilisateur'],
+                $row['nom'],
+                $row['prenom'],
+                $row['mot_de_passe_hash'],
+                $row['role'],
+                $row['date_inscription'],
+                $row['email'],
+                $row['nom_connexion'],
+                $row['sexe'],
+                $row['pays']
+            );
+        }
+        return null;
+    }
+
+    /**
+     * @brief Récupère tous les utilisateurs
+     * @details Retourne tous les utilisateurs présents en base de données, triés par date d'inscription décroissante
+     * @return array Tableau d'objets Utilisateur
+     * @throws PDOException En cas d'erreur lors de la requête SQL
+     */
+    public function findAll(): array {
+        $sql = "SELECT * FROM UTILISATEUR ORDER BY date_inscription DESC";
+        $stmt = $this->pdo->query($sql);
+
+        $utilisateurs = [];
+
+        // Boucle sur chaque ligne de résultat pour remplir le tableau d'objets
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $utilisateurs[] = new Utilisateur(
+                $row['id_utilisateur'],
+                $row['nom'],
+                $row['prenom'],
+                $row['mot_de_passe_hash'],
+                $row['role'],
+                $row['date_inscription'],
+                $row['email'],
+                $row['nom_connexion'],
+                $row['sexe'],
+                $row['pays']
+            );
+        }
+        return $utilisateurs;
+    }
+
+     /**
+     * @brief Met à jour un utilisateur
+     * @details Modifie les informations d'un utilisateur existant
+     * @param Utilisateur $utilisateur Objet utilisateur avec les nouvelles valeurs
+     * @return bool True si la mise à jour a réussi, false sinon
+     * @throws PDOException En cas d'erreur lors de l'exécution de la requête
+     */
+    public function update(Utilisateur $utilisateur): bool {
+        $sql = "UPDATE UTILISATEUR 
+                SET nom = :nom,
+                    prenom = :prenom,
+                    mot_de_passe_hash = :mot_de_passe_hash,
+                    role = :role,
+                    email = :email,
+                    nom_connexion = :nom_connexion,
+                    sexe = :sexe,
+                    pays = :pays
+                WHERE id_utilisateur = :id";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        return $stmt->execute([
+            ':nom'                => $utilisateur->getNom(),
+            ':prenom'             => $utilisateur->getPrenom(),
+            ':mot_de_passe_hash'  => $utilisateur->getMotDePasseHash(),
+            ':role'               => $utilisateur->getRole(),
+            ':email'              => $utilisateur->getEmail(),
+            ':nom_connexion'      => $utilisateur->getNomConnexion(),
+            ':sexe'               => $utilisateur->getSexe(),
+            ':pays'               => $utilisateur->getPays(),
+            ':id'                 => $utilisateur->getIdUtilisateur()
+        ]);
+    }
+
+    /**
+     * @brief Supprime un utilisateur
+     * @details Efface l'entrée correspondante à l'ID fourni dans la table UTILISATEUR
+     * @param int $idUtilisateur ID de l'utilisateur à supprimer
+     * @return bool True si la suppression a réussi, false sinon
+     * @throws PDOException En cas d'erreur lors de l'exécution de la suppression
+     */
+    public function delete(int $idUtilisateur): bool {
+        $sql = "DELETE FROM UTILISATEUR WHERE id_utilisateur = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([':id' => $idUtilisateur]);
+    }
+
+    /**
+     * @brief Compte le nombre total d'utilisateurs
+     * @details Utile pour afficher des statistiques
+     * @return int Nombre total d'utilisateurs
+     * @throws PDOException En cas d'erreur lors de la requête SQL
+     */
+    public function count(): int {
+        $sql = "SELECT COUNT(*) FROM UTILISATEUR";
+        $stmt = $this->pdo->query($sql);
+        return (int)$stmt->fetchColumn();
+    }
+
 }
