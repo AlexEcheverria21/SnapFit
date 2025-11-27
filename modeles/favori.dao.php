@@ -1,5 +1,5 @@
 <?php
-
+require_once "include.php";
 class favoriDao{
     private ?PDO $pdo;  
 
@@ -8,8 +8,8 @@ class favoriDao{
     }
 
     /**
-     * Get the value of pdo
-     */ 
+    * Get the value of pdo
+    */ 
     public function getPdo(): ?PDO
     {
         return $this->pdo;
@@ -41,14 +41,7 @@ class favoriDao{
 
         // Si une ligne correspondante est trouvée, on instancie l'objet
         if ($row) {
-            return new Favori(
-                $row['id_favori'],
-                $row['url'],
-                $row['image'],
-                $row['categorie'],
-                $row['marque'],
-                $row['date_fav']
-            );
+            return $this->hydrate($row);
         }
         return null;
     }
@@ -66,14 +59,7 @@ class favoriDao{
 
         // Boucle sur chaque ligne de résultat pour remplir le tableau d'objets
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $favoris[] = new Favori(
-                $row['id_favori'],
-                $row['url'],
-                $row['image'],
-                $row['categorie'],
-                $row['marque'],
-                $row['date_fav']
-            );
+            $favoris[] = $this->hydrate($row);
         }
         return $favoris;
     }
@@ -140,14 +126,28 @@ class favoriDao{
     }
 
     /**
-     * @brief Compte le nombre total de favoris
-     * @details Utile pour afficher des statistiques
-     * @return int Nombre total de favoris
-     * @throws PDOException En cas d'erreur lors de la requête SQL
-     */
+    * @brief Compte le nombre total de favoris
+    * @details Utile pour afficher des statistiques
+    * @return int Nombre total de favoris
+    * @throws PDOException En cas d'erreur lors de la requête SQL
+    */
     public function countFavoris(): int {
         $sql = "SELECT COUNT(*) FROM FAVORI";
         $stmt = $this->pdo->query($sql);
         return (int)$stmt->fetchColumn();
+    }
+
+    /**
+    * @brief Transforme un tableau associatif (BDD) en objet Favori
+    */
+    private function hydrate(array $row): Favori {
+        return new Favori(
+            isset($row['id_favori']) ? (int)$row['id_favori'] : null,
+            $row['url'] ?? null,
+            $row['image'] ?? null,
+            $row['categorie'] ?? null,
+            $row['marque'] ?? null,
+            $row['date_fav'] ?? null
+        );
     }
 }
