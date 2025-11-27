@@ -138,6 +138,24 @@ class favoriDao{
     }
 
     /**
+    * @brief Vérifie si un produit est en favori pour un utilisateur
+    * @details Permet de savoir si un produit est déjà dans les favoris d'un utilisateur
+    * @param int $idUtilisateur ID de l'utilisateur
+    * @param string $url URL du produit à vérifier
+    * @return bool True si le produit est en favori, false sinon
+    * @throws PDOException En cas d'erreur lors de la requête SQL
+    */
+    public function isInFavorites(int $idUtilisateur, string $url): bool {
+        $sql = "SELECT COUNT(*) FROM FAVORI WHERE id_utilisateur = :id_utilisateur AND url = :url";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':id_utilisateur' => $idUtilisateur,
+            ':url' => $url
+            ]);
+        return $stmt->fetchColumn() > 0;
+}
+
+    /**
     * @brief Transforme un tableau associatif (BDD) en objet Favori
     */
     private function hydrate(array $row): Favori {
