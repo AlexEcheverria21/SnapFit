@@ -174,16 +174,19 @@ class favoriDao{
         ]);
     }
     /**
-    * @brief Supprime un favori
-    * @details Efface l'entrée correspondante à l'ID fourni dans la table FAVORI
-    * @param int $idFavori ID du favori à supprimer
-    * @return bool True si la suppression a réussi, false sinon
-    * @throws PDOException En cas d'erreur lors de l'exécution de la suppression
+    * @brief Retire un favori pour un utilisateur spécifique
+    * @details Supprime le lien dans la table FAVORISER, mais garde l'article en base
     */
-    public function delete(int $idFavori): bool {
-        $sql = "DELETE FROM FAVORI WHERE id_favori = :id";
+    public function deleteFavori(int $idFavori, int $idUtilisateur): bool {
+        //On supprime le lien dans la table de jointure
+        $sql = "DELETE FROM FAVORISER 
+                WHERE id_favori = :id_f AND id_utilisateur = :id_u";
+        
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([':id' => $idFavori]);
+        return $stmt->execute([
+            ':id_f' => $idFavori,
+            ':id_u' => $idUtilisateur
+        ]);
     }
 
     /**
