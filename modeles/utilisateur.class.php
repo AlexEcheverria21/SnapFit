@@ -16,7 +16,7 @@ class Utilisateur {
 
 
     //Contructeur
-    public function __construct(?int $id_utilisateur = null, ?string $nom, ?string $prenom = null, ?string $mot_de_passe_hash = null, ?string $role = null, ?string $date_inscription = null, ?string $email = null, ?string $nom_connexion = null, ?string $sexe = null, ?string $pays = null ) {
+    public function __construct(?int $id_utilisateur = null, ?string $nom = null, ?string $prenom = null, ?string $mot_de_passe_hash = null, ?string $role = null, ?string $date_inscription = null, ?string $email = null, ?string $nom_connexion = null, ?string $sexe = null, ?string $pays = null ) {
         $this->id_utilisateur = $id_utilisateur;
         $this->nom = $nom;
         $this->prenom = $prenom;
