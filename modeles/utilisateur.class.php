@@ -100,4 +100,16 @@ class Utilisateur {
         $this->pays = $pays;
     }
 
+    public function setIdUtilisateur(?int $id_utilisateur): void {
+        $this->id_utilisateur = $id_utilisateur;
+    }
+
+    public function setRole(?string $role): void {
+        $this->role = $role;
+    }
+
+    public function setDateInscription(?string $date_inscription): void {
+        $this->date_inscription = $date_inscription;
+    }
+
 }
