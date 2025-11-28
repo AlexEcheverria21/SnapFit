@@ -21,40 +21,33 @@ class UtilisateurDao {
         $this->pdo = $pdo;
     }
 
+
     /**
-    * @brief Ajoute un utilisateur en base de données
-    * @details Prépare et exécute une requête INSERT. Si l'insertion réussit, l'ID de l'objet est mis à jour
-    * @param Utilisateur $utilisateur Objet utilisateur à ajouter
-    * @return bool True si l'ajout a réussi, false sinon
-    * @throws PDOException En cas d'erreur lors de l'exécution de la requête SQL
-    */
+     * @brief Crée un nouvel utilisateur
+     * @details Insère un nouvel utilisateur dans la base de données.
+     * @param Utilisateur $utilisateur Objet utilisateur à ajouter
+     * @return bool True si l'ajout a réussi, false sinon
+     * @throws PDOException Si la requête échoue.
+     */
     public function add(Utilisateur $utilisateur): bool {
-        $sql = "INSERT INTO UTILISATEUR (nom, prenom, mot_de_passe_hash, role, date_inscription, email, nom_connexion, sexe, pays) 
-                VALUES (:nom, :prenom, :mot_de_passe_hash, :role, :date_inscription, :email, :nom_connexion, :sexe, :pays)";
 
-        $stmt = $this->pdo->prepare($sql);
+        // On insère le rôle 'user' par défaut et la date actuelle avec NOW()
+        $sql = "INSERT INTO UTILISATEUR (nom, prenom, mot_de_passe_hash, role, date_inscription, email, nom_connexion, sexe, pays)
+                VALUES (:nom, :prenom, :mdp, :role, NOW(), :email, :login, :sexe, :pays)";
+        $pdoStatement = $this->pdo->prepare($sql);
 
-        $result = $stmt->execute([
-            ':nom'                => $utilisateur->getNom(),
-            ':prenom'             => $utilisateur->getPrenom(),
-            ':mot_de_passe_hash'  => $utilisateur->getMotDePasseHash(),
-            ':role'               => $utilisateur->getRole() ?? 'user', // Rôle par défaut
-            ':date_inscription'   => $utilisateur->getDateInscription() ?? date('Y-m-d H:i:s'),
-            ':email'              => $utilisateur->getEmail(),
-            ':nom_connexion'      => $utilisateur->getNomConnexion(),
-            ':sexe'               => $utilisateur->getSexe(),
-            ':pays'               => $utilisateur->getPays()
-        ]);
-
-        // Vérification du succès de l'insertion pour hydrater l'ID de l'objet
-        if ($result) {
-            // Note: Il faudrait ajouter un setter pour id_utilisateur dans ta classe
-            // Pour l'instant on ne peut pas mettre à jour l'ID car il n'y a pas de setter
-            // $utilisateur->setIdUtilisateur((int)$this->pdo->lastInsertId());
-        }
-
-
+        return $pdoStatement->execute(array(
+            ':nom' => $utilisateur->getNom(),
+            ':prenom' => $utilisateur->getPrenom(),
+            ':mdp' => $utilisateur->getMotDePasseHash(),
+            ':role' => $utilisateur->getRole() ?? 'user', // Rôle par défaut
+            ':email' => $utilisateur->getEmail(),
+            ':login' => $utilisateur->getNomConnexion(),
+            ':sexe' => $utilisateur->getSexe(),
+            ':pays' => $utilisateur->getPays()
+        ));
     }
+
 
     /**
      * @brief Récupère un utilisateur par son ID
@@ -150,6 +143,7 @@ class UtilisateurDao {
             ':pays'               => $utilisateur->getPays(),
             ':id'                 => $utilisateur->getIdUtilisateur()
         ]);
+        
     }
 
     /**
@@ -165,6 +159,7 @@ class UtilisateurDao {
         return $stmt->execute([':id' => $idUtilisateur]);
     }
 
+
     /**
      * @brief Compte le nombre total d'utilisateurs
      * @details Utile pour afficher des statistiques
@@ -176,5 +171,7 @@ class UtilisateurDao {
         $stmt = $this->pdo->query($sql);
         return (int)$stmt->fetchColumn();
     }
+
+
 
 }
