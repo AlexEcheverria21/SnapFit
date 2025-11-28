@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Recherche.class.php';
+require_once 'include.php';
 
 class RechercheDAO {
     private ?PDO $pdo;
@@ -10,8 +10,8 @@ class RechercheDAO {
      * @details Initialise le DAO avec une instance de connexion à la base de données.
      * @throws Aucun
      */
-    public function __construct(PDO $db) {
-        $this->db = $db;
+    public function __construct(PDO $pdo) {
+        $this->pdo = $pdo;
     }
 
     /**
@@ -41,7 +41,7 @@ class RechercheDAO {
         $sql = "INSERT INTO RECHERCHE (id_utilisateur, image, date_recherche, api_id) 
                 VALUES (:id_utilisateur, :image, :date_recherche, :api_id)";
 
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
 
         $result = $stmt->execute([
             ':id_utilisateur' => $recherche->getIdUtilisateur(),
@@ -52,7 +52,7 @@ class RechercheDAO {
 
         // Vérification du succès de l'insertion pour hydrater l'ID de l'objet
         if ($result) {
-            $recherche->setIdRecherche((int)$this->db->lastInsertId());
+            $recherche->setIdRecherche((int)$this->pdo->lastInsertId());
         }
 
         return $result;
@@ -65,7 +65,7 @@ class RechercheDAO {
      */
     public function getById(int $id): ?Recherche {
         $sql = "SELECT * FROM RECHERCHE WHERE id_recherche = :id";
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':id' => $id]);
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -90,20 +90,40 @@ class RechercheDAO {
      */
     public function findAllByUtilisateur(int $idUtilisateur): array {
         $sql = "SELECT * FROM RECHERCHE WHERE id_utilisateur = :id_u ORDER BY date_recherche DESC";
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':id_u' => $idUtilisateur]);
 
         $recherches = [];
 
         // Boucle sur chaque ligne de résultat pour remplir le tableau d'objets
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $recherches[] = new Recherche(
-                $row['id_utilisateur'],
-                $row['image'],
-                $row['api_id'],
-                $row['date_recherche'],
-                $row['id_recherche']
-            );
+            $recherches[] = $this->hydrate($row);
+        }
+        return $recherches;
+    }
+
+    /**
+     * @brief Récupère les recherches récentes d'un utilisateur
+     * @details Utile pour afficher un historique rapide ("Vos dernières recherches")
+     * @param int $userId ID de l'utilisateur
+     * @param int $limit Nombre de résultats à retourner (par défaut 10)
+     * @return array Liste d'objets Recherche
+     */
+    public function findRecent(int $userId, int $limit = 10): array {
+        $sql = "SELECT * FROM RECHERCHE 
+                WHERE id_utilisateur = :id_u 
+                ORDER BY date_recherche DESC 
+                LIMIT :limit";
+        
+        $stmt = $this->pdo->prepare($sql);
+        // BindValue est nécessaire pour LIMIT car execute() traite parfois les nombres comme des chaînes
+        $stmt->bindValue(':id_u', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $recherches = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $recherches[] = $this->hydrate($row);
         }
         return $recherches;
     }
@@ -115,8 +135,30 @@ class RechercheDAO {
      */
     public function delete(int $idRecherche): bool {
         $sql = "DELETE FROM RECHERCHE WHERE id_recherche = :id";
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([':id' => $idRecherche]);
+    }
+
+    /**
+     * @brief Supprime les anciennes recherches
+     * @details Supprime toutes les recherches plus vieilles qu'un certain nombre de jours.
+     * @param int $days Nombre de jours de rétention (par défaut 30)
+     * @return bool True si la requête a réussi
+     */
+    public function deleteOldSearches(int $days = 30): bool {
+        $sql = "DELETE FROM RECHERCHE WHERE date_recherche < DATE_SUB(NOW(), INTERVAL :days DAY)";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([':days' => $days]);
+    }
+
+    private function hydrate(array $row): Recherche {
+        return new Recherche(
+            isset($row['id_utilisateur']) ? (int)$row['id_utilisateur'] : null,
+            $row['image'] ?? null,
+            $row['api_id'] ?? null,
+            $row['date_recherche'] ?? null,
+            isset($row['id_recherche']) ? (int)$row['id_recherche'] : null,
+        );
     }
 }
 ?>
