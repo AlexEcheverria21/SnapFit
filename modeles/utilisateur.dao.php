@@ -81,6 +81,7 @@ class UtilisateurDao {
         return null;
     }
 
+
     /**
      * @brief Récupère tous les utilisateurs
      * @details Retourne tous les utilisateurs présents en base de données, triés par date d'inscription décroissante
@@ -88,29 +89,17 @@ class UtilisateurDao {
      * @throws PDOException En cas d'erreur lors de la requête SQL
      */
     public function findAll(): array {
-        $sql = "SELECT * FROM UTILISATEUR ORDER BY date_inscription DESC";
-        $stmt = $this->pdo->query($sql);
-
-        $utilisateurs = [];
-
-        // Boucle sur chaque ligne de résultat pour remplir le tableau d'objets
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $utilisateurs[] = new Utilisateur(
-                $row['id_utilisateur'],
-                $row['nom'],
-                $row['prenom'],
-                $row['mot_de_passe_hash'],
-                $row['role'],
-                $row['date_inscription'],
-                $row['email'],
-                $row['nom_connexion'],
-                $row['sexe'],
-                $row['pays']
-            );
-        }
-        return $utilisateurs;
+        $sql = "SELECT * FROM UTILISATEUR ORDER BY date_inscription DESC"; 
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute();
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $tableau = $pdoStatement->fetchAll();
+        
+        // On délègue la création des objets à hydrateMany
+        return $this->hydrateMany($tableau);
     }
 
+    
      /**
      * @brief Met à jour un utilisateur
      * @details Modifie les informations d'un utilisateur existant
@@ -119,32 +108,33 @@ class UtilisateurDao {
      * @throws PDOException En cas d'erreur lors de l'exécution de la requête
      */
     public function update(Utilisateur $utilisateur): bool {
-        $sql = "UPDATE UTILISATEUR 
-                SET nom = :nom,
-                    prenom = :prenom,
-                    mot_de_passe_hash = :mot_de_passe_hash,
-                    role = :role,
-                    email = :email,
-                    nom_connexion = :nom_connexion,
-                    sexe = :sexe,
-                    pays = :pays
+        $sql = "UPDATE UTILISATEUR SET 
+                nom = :nom,
+                prenom = :prenom,
+                mot_de_passe_hash = :mot_de_passe_hash,
+                role = :role,
+                email = :email,
+                nom_connexion = :nom_connexion,
+                sexe = :sexe,
+                pays = :pays
                 WHERE id_utilisateur = :id";
 
-        $stmt = $this->pdo->prepare($sql);
+        $pdoStatement = $this->pdo->prepare($sql);
 
-        return $stmt->execute([
-            ':nom'                => $utilisateur->getNom(),
-            ':prenom'             => $utilisateur->getPrenom(),
-            ':mot_de_passe_hash'  => $utilisateur->getMotDePasseHash(),
-            ':role'               => $utilisateur->getRole(),
-            ':email'              => $utilisateur->getEmail(),
-            ':nom_connexion'      => $utilisateur->getNomConnexion(),
-            ':sexe'               => $utilisateur->getSexe(),
-            ':pays'               => $utilisateur->getPays(),
-            ':id'                 => $utilisateur->getIdUtilisateur()
-        ]);
-        
+        return $pdoStatement->execute(array(
+            ':nom' => $utilisateur->getNom(),
+            ':prenom' => $utilisateur->getPrenom(),
+            ':mot_de_passe_hash' => $utilisateur->getMotDePasseHash(),
+            ':role' => $utilisateur->getRole(),
+            ':email' => $utilisateur->getEmail(),
+            ':nom_connexion' => $utilisateur->getNomConnexion(),
+            ':sexe' => $utilisateur->getSexe(),
+            ':pays' => $utilisateur->getPays(),
+            ':id' => $utilisateur->getIdUtilisateur()
+        ));
+
     }
+
 
     /**
      * @brief Supprime un utilisateur
@@ -172,6 +162,27 @@ class UtilisateurDao {
         return (int)$stmt->fetchColumn();
     }
 
+
+    /**
+     * @brief Hydrate un objet Utilisateur à partir d'un tableau de données
+     * @details Transforme un tableau associatif en une instance de la classe Utilisateur.
+     * @throws Aucun
+     */
+    public function hydrate(array $tableau): Utilisateur {
+
+        $utilisateur = new Utilisateur();
+        $utilisateur->setIdUtilisateur($tableau['id_utilisateur']);
+        $utilisateur->setNom($tableau['nom']);
+        $utilisateur->setPrenom($tableau['prenom']);
+        $utilisateur->setMotDePasseHash($tableau['mot_de_passe_hash']);
+        $utilisateur->setRole($tableau['role']);
+        $utilisateur->setDateInscription($tableau['date_inscription']);
+        $utilisateur->setEmail($tableau['email']);
+        $utilisateur->setNomConnexion($tableau['nom_connexion']);
+        $utilisateur->setSexe($tableau['sexe']);
+        $utilisateur->setPays($tableau['pays']);
+        return $utilisateur;
+    }
 
 
 }
