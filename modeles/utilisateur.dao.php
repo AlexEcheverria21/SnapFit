@@ -53,33 +53,21 @@ class UtilisateurDao {
 
     /**
      * @brief Récupère un utilisateur par son ID
-     * @details Sélectionne une ligne dans la table UTILISATEUR via son identifiant unique
+     * @details Sélectionne un utilisateur spécifique via son ID et hydrate l'objet.
      * @param int $id ID de l'utilisateur à rechercher
      * @return Utilisateur|null Instance d'Utilisateur ou null si non trouvé
-     * @throws PDOException En cas d'erreur lors de la requête SQL
+     * @throws PDOException Si la requête échoue.
      */
     public function find(int $id): ?Utilisateur {
         $sql = "SELECT * FROM UTILISATEUR WHERE id_utilisateur = :id";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':id' => $id]);
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute([':id' => $id]);
+        $row = $pdoStatement->fetch(PDO::FETCH_ASSOC);
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Si une ligne correspondante est trouvée, on instancie l'objet
         if ($row) {
-            return new Utilisateur(
-                $row['id_utilisateur'],
-                $row['nom'],
-                $row['prenom'],
-                $row['mot_de_passe_hash'],
-                $row['role'],
-                $row['date_inscription'],
-                $row['email'],
-                $row['nom_connexion'],
-                $row['sexe'],
-                $row['pays']
-            );
+            return $this->hydrate([$row]);
         }
+        
         return null;
     }
 
@@ -170,8 +158,8 @@ class UtilisateurDao {
      */
     public function delete(int $idUtilisateur): bool {
         $sql = "DELETE FROM UTILISATEUR WHERE id_utilisateur = :id";
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([':id' => $idUtilisateur]);
+        $pdoStatement = $this->pdo->prepare($sql);
+        return $pdoStatement->execute([':id' => $idUtilisateur]);
     }
 
 
