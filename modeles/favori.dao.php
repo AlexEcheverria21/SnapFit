@@ -64,6 +64,26 @@ class favoriDao{
         return $favoris;
     }
 
+    /**
+     * @brief Liste les favoris d'un utilisateur spécifique
+     * @details Utilise une jointure avec la table de liaison 'favoriser'
+     */
+    public function findAllByUtilisateur(int $idUtilisateur): array {
+        $sql = "SELECT f.* FROM FAVORI f
+                JOIN FAVORISER l ON f.id_favori = l.id_favori
+                WHERE l.id_utilisateur = :id_u
+                ORDER BY f.date_fav DESC"; 
+        
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id_u' => $idUtilisateur]);
+
+        $favoris = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $favoris[] = $this->hydrate($row);
+        }
+        return $favoris;
+    }
+
     public function add(Favori $favori): bool {
         $sql = "INSERT INTO FAVORI (url, image, categorie, marque, date_fav) 
                 VALUES (:url, :image, :categorie, :marque, :date_fav)";
@@ -78,7 +98,6 @@ class favoriDao{
             ':date_fav'  => $favori->getDate_fav()
         ]);
 
-        // Vérification du succès de l'insertion pour hydrater l'ID de l'objet
         if ($result) {
             $favori->setId_favori((int)$this->pdo->lastInsertId());
         }
@@ -153,7 +172,7 @@ class favoriDao{
             ':url' => $url
             ]);
         return $stmt->fetchColumn() > 0;
-}
+    }
 
     /**
     * @brief Transforme un tableau associatif (BDD) en objet Favori
