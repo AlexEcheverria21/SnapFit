@@ -84,26 +84,68 @@ class favoriDao{
         return $favoris;
     }
 
-    public function add(Favori $favori): bool {
-        $sql = "INSERT INTO FAVORI (url, image, categorie, marque, date_fav) 
-                VALUES (:url, :image, :categorie, :marque, :date_fav)";
+    /**
+     * @brief Ajoute un favori et le lie à un utilisateur
+     * @param Favori $favori L'objet favori à créer
+     * @param int $idUtilisateur L'ID de l'utilisateur qui ajoute ce favori
+     * @return bool True si l'ajout complet a réussi
+     */
+    public function create(Favori $favori, int $idUtilisateur): bool {
+        try {
+            //démarre une transaction 
+            $this->pdo->beginTransaction();
 
-        $stmt = $this->pdo->prepare($sql);
+            //Insertion du Favori
+            $sql = "INSERT INTO FAVORI (url, image, categorie, marque, date_fav) 
+                    VALUES (:url, :image, :categorie, :marque, :date_fav)";
+            
+            $stmt = $this->pdo->prepare($sql);
+            
+            $result = $stmt->execute([
+                ':url'       => $favori->getUrl(),
+                ':image'     => $favori->getImage(),
+                ':categorie' => $favori->getCategorie(),
+                ':marque'    => $favori->getMarque(),
+                ':date_fav'  => $favori->getDate_fav()
+            ]);
 
-        $result = $stmt->execute([
-            ':url'       => $favori->getUrl(),
-            ':image'     => $favori->getImage(),
-            ':categorie' => $favori->getCategorie(),
-            ':marque'    => $favori->getMarque(),
-            ':date_fav'  => $favori->getDate_fav()
-        ]);
+            // Si ça rate, on annule tout
+            if (!$result) {
+                $this->pdo->rollBack();
+                return false;
+            }
 
-        if ($result) {
-            $favori->setId_favori((int)$this->pdo->lastInsertId());
+            //récupère l'ID du favori qu'on vient de créer
+            $idFavori = (int)$this->pdo->lastInsertId();
+            $favori->setId_favori($idFavori); 
+
+            //Création du lien dans la table de jointure
+            $sqlLien = "INSERT INTO Ajouter (id_utilisateur, id_favori) VALUES (:id_u, :id_f)";
+            $stmtLien = $this->pdo->prepare($sqlLien);
+            
+            $resultLien = $stmtLien->execute([
+                ':id_u' => $idUtilisateur,
+                ':id_f' => $idFavori
+            ]);
+
+            if (!$resultLien) {
+                $this->pdo->rollBack();
+                return false;
+            }
+
+            //On valide la transaction.
+            $this->pdo->commit();
+            return true;
+
+        } catch (Exception $e) {
+            //on annule tout
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            return false;
         }
-
-        return $result;
     }
+
     /**
     * @brief Met à jour un favori
     * @details Modifie les informations d'un favori existant
@@ -111,7 +153,7 @@ class favoriDao{
     * @return bool True si la mise à jour a réussi, false sinon
     * @throws PDOException En cas d'erreur lors de l'exécution de la requête
     */
-    public function modifier(Favori $favori): bool {
+    public function update(Favori $favori): bool {
         $sql = "UPDATE FAVORI 
                 SET url = :url,
                     image = :image,
