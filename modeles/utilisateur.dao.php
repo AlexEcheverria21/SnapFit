@@ -151,38 +151,44 @@ class UtilisateurDao {
 
 
     /**
-     * @brief Compte le nombre total d'utilisateurs
-     * @details Utile pour afficher des statistiques
-     * @return int Nombre total d'utilisateurs
-     * @throws PDOException En cas d'erreur lors de la requête SQL
-     */
-    public function count(): int {
-        $sql = "SELECT COUNT(*) FROM UTILISATEUR";
-        $stmt = $this->pdo->query($sql);
-        return (int)$stmt->fetchColumn();
-    }
-
-
-    /**
      * @brief Hydrate un objet Utilisateur à partir d'un tableau de données
      * @details Transforme un tableau associatif en une instance de la classe Utilisateur.
+     * @param array $tableau Tableau associatif de données utilisateur
+     * @return Utilisateur Instance d'Utilisateur
      * @throws Aucun
      */
     public function hydrate(array $tableau): Utilisateur {
 
         $utilisateur = new Utilisateur();
-        $utilisateur->setIdUtilisateur($tableau['id_utilisateur']);
-        $utilisateur->setNom($tableau['nom']);
-        $utilisateur->setPrenom($tableau['prenom']);
-        $utilisateur->setMotDePasseHash($tableau['mot_de_passe_hash']);
-        $utilisateur->setRole($tableau['role']);
-        $utilisateur->setDateInscription($tableau['date_inscription']);
-        $utilisateur->setEmail($tableau['email']);
-        $utilisateur->setNomConnexion($tableau['nom_connexion']);
-        $utilisateur->setSexe($tableau['sexe']);
-        $utilisateur->setPays($tableau['pays']);
+        $utilisateur->setIdUtilisateur($tableau[0]['id_utilisateur']);
+        $utilisateur->setNom($tableau[0]['nom']);
+        $utilisateur->setPrenom($tableau[0]['prenom']);
+        $utilisateur->setMotDePasseHash($tableau[0]['mot_de_passe_hash']);
+        $utilisateur->setRole($tableau[0]['role']);
+        $utilisateur->setDateInscription($tableau[0]['date_inscription']);
+        $utilisateur->setEmail($tableau[0]['email']);
+        $utilisateur->setNomConnexion($tableau[0]['nom_connexion']);
+        $utilisateur->setSexe($tableau[0]['sexe']);
+        $utilisateur->setPays($tableau[0]['pays']);
         return $utilisateur;
     }
 
+    /**
+     * @brief Hydrate plusieurs objets Utilisateur à partir d'un tableau de données
+     * @details Transforme un tableau de tableaux associatifs en une liste d'instances de la classe Utilisateur.
+     * @param array $tableau Tableau de tableaux associatifs de données utilisateur
+     * @return array Tableau d'objets Utilisateur
+     * @throws Aucun
+     */
+    public function hydrateMany(array $tableau): array {
+        $listeUtilisateurs = [];
+        
+        foreach($tableau as $row) {
+            // Important : On met $row dans des crochets [] car ta méthode hydrate attend un tableau où la donnée est à l'index 0
+            $listeUtilisateurs[] = $this->hydrate([$row]);
+        }
+        
+        return $listeUtilisateurs;
+    }
 
 }
