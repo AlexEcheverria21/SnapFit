@@ -1,4 +1,9 @@
 <?php
+//Ajout de vendor
+require_once 'vendor/autoload.php';
+
+//Ajout de la constantes
+require_once 'config/constantes.php';
 
 //Ajout des contrôleurs
 require_once 'controllers/controller.class.php';

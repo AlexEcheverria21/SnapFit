@@ -1,0 +1,6 @@
+#Connection à la base de données
+bdd:
+  host: "linkBD"
+  nom: "nameBD"
+  user: "name"
+  password: "password"
