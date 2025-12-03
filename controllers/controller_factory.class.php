@@ -11,10 +11,21 @@ class ControllerFactory{
      */
 
     public static function getController($controleur, Twig\Loader\FilesystemLoader $loader, Twig\Environment $twig){
-        $controlleurName = "Controlleur".ucfirst($controleur);
-        if (!class_exists($controlleurName)) {
-            throw new Exception("Le controlleur $controlleurName n'existe pas");
+        //Construit le nom de la classe
+        $controllerName = "Controller".ucfirst($controleur);
+        //Construit le nom du fichier
+        $fileName = "controller_" . strtolower($controleur) . ".class.php";
+        //Cherche le fichier et on l'inclut 
+        $filePath = __DIR__ . '/' . $fileName;
+        if (file_exists($filePath)) {
+            require_once $filePath;
+        } else {
+            // Si le fichier n'existe pas, on lance une erreur
+            throw new Exception("Le fichier du contrôleur '$fileName' est introuvable.");
         }
-        return new $controlleurName($twig, $loader);
+        if (!class_exists($controllerName)) {
+            throw new Exception("Le controlleur $controllerName n'existe pas");
+        }
+        return new $controllerName($twig, $loader);
     }
 }
