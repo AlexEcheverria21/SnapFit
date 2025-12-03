@@ -1,5 +1,5 @@
 <?php
-class ControllerUtilisateur extends controller{
+class ControllerUtilisateur extends Controller{
     public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader){
         parent::__construct($twig, $loader);
     }
