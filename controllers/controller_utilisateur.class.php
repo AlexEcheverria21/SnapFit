@@ -1,28 +1,64 @@
 <?php
+/**
+ * @file    controller_utilisateur.class.php
+ * @author  Alex Echeverria
+ * @brief   Gère les utilisateurs (inscription, connexion, déconnexion).
+ * @version 0.3
+ * @date    16/12/2025
+ */
 class ControllerUtilisateur extends Controller{
+
     public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader){
         parent::__construct($twig, $loader);
     }
 
+    /**
+     * @brief   Connexion sécurisée d'un utilisateur.
+     */
     public function login() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            
-            $userDao = new UtilisateurDao($this->getPdo());
-            $user = $userDao->findByEmail($email);
+        $erreur = null;
+        $msg = $_GET['msg'] ?? null;
 
-            if ($user && password_verify($password, $user->getMotDePasseHash())) {
-                $_SESSION['user'] = $user;
-                header('Location: index.php');
-                exit();
-            } else {
-                $error = "Identifiants incorrects.";
-                echo $this->getTwig()->render('auth/login.html.twig', ['error' => $error]);
-                return;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'] ?? '';
+            $mdp = $_POST['mdp'] ?? '';
+
+            try {
+                // Instanciation de l'User pour authentification
+                $user = new Utilisateur($email, ''); 
+
+                if ($user->authentification($mdp)) {
+                    // Mise en session
+                    $_SESSION['user_id'] = $user->getId();
+                    $_SESSION['user'] = [
+                        'id' => $user->getId(),
+                        'nom' => $user->getNom(),
+                        'prenom' => $user->getPrenom(),
+                        'email' => $user->getEmail(),
+                        'role' => $user->getRole(),
+                        'login' => $user->getNomConnexion()
+                    ];
+                    
+                    // Redirection
+                    header('Location: index.php?controleur=home&methode=index&login=success'); 
+                    exit;
+                } else {
+                    $erreur = "Identifiant ou mot de passe incorrect.";
+                }
+
+            } catch (Exception $e) {
+                if ($e->getMessage() == 'compte_desactive') {
+                    $erreur = "Compte bloqué suite à trop de tentatives. Réessayez dans 5 minutes.";
+                } else {
+                    $erreur = "Erreur : " . $e->getMessage();
+                }
             }
         }
-        echo $this->getTwig()->render('auth/login.html.twig');
+
+        echo $this->twig->render('auth/login.html.twig', [
+            'error' => $erreur,
+            'success' => ($msg == 'registered') ? 'Compte créé avec succès ! Connectez-vous.' : null
+        ]);
     }
 
     public function register() {
