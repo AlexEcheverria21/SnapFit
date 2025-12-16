@@ -1,10 +1,10 @@
 <?php
 /**
  * @file    controller_favori.class.php
- * @author  Paul (Team SnapFit)
+ * @author  Louis (Team SnapFit)
  * @brief   Gère les favoris (Ajout, Liste, Suppression).
  * @version 2.0
- * @date    15/12/2025
+ * @date    16/12/2025
  */
 class ControllerFavori extends Controller {
     
