@@ -2,12 +2,12 @@
 //ajout de la classe IntlExtension et creation de l’alias IntlExtension
 use Twig\Extra\Intl\IntlExtension;
 
-//initialisation twig : chargement du dossier contenant les templates
-$loader = new Twig\Loader\FilesystemLoader('templates');
+//initialisation twig : chargement du dossier contenant les views
+$loader = new Twig\Loader\FilesystemLoader('views');
 
 //Paramétrage de l'environnement twig
 $twig = new Twig\Environment($loader, [
-    /*passe en mode debug à enlever en environnement de prod : permet d'utiliser dans un templates {{dump
+    /*passe en mode debug à enlever en environnement de prod : permet d'utiliser dans un views {{dump
     (variable)}} pour afficher le contenu d'une variable. Nécessite l'utilisation de l'extension debug*/
     'debug' => true,
     // Il est possible de définir d'autre variable d'environnement
