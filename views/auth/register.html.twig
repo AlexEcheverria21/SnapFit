@@ -1,0 +1,49 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Inscription - SnapFit{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Rejoindre la communauté SnapFit</h3>
+                </div>
+                <div class="card-body">
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+
+                    <form method="post" action="index.php?controleur=utilisateur&methode=register">
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nom</label>
+                            <input type="text" class="form-control" id="nom" name="nom" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="prenom" class="form-label">Prénom</label>
+                            <input type="text" class="form-control" id="prenom" name="prenom" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="login" class="form-label">Identifiant (Pseudo)</label>
+                            <input type="text" class="form-control" id="login" name="login" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mdp" class="form-label">Mot de passe</label>
+                            <input type="password" class="form-control" id="mdp" name="mdp" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <small>Déjà un compte ? <a href="index.php?controleur=utilisateur&methode=login">Se connecter</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
