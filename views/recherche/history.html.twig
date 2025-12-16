@@ -1,0 +1,48 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Mon Historique - SnapFit{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="fas fa-history text-primary"></i> Mon Historique de Recherche</h2>
+
+    {% if historique is empty %}
+        <div class="alert alert-info text-center">
+            Vous n'avez pas encore effectué de recherche.
+            <a href="index.php?controleur=article&methode=add" class="alert-link">Lancer un premier scan !</a>
+        </div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Scan</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in historique %}
+                    <tr>
+                        <td>{{ item.dateRecherche|date("d/m/Y H:i") }}</td>
+                        <td>
+                            <img src="public/uploads/{{ item.image }}" class="rounded shadow-sm" style="max-height: 80px;" alt="Scan">
+                        </td>
+                        <td>
+                            <a href="index.php?controleur=article&methode=result&scan={{ item.image }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-redo"></i> Relancer
+                            </a>
+                            <a href="index.php?controleur=recherche&methode=delete&id={{ item.idRecherche }}" 
+                               class="btn btn-outline-danger btn-sm ms-2"
+                               onclick="return confirm('Confirmer la suppression de cet historique ?');">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

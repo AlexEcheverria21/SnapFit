@@ -1,0 +1,38 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Connexion - SnapFit{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-4">Connexion</h2>
+
+                    {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i> {{ error }}
+                    </div>
+                    {% endif %}
+                    
+                    <form method="post" action="index.php?controleur=utilisateur&methode=login">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mdp" class="form-label">Mot de passe</label>
+                            <input type="password" class="form-control" id="mdp" name="mdp" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Se connecter</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <small><a href="index.php?controleur=utilisateur&methode=register">Pas encore de compte ?</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
