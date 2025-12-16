@@ -1,39 +1,38 @@
 <?php
-
+session_start();
 require_once 'include.php';
 
-try  {
-    if (isset($_GET['controleur'])){
-        $controllerName=$_GET['controleur'];
-    }else{
-        $controllerName='';
-    }
+$loader = new \Twig\Loader\FilesystemLoader('views');
+$twig = new \Twig\Environment($loader, [
+    'debug' => true,
+]);
+$twig->addExtension(new \Twig\Extension\DebugExtension());
+$twig->addGlobal('session', $_SESSION);
 
-    if (isset($_GET['methode'])){
-        $methode=$_GET['methode'];
-    }else{
-        $methode='';
-    }
+if (isset($_GET['controleur'])) {
+    $nomControleur = $_GET['controleur'];
+} else {
+    $nomControleur = 'home';
+}
 
-    //Gestion de la page d'accueil par défaut
-    if ($controllerName == '' && $methode ==''){
-        $controllerName='home'; // Adapté pour SnapFit
-        $methode='index';       // Adapté pour SnapFit
-    }
+if (isset($_GET['methode'])) {
+    $nomMethode = $_GET['methode'];
+} else {
+    $nomMethode = 'afficher'; // Méthode par défaut
+}
 
-    if ($controllerName == '' ){
-        throw new Exception('Le controleur n\'est pas défini');
-    }
+switch ($nomControleur) {
+    case 'utilisateur':
+        $controleur = new ControllerUtilisateur($twig, $loader);
+        break;
+    case 'home':
+    default:
+        $controleur = new ControllerHome($twig, $loader);
+        break;
+}
 
-    if ($methode == '' ){
-        throw new Exception('La méthode n\'est pas définie');
-    }
-
-    // $loader et $twig viennent de config/twig.php
-    $controller = ControllerFactory::getController($controllerName, $loader, $twig);
-  
-    $controller->call($methode);
-
-}catch (Exception $e) {
-   die('Erreur : ' . $e->getMessage());
+if (method_exists($controleur, $nomMethode)) {
+    $controleur->$nomMethode();
+} else {
+    echo "Erreur 404 : Méthode introuvable";
 }

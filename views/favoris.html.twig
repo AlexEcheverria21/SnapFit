@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Favoris - SnapFit{% endblock %}
+
+{% block body %}
+    <h1>Mes Favoris</h1>
+    <div class="row">
+        {% for favori in favoris %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ favori.image }}" class="card-img-top" alt="{{ favori.categorie }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ favori.marque }}</h5>
+                        <a href="{{ favori.url }}" class="btn btn-primary" target="_blank">Voir</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>Aucun favori.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
