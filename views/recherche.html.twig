@@ -1,0 +1,14 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Recherche - SnapFit{% endblock %}
+
+{% block body %}
+    <h1>Recherche</h1>
+    <form action="/index.php?controller=recherche&action=search" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="image" class="form-label">Télécharger une image</label>
+            <input class="form-control" type="file" id="image" name="image" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+{% endblock %}
