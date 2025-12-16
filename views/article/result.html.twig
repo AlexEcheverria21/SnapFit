@@ -1,0 +1,21 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h2>Résultats de la recherche</h2>
+<div class="row">
+    {% for item in articles %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="{{ item.thumbnail }}" class="card-img-top" alt="{{ item.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ item.title }}</h5>
+                <p class="card-text">{{ item.source }} - {{ item.price.value }} {{ item.price.currency }}</p>
+                <a href="{{ item.link }}" target="_blank" class="btn btn-sm btn-outline-primary">Voir l'offre</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>Aucun résultat trouvé.</p>
+    {% endfor %}
+</div>
+{% endblock %}
