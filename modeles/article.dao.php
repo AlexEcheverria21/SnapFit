@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file    article.dao.php
  * @author  Thomas (Team SnapFit)
