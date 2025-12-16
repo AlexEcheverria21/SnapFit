@@ -4,7 +4,11 @@ class ControllerUtilisateur extends Controller{
         parent::__construct($twig, $loader);
     }
 
-    public function afficher(){
-        echo "afficher favori";
+    public function login() {
+        echo "Page de connexion (A faire)";
+    }
+
+    public function register() {
+        echo "Page d'inscription (A faire)";
     }
 }
