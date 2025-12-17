@@ -141,6 +141,19 @@ class UtilisateurDao {
 
     }
 
+    /**
+     * @brief Supprime un utilisateur
+     * @details Efface l'entrée correspondante à l'ID fourni dans la table UTILISATEUR
+     * @param int $idUtilisateur ID de l'utilisateur à supprimer
+     * @return bool True si la suppression a réussi, false sinon
+     * @throws PDOException En cas d'erreur lors de l'exécution de la suppression
+     */
+    public function delete(int $idUtilisateur): bool {
+        $sql = "DELETE FROM UTILISATEUR WHERE id_utilisateur = :id";
+        $pdoStatement = $this->pdo->prepare($sql);
+        return $pdoStatement->execute([':id' => $idUtilisateur]);
+    }
+
     private function hydrate(array $row): Utilisateur {
         $u = new Utilisateur();
         $u->setIdUtilisateur($row['id_utilisateur']);
