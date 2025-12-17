@@ -1,10 +1,10 @@
 <?php
 class Controller {
-    private PDO $pdo;
-    private Twig\Loader\FilesystemLoader $loader;
-    private Twig\Environment $twig;
-    private ?array $get = null;
-    private ?array $post = null;
+    protected PDO $pdo;
+    protected Twig\Loader\FilesystemLoader $loader;
+    protected Twig\Environment $twig;
+    protected ?array $get = null;
+    protected ?array $post = null;
 
     public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader) {
         $db = Bd::getInstance();
