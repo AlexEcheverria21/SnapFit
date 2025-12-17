@@ -67,6 +67,23 @@ class UtilisateurDao {
         return null;
     }
 
+    /**
+     * @brief Récupère tous les utilisateurs
+     * @details Retourne tous les utilisateurs présents en base de données, triés par date d'inscription décroissante
+     * @return array Tableau d'objets Utilisateur
+     * @throws PDOException En cas d'erreur lors de la requête SQL
+     */
+    public function findAll(): array {
+        $sql = "SELECT * FROM UTILISATEUR ORDER BY date_inscription DESC"; 
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute();
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $tableau = $pdoStatement->fetchAll();
+        
+        // On délègue la création des objets à hydrateMany
+        return $this->hydrateMany($tableau);
+    }
+
     public function findByEmail(string $email): ?Utilisateur {
         $sql = "SELECT * FROM UTILISATEUR WHERE email = :email";
         $stmt = $this->pdo->prepare($sql);
