@@ -1,4 +1,5 @@
 <?php
+
 //Ajout de vendor
 require_once 'vendor/autoload.php';
 
