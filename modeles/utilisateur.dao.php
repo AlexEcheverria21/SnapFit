@@ -154,15 +154,26 @@ class UtilisateurDao {
         return $pdoStatement->execute([':id' => $idUtilisateur]);
     }
 
-    private function hydrate(array $row): Utilisateur {
-        $u = new Utilisateur();
-        $u->setIdUtilisateur($row['id_utilisateur']);
-        $u->setNom($row['nom']);
-        $u->setPrenom($row['prenom']);
-        $u->setEmail($row['email']);
-        $u->setMotDePasseHash($row['mot_de_passe_hash']);
-        $u->setRole($row['role']);
-        $u->setNomConnexion($row['nom_connexion']);
-        return $u;
+    /**
+     * @brief Hydrate un objet Utilisateur à partir d'un tableau de données
+     * @details Transforme un tableau associatif en une instance de la classe Utilisateur.
+     * @param array $tableau Tableau associatif de données utilisateur
+     * @return Utilisateur Instance d'Utilisateur
+     * @throws Aucun
+     */
+    public function hydrate(array $tableau): Utilisateur {
+
+        $utilisateur = new Utilisateur();
+        $utilisateur->setIdUtilisateur($tableau[0]['id_utilisateur']);
+        $utilisateur->setNom($tableau[0]['nom']);
+        $utilisateur->setPrenom($tableau[0]['prenom']);
+        $utilisateur->setMotDePasseHash($tableau[0]['mot_de_passe_hash']);
+        $utilisateur->setRole($tableau[0]['role']);
+        $utilisateur->setDateInscription($tableau[0]['date_inscription']);
+        $utilisateur->setEmail($tableau[0]['email']);
+        $utilisateur->setNomConnexion($tableau[0]['nom_connexion']);
+        $utilisateur->setSexe($tableau[0]['sexe']);
+        $utilisateur->setPays($tableau[0]['pays']);
+        return $utilisateur;
     }
 }
