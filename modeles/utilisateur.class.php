@@ -33,19 +33,19 @@ class Utilisateur {
     private string $statutCompte = 'actif';
 
     //Contructeur
-    public function __construct(?int $id_utilisateur = null, ?string $nom = null, ?string $prenom = null, ?string $mot_de_passe_hash = null, ?string $role = null, ?string $date_inscription = null, ?string $email = null, ?string $nom_connexion = null, ?string $sexe = null, ?string $pays = null ) {
-        $this->id_utilisateur = $id_utilisateur;
+    public function __construct(
+        string $email, 
+        string $passwordHashOrClear,
+        ?string $nom = null,
+        ?string $prenom = null,
+        ?string $nom_connexion = null
+    ) {
+        $this->email = $email;
+        $this->mot_de_passe_hash = $passwordHashOrClear; // haché si inscription
         $this->nom = $nom;
         $this->prenom = $prenom;
-        $this->mot_de_passe_hash = $mot_de_passe_hash;
-        $this->role = $role;
-        $this->date_inscription = $date_inscription;
-        $this->email = $email;
         $this->nom_connexion = $nom_connexion;
-        $this->sexe = $sexe;
-        $this->pays = $pays;
     }
-
 
     //Getters
     public function getIdUtilisateur(): ?int {
