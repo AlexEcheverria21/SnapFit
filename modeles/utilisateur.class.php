@@ -155,6 +155,24 @@ class Utilisateur {
         $req->execute(['id' => $this->id_utilisateur]);
     }
 
+    // Méthode gère les échecs de connexion
+    private function gererEchecConnexion(): void {
+        $this->tentativesEchouees++;
+        $pdo = Bd::getInstance()->getConnexion();
+        
+        if ($this->tentativesEchouees >= MAX_CONNEXIONS_ECHOUEES) {
+            $req = $pdo->prepare(
+                'UPDATE UTILISATEUR SET tentatives_echouees = :t, date_dernier_echec_connexion = NOW(), statut_compte = "desactive" WHERE id_utilisateur = :id'
+            );
+            $this->statutCompte = 'desactive';
+        } else {
+            $req = $pdo->prepare(
+                'UPDATE UTILISATEUR SET tentatives_echouees = :t, date_dernier_echec_connexion = NOW() WHERE id_utilisateur = :id'
+            );
+        }
+        $req->execute(['t' => $this->tentativesEchouees, 'id' => $this->id_utilisateur]);
+    }
+
     //Getters
     public function getIdUtilisateur(): ?int {
         return $this->id_utilisateur;
