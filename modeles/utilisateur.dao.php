@@ -176,4 +176,22 @@ class UtilisateurDao {
         $utilisateur->setPays($tableau[0]['pays']);
         return $utilisateur;
     }
+
+    /**
+     * @brief Hydrate plusieurs objets Utilisateur à partir d'un tableau de données
+     * @details Transforme un tableau de tableaux associatifs en une liste d'instances de la classe Utilisateur.
+     * @param array $tableau Tableau de tableaux associatifs de données utilisateur
+     * @return array Tableau d'objets Utilisateur
+     * @throws Aucun
+     */
+    public function hydrateMany(array $tableau): array {
+        $listeUtilisateurs = [];
+        
+        foreach($tableau as $row) {
+            // Important : On met $row dans des crochets [] car ta méthode hydrate attend un tableau où la donnée est à l'index 0
+            $listeUtilisateurs[] = $this->hydrate([$row]);
+        }
+        
+        return $listeUtilisateurs;
+    }
 }
