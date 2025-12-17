@@ -1,25 +1,25 @@
 {% extends "layout.html.twig" %}
 
-{% block content %}
-<h2>Scanner un article</h2>
-<form action="index.php?controleur=article&methode=result" method="post" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label>Photo de l'article</label>
-        <input type="file" name="photo" class="form-control" id="photoInput">
-    </div>
-    <div class="mb-3">
-        <img id="preview" style="max-width: 300px; display: none;" />
-    </div>
-    <button type="submit" class="btn btn-primary">Lancer la recherche</button>
-</form>
+{% block title %}Scanner une tenue - SnapFit{% endblock %}
 
-<script>
-document.getElementById('photoInput').onchange = evt => {
-    const [file] = evt.target.files
-    if (file) {
-        document.getElementById('preview').src = URL.createObjectURL(file)
-        document.getElementById('preview').style.display = 'block'
-    }
-}
-</script>
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="mb-4">Trouver ce look <i class="fas fa-search"></i></h1>
+            <div class="card shadow-lg p-5">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label for="photo" class="form-label h4">Télécharger une photo</label>
+                        <input class="form-control form-control-lg mt-3" type="file" id="photo" name="photo" accept="image/*" required>
+                        <div class="form-text mt-2">Nous analysons l'image pour trouver les vêtements similaires.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill">
+                        <i class="fas fa-camera"></i> Lancer l'analyse
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
