@@ -96,6 +96,53 @@ class Utilisateur {
         $this->id_utilisateur = $pdo->lastInsertId();
     }
 
+    /**
+     * @brief Authentification sécurisée
+     */
+    public function authentification(string $passwordClair): bool {
+        $pdo = Bd::getInstance()->getConnexion();
+        
+        // Récupération des infos sécurité
+        $req = $pdo->prepare(
+            'SELECT id_utilisateur, mot_de_passe_hash, tentatives_echouees, date_dernier_echec_connexion, statut_compte, role, nom, prenom, nom_connexion 
+             FROM UTILISATEUR WHERE email = :email'
+        );
+        $req->execute(['email' => $this->email]);
+        $user = $req->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) return false;
+
+        // Hydratation interne
+        $this->id_utilisateur = $user['id_utilisateur'];
+        $this->mot_de_passe_hash = $user['mot_de_passe_hash']; // Hash stocké
+        $this->tentativesEchouees = $user['tentatives_echouees'];
+        $this->dateDernierEchecConnexion = $user['date_dernier_echec_connexion'];
+        $this->statutCompte = $user['statut_compte'];
+        $this->role = $user['role'];
+        $this->nom = $user['nom'];
+        $this->prenom = $user['prenom'];
+        $this->nom_connexion = $user['nom_connexion'];
+
+        // Vérif Compte Désactivé
+        if ($this->statutCompte === 'desactive') {
+            if (!$this->delaiAttenteEstEcoule()) {
+                throw new Exception("compte_desactive");
+            }
+            $this->reactiverCompte();
+        }
+
+        // Vérif Password
+        if (password_verify($passwordClair, $this->mot_de_passe_hash)) {
+            if ($this->tentativesEchouees > 0) {
+                $this->reinitialiserTentativesConnexions();
+            }
+            return true;
+        } else {
+            $this->gererEchecConnexion();
+            return false;
+        }
+    }
+
     //Getters
     public function getIdUtilisateur(): ?int {
         return $this->id_utilisateur;
