@@ -173,6 +173,15 @@ class Utilisateur {
         $req->execute(['t' => $this->tentativesEchouees, 'id' => $this->id_utilisateur]);
     }
 
+    // Méthode pour reactiver le compte après délai d'attente
+    private function reactiverCompte(): void {
+        $this->tentativesEchouees = 0;
+        $this->dateDernierEchecConnexion = null;
+        $this->statutCompte = 'actif';
+        $pdo = Bd::getInstance()->getConnexion();
+        $pdo->prepare('UPDATE UTILISATEUR SET tentatives_echouees = 0, date_dernier_echec_connexion = NULL, statut_compte = "actif" WHERE id_utilisateur = :id')->execute(['id' => $this->id_utilisateur]);
+    }
+
     //Getters
     public function getIdUtilisateur(): ?int {
         return $this->id_utilisateur;
