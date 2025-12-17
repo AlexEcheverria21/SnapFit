@@ -13,8 +13,10 @@ class ControllerHome extends Controller {
         $template = $this->getTwig()->load('home.html.twig');
         
         // Affichage de la page
+        $loginSuccess = (isset($_GET['login']) && $_GET['login'] === 'success');
+        
         echo $template->render(array(
-            // On pourra passer des variables ici plus tard (ex: 'titre' => 'Bienvenue')
+            'login_success' => $loginSuccess
         ));
     }
 }
