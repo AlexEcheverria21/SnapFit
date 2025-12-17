@@ -1,11 +1,17 @@
 {% extends "layout.html.twig" %}
 
+{% block title %}Bienvenue{% endblock %}
+
 {% block content %}
-    <div class="p-5 mb-4 bg-light rounded-3">
-        <div class="container-fluid py-5">
-            <h1 class="display-5 fw-bold">Bienvenue sur SnapFit</h1>
-            <p class="col-md-8 fs-4">Le Shazam de la mode. Scannez, trouvez, achetez.</p>
-            <button class="btn btn-primary btn-lg" type="button">Scanner un article</button>
-        </div>
+<div class="text-center py-5">
+    {% if login_success %}
+    <div class="alert alert-success alert-dismissible fade show w-50 mx-auto" role="alert">
+        <strong>Connexion réussie !</strong> Ravi de vous revoir.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+    {% endif %}
+    <h1>Bienvenue sur SnapFit 📸</h1>
+    <p class="lead">Retrouvez vos vêtements préférés en un clic.</p>
+    <a href="index.php?controleur=article&methode=add" class="btn btn-success btn-lg">Commencer la recherche</a>
+</div>
 {% endblock %}

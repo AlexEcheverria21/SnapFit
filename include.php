@@ -25,6 +25,7 @@ require_once 'modeles/article.dao.php';
 require_once 'modeles/favori.dao.php';
 require_once 'modeles/recherche.dao.php';
 require_once 'modeles/utilisateur.dao.php';
+require_once 'services/SerpApiService.php'; // Service API Google Lens
 
 //Ajout des config
 require_once 'config/twig.php';
