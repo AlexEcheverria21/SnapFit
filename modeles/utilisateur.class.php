@@ -55,6 +55,8 @@ class Utilisateur {
         return $req->fetchColumn() > 0;
     }
 
+
+    // MÉTHODES PUBLICS
     // Méthode pour vérifier la robustesse du mot de passe
     public function estRobuste(string $password): bool {
         $regex = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/';
@@ -141,6 +143,16 @@ class Utilisateur {
             $this->gererEchecConnexion();
             return false;
         }
+    }
+
+    // MÉTHODES PRIVÉES
+    // Méthode pour reinitialise les tentatives de connexion
+    private function reinitialiserTentativesConnexions(): void {
+        $this->tentativesEchouees = 0;
+        $this->dateDernierEchecConnexion = null;
+        $pdo = Bd::getInstance()->getConnexion();
+        $req = $pdo->prepare('UPDATE UTILISATEUR SET tentatives_echouees = 0, date_dernier_echec_connexion = NULL WHERE id_utilisateur = :id');
+        $req->execute(['id' => $this->id_utilisateur]);
     }
 
     //Getters
