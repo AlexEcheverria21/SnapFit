@@ -1,13 +1,23 @@
 <?php
 class UtilisateurDao {
+    //Attributs privés
     private ?PDO $pdo;
 
-    public function __construct(?PDO $pdo = null) {
+
+    //Constructeur
+    public function __construct(?PDO $pdo=null){
         $this->pdo = $pdo;
     }
 
-    public function getPdo(): ?PDO { return $this->pdo; }
-    public function setPdo(?PDO $pdo): void { $this->pdo = $pdo; }
+    //Getters
+    public function getPdo(): ?PDO {
+        return $this->pdo;
+    }
+
+    //Setters
+    public function setPdo(?PDO $pdo): void {
+        $this->pdo = $pdo;
+    }
 
     /**
      * @brief Crée un nouvel utilisateur (V3 Cleaned)
