@@ -61,6 +61,41 @@ class Utilisateur {
         return preg_match($regex, $password) === 1;
     }
 
+    /**
+     * @brief Inscription sécurisée
+     */
+    public function inscription(string $passwordClair): void {
+        if (!$this->estRobuste($passwordClair)) {
+            throw new Exception("mdp_faible");
+        }
+        if ($this->emailExiste()) {
+            throw new Exception("compte_existant");
+        }
+
+        $pdo = Bd::getInstance()->getConnexion();
+        $this->mot_de_passe_hash = password_hash($passwordClair, PASSWORD_BCRYPT);
+        
+        // On génère un nom de connexion unique si pas fourni
+        if (!$this->nom_connexion) {
+            $this->nom_connexion = explode('@', $this->email)[0] . uniqid();
+        }
+
+        $sql = "INSERT INTO UTILISATEUR (email, mot_de_passe_hash, role, nom_connexion, nom, prenom, sexe, pays, date_inscription) 
+                VALUES (:email, :mdp, :role, :login, :nom, :prenom, 'N-A', 'France', NOW())";
+        
+        $req = $pdo->prepare($sql);
+        $req->execute([
+            'email' => $this->email,
+            'mdp' => $this->mot_de_passe_hash,
+            'role' => $this->role,
+            'login' => $this->nom_connexion,
+            'nom'  => $this->nom ?? 'Anonyme',
+            'prenom' => $this->prenom ?? 'User'
+        ]);
+        
+        $this->id_utilisateur = $pdo->lastInsertId();
+    }
+
     //Getters
     public function getIdUtilisateur(): ?int {
         return $this->id_utilisateur;
