@@ -182,6 +182,17 @@ class Utilisateur {
         $pdo->prepare('UPDATE UTILISATEUR SET tentatives_echouees = 0, date_dernier_echec_connexion = NULL, statut_compte = "actif" WHERE id_utilisateur = :id')->execute(['id' => $this->id_utilisateur]);
     }
 
+    private function delaiAttenteEstEcoule(): bool {
+        return $this->tempsRestantAvantReactivationCompte() === 0;
+    }
+
+    // Méthode pour obtenir le temps restant avant réactivation du compte
+    public function tempsRestantAvantReactivationCompte(): int {
+        if (!$this->dateDernierEchecConnexion) return 0;
+        $dernierEchec = strtotime($this->dateDernierEchecConnexion);
+        return max(0, DELAI_ATTENTE_CONNEXION - (time() - $dernierEchec));
+    }
+
     //Getters
     public function getIdUtilisateur(): ?int {
         return $this->id_utilisateur;
