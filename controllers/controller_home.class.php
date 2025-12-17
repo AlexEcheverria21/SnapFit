@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * @file    controller_home.class.php
+ * @author  Louis (Team SnapFit)
+ * @brief   Gère l'affichage de la page d'accueil.
+ * @version 1.0
+ * @date    17/12/2025
+ */
 class ControllerHome extends Controller {
 
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader) {
