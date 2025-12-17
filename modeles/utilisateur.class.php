@@ -47,6 +47,14 @@ class Utilisateur {
         $this->nom_connexion = $nom_connexion;
     }
 
+    // Méthode pour vérifier si l'email existe déjà dans la base de données
+    public function emailExiste(): bool {
+        $pdo = Bd::getInstance()->getConnexion();
+        $req = $pdo->prepare('SELECT COUNT(*) FROM UTILISATEUR WHERE email = :email');
+        $req->execute(['email' => $this->email]);
+        return $req->fetchColumn() > 0;
+    }
+
     //Getters
     public function getIdUtilisateur(): ?int {
         return $this->id_utilisateur;
