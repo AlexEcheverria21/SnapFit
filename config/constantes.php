@@ -17,11 +17,19 @@ try {
     die("<h1>Erreur YAML</h1><p>Impossible de lire le fichier de configuration : " . $e->getMessage() . "</p>");
 }
 
-// 4. Définition des constantes
-define('DB_HOST', $config['database']['host'] ?? 'localhost');
-define('DB_NAME', $config['database']['nom'] ?? 'aecheverria_pro');
-define('DB_USER', $config['database']['user'] ?? 'aecheverria_pro');
-define('DB_PASS', $config['database']['password'] ?? 'aecheverria_pro');
-define('', '');
+if (isset($config['bdd'])) {
+    define('DB_HOST', $config['bdd']['host'] );
+    define('DB_NAME', $config['bdd']['nom']); // 'nom' dans le YAML
+    define('DB_USER', $config['bdd']['user']);
+    define('DB_PASS', $config['bdd']['password']);
+} else {
+    // Valeurs par défaut si la section bdd est absente
+    define('DB_HOST', '');
+    define('DB_NAME', '');
+    define('DB_USER', '');
+    define('DB_PASS', '');
+}
+
+
 
 ?>
