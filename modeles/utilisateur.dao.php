@@ -106,6 +106,41 @@ class UtilisateurDao {
         return null;
     }
 
+     /**
+     * @brief Met à jour un utilisateur
+     * @details Modifie les informations d'un utilisateur existant
+     * @param Utilisateur $utilisateur Objet utilisateur avec les nouvelles valeurs
+     * @return bool True si la mise à jour a réussi, false sinon
+     * @throws PDOException En cas d'erreur lors de l'exécution de la requête
+     */
+    public function update(Utilisateur $utilisateur): bool {
+        $sql = "UPDATE UTILISATEUR SET 
+                nom = :nom,
+                prenom = :prenom,
+                mot_de_passe_hash = :mot_de_passe_hash,
+                role = :role,
+                email = :email,
+                nom_connexion = :nom_connexion,
+                sexe = :sexe,
+                pays = :pays
+                WHERE id_utilisateur = :id";
+
+        $pdoStatement = $this->pdo->prepare($sql);
+
+        return $pdoStatement->execute(array(
+            ':nom' => $utilisateur->getNom(),
+            ':prenom' => $utilisateur->getPrenom(),
+            ':mot_de_passe_hash' => $utilisateur->getMotDePasseHash(),
+            ':role' => $utilisateur->getRole(),
+            ':email' => $utilisateur->getEmail(),
+            ':nom_connexion' => $utilisateur->getNomConnexion(),
+            ':sexe' => $utilisateur->getSexe(),
+            ':pays' => $utilisateur->getPays(),
+            ':id' => $utilisateur->getIdUtilisateur()
+        ));
+
+    }
+
     private function hydrate(array $row): Utilisateur {
         $u = new Utilisateur();
         $u->setIdUtilisateur($row['id_utilisateur']);
