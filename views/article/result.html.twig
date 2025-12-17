@@ -1,21 +1,124 @@
 {% extends "layout.html.twig" %}
 
+{% block title %}Résultats - SnapFit{% endblock %}
+
 {% block content %}
-<h2>Résultats de la recherche</h2>
-<div class="row">
-    {% for item in articles %}
-    <div class="col-md-4 mb-4">
-        <div class="card h-100">
-            <img src="{{ item.thumbnail }}" class="card-img-top" alt="{{ item.title }}">
-            <div class="card-body">
-                <h5 class="card-title">{{ item.title }}</h5>
-                <p class="card-text">{{ item.source }} - {{ item.price.value }} {{ item.price.currency }}</p>
-                <a href="{{ item.link }}" target="_blank" class="btn btn-sm btn-outline-primary">Voir l'offre</a>
-            </div>
+<div class="container mt-4">
+    <!-- En-tête avec l'image scannée -->
+    {% if scanImage %}
+    <div class="row mb-5 align-items-center bg-light p-3 rounded">
+        <div class="col-md-2 text-center">
+            <img src="public/uploads/{{ scanImage }}" class="img-fluid rounded border border-3 border-white shadow-sm" style="max-height: 100px;">
+        </div>
+        <div class="col-md-10">
+            <h3><i class="fas fa-check-circle text-success"></i> Analyse terminée !</h3>
+            <p class="mb-0 text-muted">Voici les articles que nous avons identifiés pour vous.</p>
         </div>
     </div>
-    {% else %}
-    <p>Aucun résultat trouvé.</p>
-    {% endfor %}
+    {% endif %}
+
+    <!-- Alerte Anti-Scam -->
+    {% if nbBloques > 0 %}
+    <div class="alert alert-warning d-flex align-items-center mb-4" role="alert">
+        <i class="fas fa-shield-alt fa-2x me-3"></i>
+        <div>
+            <strong>Sécurité SnapFit activée !</strong>
+            <br>
+            Nous avons masqué <strong>{{ nbBloques }} résultat(s)</strong> provenant de sites identifiés comme frauduleux ou peu fiables (Scam).
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Grille de résultats -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for article in articles %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <!-- Image Article (Si lien externe ou local) -->
+                <div class="position-relative" style="height: 250px; overflow: hidden;">
+                    <img src="{{ article.image }}" class="card-img-top w-100 h-100" style="object-fit: cover;" alt="{{ article.categorie }}">
+                    <span class="badge bg-dark position-absolute top-0 end-0 m-2">{{ article.marque }}</span>
+                </div>
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ article.categorie }}</h5>
+                    <p class="card-text text-muted">Identifié avec certitude.</p>
+                    
+                    <a href="{{ article.url }}" target="_blank" class="btn btn-outline-primary w-100 mb-2">
+                        <i class="fas fa-shopping-bag"></i> Acheter
+                    </a>
+                    
+                    <!-- Bouton Favori Fonctionnel -->
+                    {% if session.user %}
+                    <form action="index.php?controleur=favori&methode=add" method="post" class="d-inline">
+                        <input type="hidden" name="url" value="{{ article.url }}">
+                        <input type="hidden" name="image" value="{{ article.image }}">
+                        <input type="hidden" name="titre" value="{{ article.titre }}">
+                        <input type="hidden" name="prix" value="{{ article.prix }}">
+                        <button type="submit" class="btn btn-light w-100 text-danger">
+                            <i class="far fa-heart"></i> Sauvegarder
+                        </button>
+                    </form>
+                    {% else %}
+                    <a href="index.php?controleur=utilisateur&methode=login" class="btn btn-light w-100 text-muted" title="Connectez-vous pour sauvegarder">
+                        <i class="far fa-heart"></i> (Connexion requise)
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12 text-center">
+            <p>Aucun résultat trouvé dans notre catalogue de démo.</p>
+        </div>
+        {% endfor %}
+    </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const forms = document.querySelectorAll('form[action*="methode=add"]');
+    
+    forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // On bloque la redirection
+            
+            const btn = this.querySelector('button');
+            const icon = btn.querySelector('i');
+            const originalText = btn.innerHTML;
+            
+            // UI Feedback immédiat (Chargement)
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ...';
+
+            const formData = new FormData(this);
+            
+            // Appel AJAX
+            fetch(this.action + '&ajax=1', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Succès : Coeur plein Rouge + Texte "Sauvegardé"
+                    btn.className = "btn btn-outline-danger w-100"; // Style Outline Rouge
+                    btn.innerHTML = '<i class="fas fa-heart"></i> Sauvegardé';
+                } else {
+                    // Erreur technique
+                    alert("Erreur : " + (data.error || "Inconnue"));
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Erreur réseau");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
+        });
+    });
+});
+</script>
 {% endblock %}
