@@ -55,6 +55,12 @@ class Utilisateur {
         return $req->fetchColumn() > 0;
     }
 
+    // Méthode pour vérifier la robustesse du mot de passe
+    public function estRobuste(string $password): bool {
+        $regex = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/';
+        return preg_match($regex, $password) === 1;
+    }
+
     //Getters
     public function getIdUtilisateur(): ?int {
         return $this->id_utilisateur;
