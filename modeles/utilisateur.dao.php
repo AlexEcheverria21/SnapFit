@@ -84,12 +84,25 @@ class UtilisateurDao {
         return $this->hydrateMany($tableau);
     }
 
+    /**
+     * @brief Récupère un utilisateur par son email
+     * @details Sélectionne un utilisateur spécifique via son email et hydrate l'objet.
+     * @param string $email Email de l'utilisateur à rechercher
+     * @return Utilisateur|null Instance d'Utilisateur ou null si non trouvé
+     * @throws PDOException Si la requête échoue.
+     */
     public function findByEmail(string $email): ?Utilisateur {
+
         $sql = "SELECT * FROM UTILISATEUR WHERE email = :email";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':email' => $email]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($row) return $this->hydrate($row);
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute(array(':email' => $email));
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $tableau = $pdoStatement->fetchAll();
+
+        if (count($tableau) > 0) {
+            return $this->hydrate($tableau);
+        }
+
         return null;
     }
 
