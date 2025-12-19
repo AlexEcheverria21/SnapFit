@@ -1,6 +1,7 @@
-#Connection à la base de données
+# Connexion à la base de données, rentrez vos identifiants 
 bdd:
-  host: "linkBD"
-  nom: "nameBD"
-  user: "name"
-  password: "password"
+  host: "linkBD" # lakartxela.iutbayonne.univ-pau.fr si serveur iut / localhost si local
+  nom: "nameBD" # nom de la base de données, ex : pgimenez003_bd
+  user: "name" # ex : pgimenez003_pro 
+  password: "password" # ex : pgimenez003_pro
+
