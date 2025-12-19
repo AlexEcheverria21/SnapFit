@@ -1,18 +1,5 @@
--- Script SQL à importer dans votre bdd phpMyAdmin
+-- Script SQL à importer dans votre bdd phpMyAdmin, supprimez vos tables avant si besoin.
 -- Oubliez pas de mettre vos bons identifiants dans config.exemple.yaml et de renommer le fichier en config.yaml
-
--- NETTOYAGE COMPLET, vous pouvez exécuter ce script dans votre base actuelle dans 
--- importer sur phpmyadmin
-SET FOREIGN_KEY_CHECKS = 0;
-DROP TABLE IF EXISTS FAVORI;
-DROP TABLE IF EXISTS AJOUTER; -- Ancienne table au cas ou
-DROP TABLE IF EXISTS RECHERCHE;
-DROP TABLE IF EXISTS ARTICLE;
-DROP TABLE IF EXISTS DOMAINE;
-DROP TABLE IF EXISTS SITE_SCAM; -- pareil
-DROP TABLE IF EXISTS SITE_ECO; -- pareil
-DROP TABLE IF EXISTS UTILISATEUR;
-
 
 -- CRÉATION DES TABLES
 
