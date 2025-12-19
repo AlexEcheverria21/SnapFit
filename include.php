@@ -7,8 +7,8 @@ require_once 'vendor/autoload.php';
 require_once 'config/constantes.php';
 
 //Ajout des contrôleurs
-require_once 'controllers/controller_admin.php';
 require_once 'controllers/controller.class.php';
+require_once 'controllers/controller_admin.php';
 require_once 'controllers/controller_factory.class.php';
 require_once 'controllers/controller_article.class.php';
 require_once 'controllers/controller_favori.class.php';
