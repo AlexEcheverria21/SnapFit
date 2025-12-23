@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Snapfit: CHANGELOG</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Snapfit
+   </div>
+   <div id="projectbrief">Documentation de Snapfit, application web qui a pour but de guider les utilisateurs dans un shopping plus simple, écoresponsable et sécurisé.</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div id="doc-content">
+<div><div class="header">
+  <div class="headertitle"><div class="title">CHANGELOG </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><h1 class="doxsection"><a class="anchor" id="autotoc_md78"></a>
+7.3</h1>
+<ul>
+<li>Add compact nested mapping support by using the <span class="tt">Yaml::DUMP_COMPACT_NESTED_MAPPING</span> flag</li>
+<li>Add the <span class="tt">Yaml::DUMP_FORCE_DOUBLE_QUOTES_ON_VALUES</span> flag to enforce double quotes around string values</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md79"></a>
+7.2</h1>
+<ul>
+<li>Deprecate parsing duplicate mapping keys whose value is <span class="tt">null</span></li>
+<li>Add support for dumping <span class="tt">null</span> as an empty value by using the <span class="tt">Yaml::DUMP_NULL_AS_EMPTY</span> flag</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md80"></a>
+7.1</h1>
+<ul>
+<li>Add support for getting all the enum cases with <span class="tt">!php/enum Foo</span></li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md81"></a>
+7.0</h1>
+<ul>
+<li>Remove the <span class="tt">!php/const:</span> tag, use <span class="tt">!php/const</span> instead (without the colon)</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md82"></a>
+6.3</h1>
+<ul>
+<li>Add support to dump int keys as strings by using the <span class="tt">Yaml::DUMP_NUMERIC_KEY_AS_STRING</span> flag</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md83"></a>
+6.2</h1>
+<ul>
+<li>Add support for <span class="tt">!php/enum</span> and <span class="tt">!php/enum *-&gt;value</span></li>
+<li>Deprecate the <span class="tt">!php/const:</span> tag in key which will be replaced by the <span class="tt">!php/const</span> tag (without the colon) since 3.4</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md84"></a>
+6.1</h1>
+<ul>
+<li>In cases where it will likely improve readability, strings containing single quotes will be double-quoted</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md85"></a>
+5.4</h1>
+<ul>
+<li>Add new <span class="tt">lint:yaml dirname --exclude=/dirname/foo.yaml --exclude=/dirname/bar.yaml</span> option to exclude one or more specific files from multiple file list</li>
+<li>Allow negatable for the parse tags option with <span class="tt">--no-parse-tags</span></li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md86"></a>
+5.3</h1>
+<ul>
+<li>Added <span class="tt">github</span> format support &amp; autodetection to render errors as annotations when running the YAML linter command in a Github Action environment.</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md87"></a>
+5.1.0</h1>
+<ul>
+<li>Added support for parsing numbers prefixed with <span class="tt">0o</span> as octal numbers.</li>
+<li><p class="startli">Deprecated support for parsing numbers starting with <span class="tt">0</span> as octal numbers. They will be parsed as strings as of Symfony 6.0. Prefix numbers with <span class="tt">0o</span> so that they are parsed as octal numbers.</p>
+<p class="startli">Before:</p>
+<div class="fragment"><div class="line">Yaml::parse(&#39;072&#39;);</div>
+</div><!-- fragment --><p class="startli">After:</p>
+<div class="fragment"><div class="line">Yaml::parse(&#39;0o72&#39;);</div>
+</div><!-- fragment --></li>
+<li>Added <span class="tt">yaml-lint</span> binary.</li>
+<li>Deprecated using the <span class="tt">!php/object</span> and <span class="tt">!php/const</span> tags without a value.</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md88"></a>
+5.0.0</h1>
+<ul>
+<li>Removed support for mappings inside multi-line strings.</li>
+<li>removed support for implicit STDIN usage in the <span class="tt">lint:yaml</span> command, use <span class="tt">lint:yaml -</span> (append a dash) instead to make it explicit.</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md89"></a>
+4.4.0</h1>
+<ul>
+<li>Added support for parsing the inline notation spanning multiple lines.</li>
+<li>Added support to dump <span class="tt">null</span> as <span class="tt">~</span> by using the <span class="tt">Yaml::DUMP_NULL_AS_TILDE</span> flag.</li>
+<li>deprecated accepting STDIN implicitly when using the <span class="tt">lint:yaml</span> command, use <span class="tt">lint:yaml -</span> (append a dash) instead to make it explicit.</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md90"></a>
+4.3.0</h1>
+<ul>
+<li>Using a mapping inside a multi-line string is deprecated and will throw a <span class="tt">ParseException</span> in 5.0.</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md91"></a>
+4.2.0</h1>
+<ul>
+<li>added support for multiple files or directories in <span class="tt">LintCommand</span></li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md92"></a>
+4.0.0</h1>
+<ul>
+<li>The behavior of the non-specific tag <span class="tt">!</span> is changed and now forces non-evaluating your values.</li>
+<li>complex mappings will throw a <span class="tt">ParseException</span></li>
+<li>support for the comma as a group separator for floats has been dropped, use the underscore instead</li>
+<li>support for the <span class="tt">!!php/object</span> tag has been dropped, use the <span class="tt">!php/object</span> tag instead</li>
+<li>duplicate mapping keys throw a <span class="tt">ParseException</span></li>
+<li>non-string mapping keys throw a <span class="tt">ParseException</span>, use the <span class="tt">Yaml::PARSE_KEYS_AS_STRINGS</span> flag to cast them to strings</li>
+<li><span class="tt">%</span> at the beginning of an unquoted string throw a <span class="tt">ParseException</span></li>
+<li>mappings with a colon (<span class="tt">:</span>) that is not followed by a whitespace throw a <span class="tt">ParseException</span></li>
+<li>the <span class="tt">Dumper::setIndentation()</span> method has been removed</li>
+<li>being able to pass boolean options to the <span class="tt">Yaml::parse()</span>, <span class="tt">Yaml::dump()</span>, <span class="tt">Parser::parse()</span>, and <span class="tt">Dumper::dump()</span> methods to configure the behavior of the parser and dumper is no longer supported, pass bitmask flags instead</li>
+<li>the constructor arguments of the <span class="tt">Parser</span> class have been removed</li>
+<li>the <span class="tt">Inline</span> class is internal and no longer part of the BC promise</li>
+<li>removed support for the <span class="tt">!str</span> tag, use the <span class="tt">!!str</span> tag instead</li>
+<li><p class="startli">added support for tagged scalars.</p>
+<div class="fragment"><div class="line">Yaml::parse(&#39;!foo bar&#39;, Yaml::PARSE_CUSTOM_TAGS);</div>
+<div class="line">// returns TaggedValue(&#39;foo&#39;, &#39;bar&#39;);</div>
+</div><!-- fragment --></li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md93"></a>
+3.4.0</h1>
+<ul>
+<li>added support for parsing YAML files using the <span class="tt">Yaml::parseFile()</span> or <span class="tt">Parser::parseFile()</span> method</li>
+<li>the <span class="tt">Dumper</span>, <span class="tt">Parser</span>, and <span class="tt">Yaml</span> classes are marked as final</li>
+<li>Deprecated the <span class="tt">!php/object:</span> tag which will be replaced by the <span class="tt">!php/object</span> tag (without the colon) in 4.0.</li>
+<li>Deprecated the <span class="tt">!php/const:</span> tag which will be replaced by the <span class="tt">!php/const</span> tag (without the colon) in 4.0.</li>
+<li>Support for the <span class="tt">!str</span> tag is deprecated, use the <span class="tt">!!str</span> tag instead.</li>
+<li>Deprecated using the non-specific tag <span class="tt">!</span> as its behavior will change in 4.0. It will force non-evaluating your values in 4.0. Use plain integers or <span class="tt">!!float</span> instead.</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md94"></a>
+3.3.0</h1>
+<ul>
+<li>Starting an unquoted string with a question mark followed by a space is deprecated and will throw a <span class="tt">ParseException</span> in Symfony 4.0.</li>
+<li><p class="startli">Deprecated support for implicitly parsing non-string mapping keys as strings. Mapping keys that are no strings will lead to a <span class="tt">ParseException</span> in Symfony 4.0. Use quotes to opt-in for keys to be parsed as strings.</p>
+<p class="startli">Before:</p>
+<div class="fragment"><div class="line">$yaml = &lt;&lt;&lt;YAML</div>
+<div class="line"><span class="keyword">null</span>: <span class="keyword">null</span> key</div>
+<div class="line"><span class="keyword">true</span>: <span class="keywordtype">boolean</span> <span class="keyword">true</span></div>
+<div class="line">2.0: float key</div>
+<div class="line">YAML;</div>
+<div class="line"> </div>
+<div class="line">Yaml::parse($yaml);</div>
+</div><!-- fragment --><p class="startli">After:</p>
+<div class="fragment"><div class="line">$yaml = &lt;&lt;&lt;YAML</div>
+<div class="line"><span class="stringliteral">&quot;null&quot;</span>: <span class="keyword">null</span> key</div>
+<div class="line"><span class="stringliteral">&quot;true&quot;</span>: <span class="keywordtype">boolean</span> <span class="keyword">true</span></div>
+<div class="line"><span class="stringliteral">&quot;2.0&quot;</span>: <span class="keywordtype">float</span> key</div>
+<div class="line">YAML;</div>
+<div class="line"> </div>
+<div class="line">Yaml::parse($yaml);</div>
+</div><!-- fragment --></li>
+<li>Omitted mapping values will be parsed as <span class="tt">null</span>.</li>
+<li>Omitting the key of a mapping is deprecated and will throw a <span class="tt">ParseException</span> in Symfony 4.0.</li>
+<li><p class="startli">Added support for dumping empty PHP arrays as YAML sequences:</p>
+<div class="fragment"><div class="line">Yaml::dump([], 0, 0, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE);</div>
+</div><!-- fragment --></li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md95"></a>
+3.2.0</h1>
+<ul>
+<li>Mappings with a colon (<span class="tt">:</span>) that is not followed by a whitespace are deprecated when the mapping key is not quoted and will lead to a <span class="tt">ParseException</span> in Symfony 4.0 (e.g. <span class="tt">foo:bar</span> must be <span class="tt">foo: bar</span>).</li>
+<li><p class="startli">Added support for parsing PHP constants:</p>
+<div class="fragment"><div class="line">Yaml::parse(<span class="stringliteral">&#39;!php/const:PHP_INT_MAX&#39;</span>, Yaml::PARSE_CONSTANT);</div>
+</div><!-- fragment --></li>
+<li>Support for silently ignoring duplicate mapping keys in YAML has been deprecated and will lead to a <span class="tt">ParseException</span> in Symfony 4.0.</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md96"></a>
+3.1.0</h1>
+<ul>
+<li>Added support to dump <span class="tt">stdClass</span> and <span class="tt">ArrayAccess</span> objects as YAML mappings through the <span class="tt">Yaml::DUMP_OBJECT_AS_MAP</span> flag.</li>
+<li>Strings that are not UTF-8 encoded will be dumped as base64 encoded binary data.</li>
+<li>Added support for dumping multi line strings as literal blocks.</li>
+<li>Added support for parsing base64 encoded binary data when they are tagged with the <span class="tt">!!binary</span> tag.</li>
+<li><p class="startli">Added support for parsing timestamps as <span class="tt">\DateTime</span> objects:</p>
+<div class="fragment"><div class="line">Yaml::parse(<span class="stringliteral">&#39;2001-12-15 21:59:43.10 -5&#39;</span>, Yaml::PARSE_DATETIME);</div>
+</div><!-- fragment --></li>
+<li><span class="tt">\DateTime</span> and <span class="tt">\DateTimeImmutable</span> objects are dumped as YAML timestamps.</li>
+<li>Deprecated usage of <span class="tt">%</span> at the beginning of an unquoted string.</li>
+<li><p class="startli">Added support for customizing the YAML parser behavior through an optional bit field:</p>
+<div class="fragment"><div class="line">Yaml::parse(<span class="stringliteral">&#39;{ &quot;foo&quot;: &quot;bar&quot;, &quot;fiz&quot;: &quot;cat&quot; }&#39;</span>, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE | Yaml::PARSE_OBJECT | Yaml::PARSE_OBJECT_FOR_MAP);</div>
+</div><!-- fragment --></li>
+<li><p class="startli">Added support for customizing the dumped YAML string through an optional bit field:</p>
+<div class="fragment"><div class="line">Yaml::dump([<span class="stringliteral">&#39;foo&#39;</span> =&gt; <span class="keyword">new</span> A(), <span class="stringliteral">&#39;bar&#39;</span> =&gt; 1], 0, 0, Yaml::DUMP_EXCEPTION_ON_INVALID_TYPE | Yaml::DUMP_OBJECT);</div>
+</div><!-- fragment --></li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md97"></a>
+3.0.0</h1>
+<ul>
+<li>Yaml::parse() now throws an exception when a blackslash is not escaped in double-quoted strings</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md98"></a>
+2.8.0</h1>
+<ul>
+<li>Deprecated usage of a colon in an unquoted mapping value</li>
+<li>Deprecated usage of @, `, | and &gt; at the beginning of an unquoted string</li>
+<li><p class="startli">When surrounding strings with double-quotes, you must now escape <span class="tt">\</span> characters. Not escaping those characters (when surrounded by double-quotes) is deprecated.</p>
+<p class="startli">Before:</p>
+<div class="fragment"><div class="line">class: &quot;Foo\Var&quot;</div>
+</div><!-- fragment --><p class="startli">After:</p>
+<div class="fragment"><div class="line">class: &quot;Foo\\Var&quot;</div>
+</div><!-- fragment --></li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md99"></a>
+2.1.0</h1>
+<ul>
+<li>Yaml::parse() does not evaluate loaded files as PHP files by default anymore (call Yaml::enablePhpParsing() to get back the old behavior) </li>
+</ul>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

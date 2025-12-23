@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file    include.php
+ * @author  Team SnapFit
+ * @brief   Chargeur de dépendances centralisé.
+ * @details Iincorpore l'autoloader Composer, la configuration et tous les fichiers de classes nécessaires.
+ * @version 1.0
+ * @date    2025-12-23
+ */
 
 //Ajout de vendor
 require_once 'vendor/autoload.php';

@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file    recherche.class.php
+ * @author  Team SnapFit
+ * @brief   Classe représentant une Recherche visuelle effectuée par un utilisateur.
+ *          Stocke l'image uploadée et l'ID de l'API.
+ * @version 1.0
+ * @date    2025-12-23
+ */
 
 class Recherche {
     // Attributs correspondant aux colonnes de la BDD

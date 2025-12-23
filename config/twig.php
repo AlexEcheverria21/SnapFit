@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file    twig.php
+ * @author  Team SnapFit
+ * @brief   Initialisation du moteur de template Twig.
+ * @details Configure le loader, l'environnement et les extensions (Debug, Intl) pour les vues.
+ * @version 1.0
+ * @date    2025-12-23
+ */
 //ajout de la classe IntlExtension et creation de l’alias IntlExtension
 use Twig\Extra\Intl\IntlExtension;
 

@@ -1,0 +1,504 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Snapfit: Référence de la classe ExpressionParser</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Snapfit
+   </div>
+   <div id="projectbrief">Documentation de Snapfit, application web qui a pour but de guider les utilisateurs dans un shopping plus simple, écoresponsable et sécurisé.</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="namespace_twig.html">Twig</a></li><li class="navelem"><a href="class_twig_1_1_expression_parser.html">ExpressionParser</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Types publics</a> &#124;
+<a href="#pub-methods">Fonctions membres publiques</a> &#124;
+<a href="#pub-attribs">Champs de données</a>  </div>
+  <div class="headertitle"><div class="title">Référence de la classe ExpressionParser</div></div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
+Types publics</h2></td></tr>
+<tr class="memitem:a29913aca09773279d6227c45fce5c699" id="r_a29913aca09773279d6227c45fce5c699"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29913aca09773279d6227c45fce5c699">ExpressionParserType</a> : string { <a class="el" href="#a29913aca09773279d6227c45fce5c699ac6f68618f5493c590283839197f94f10">getType</a>
+ }</td></tr>
+<tr class="memitem:a14da693adc46ac899830d67901d17e54" id="r_a14da693adc46ac899830d67901d17e54"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14da693adc46ac899830d67901d17e54">InfixAssociativity</a> { <a class="el" href="#a14da693adc46ac899830d67901d17e54ad48f7af8c070184f3774c8e85854eb66">Right</a>
+ }</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Fonctions membres publiques</h2></td></tr>
+<tr class="memitem:a5801a247309da4b032e24676914306f9" id="r_a5801a247309da4b032e24676914306f9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5801a247309da4b032e24676914306f9">__construct</a> (private <a class="el" href="class_twig_1_1_parser.html">Parser</a> $parser, private <a class="el" href="class_twig_1_1_environment.html">Environment</a> $env,)</td></tr>
+<tr class="memitem:a7071b8b73762e33627251e6515b0fe20" id="r_a7071b8b73762e33627251e6515b0fe20"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7071b8b73762e33627251e6515b0fe20">parseExpression</a> ($precedence=0)</td></tr>
+<tr class="memitem:af4649c23ab84785567030a0673a9ee76" id="r_af4649c23ab84785567030a0673a9ee76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4649c23ab84785567030a0673a9ee76">parsePrimaryExpression</a> ()</td></tr>
+<tr class="memitem:a99a1301121a1b6e34fb7ce044baef1cf" id="r_a99a1301121a1b6e34fb7ce044baef1cf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99a1301121a1b6e34fb7ce044baef1cf">parseStringExpression</a> ()</td></tr>
+<tr class="memitem:ac8125f8f7746662e24757a1207fe9986" id="r_ac8125f8f7746662e24757a1207fe9986"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac8125f8f7746662e24757a1207fe9986">parseArrayExpression</a> ()</td></tr>
+<tr class="memitem:ab0aadda3022fcd4afff8d7ce4d01bbfc" id="r_ab0aadda3022fcd4afff8d7ce4d01bbfc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0aadda3022fcd4afff8d7ce4d01bbfc">parseSequenceExpression</a> ()</td></tr>
+<tr class="memitem:aa1ab124f21f6eb72bdda3f835a747237" id="r_aa1ab124f21f6eb72bdda3f835a747237"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa1ab124f21f6eb72bdda3f835a747237">parseHashExpression</a> ()</td></tr>
+<tr class="memitem:ab615af4799d39b3141fe019395bd42a9" id="r_ab615af4799d39b3141fe019395bd42a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab615af4799d39b3141fe019395bd42a9">parseMappingExpression</a> ()</td></tr>
+<tr class="memitem:ad6aaf1c175652606d37f74ef5e008664" id="r_ad6aaf1c175652606d37f74ef5e008664"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6aaf1c175652606d37f74ef5e008664">parsePostfixExpression</a> ($node)</td></tr>
+<tr class="memitem:a39de613eaf1404c8b0e3e676feaf5131" id="r_a39de613eaf1404c8b0e3e676feaf5131"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a39de613eaf1404c8b0e3e676feaf5131">parseSubscriptExpression</a> ($node)</td></tr>
+<tr class="memitem:aa34dd7e6733af986a5d59be68e0cc24e" id="r_aa34dd7e6733af986a5d59be68e0cc24e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa34dd7e6733af986a5d59be68e0cc24e">parseFilterExpression</a> ($node)</td></tr>
+<tr class="memitem:a5cc9906017cdf081b15a6d02b6f2581c" id="r_a5cc9906017cdf081b15a6d02b6f2581c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5cc9906017cdf081b15a6d02b6f2581c">parseFilterExpressionRaw</a> ($node)</td></tr>
+<tr class="memitem:a7d9e9372bc6498d076030a4caf7bc188" id="r_a7d9e9372bc6498d076030a4caf7bc188"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d9e9372bc6498d076030a4caf7bc188">parseArguments</a> ()</td></tr>
+<tr class="memitem:a9d63b236eb972c8932a82eb72b6b74d2" id="r_a9d63b236eb972c8932a82eb72b6b74d2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d63b236eb972c8932a82eb72b6b74d2">parseAssignmentExpression</a> ()</td></tr>
+<tr class="memitem:a723d955922d5703cae23f36dcdbfdc06" id="r_a723d955922d5703cae23f36dcdbfdc06"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a723d955922d5703cae23f36dcdbfdc06">parseMultitargetExpression</a> ()</td></tr>
+<tr class="memitem:a7a959294127ffd957c00f8ba1263cf55" id="r_a7a959294127ffd957c00f8ba1263cf55"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7a959294127ffd957c00f8ba1263cf55">parseOnlyArguments</a> ()</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Champs de données</h2></td></tr>
+<tr class="memitem:abe5a3390382bf3aba3867940eec28a61" id="r_abe5a3390382bf3aba3867940eec28a61"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe5a3390382bf3aba3867940eec28a61">OPERATOR_LEFT</a> = 1</td></tr>
+<tr class="memitem:a90a1202797b2ac98156a907ac86d0052" id="r_a90a1202797b2ac98156a907ac86d0052"><td class="memItemLeft" align="right" valign="top">const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90a1202797b2ac98156a907ac86d0052">OPERATOR_RIGHT</a> = 2</td></tr>
+</table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Parses expressions.</p>
+<p>This parser implements a "Precedence climbing" algorithm.</p>
+<dl class="section see"><dt>Voir également</dt><dd><a href="https://www.engr.mun.ca/~theo/Misc/exp_parsing.htm">https://www.engr.mun.ca/~theo/Misc/exp_parsing.htm</a> </dd>
+<dd>
+<a href="https://en.wikipedia.org/wiki/Operator-precedence_parser">https://en.wikipedia.org/wiki/Operator-precedence_parser</a></dd></dl>
+<dl class="section author"><dt>Auteur</dt><dd>Fabien Potencier <a href="#" onclick="location.href='mai'+'lto:'+'fab'+'ie'+'n@s'+'ym'+'fon'+'y.'+'com'; return false;">fabie<span class="obfuscator">.nosp@m.</span>n@sy<span class="obfuscator">.nosp@m.</span>mfony<span class="obfuscator">.nosp@m.</span>.com</a></dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000007">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.21 </dd></dl>
+</div><a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Documentation des énumérations membres</h2>
+<a id="a29913aca09773279d6227c45fce5c699" name="a29913aca09773279d6227c45fce5c699"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29913aca09773279d6227c45fce5c699">&#9670;&#160;</a></span>ExpressionParserType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a29913aca09773279d6227c45fce5c699">ExpressionParserType</a> : string</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Valeurs énumérées</th></tr><tr><td class="fieldname"><a id="a29913aca09773279d6227c45fce5c699ac6f68618f5493c590283839197f94f10" name="a29913aca09773279d6227c45fce5c699ac6f68618f5493c590283839197f94f10"></a>getType&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a14da693adc46ac899830d67901d17e54" name="a14da693adc46ac899830d67901d17e54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14da693adc46ac899830d67901d17e54">&#9670;&#160;</a></span>InfixAssociativity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a14da693adc46ac899830d67901d17e54">InfixAssociativity</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Valeurs énumérées</th></tr><tr><td class="fieldname"><a id="a14da693adc46ac899830d67901d17e54ad48f7af8c070184f3774c8e85854eb66" name="a14da693adc46ac899830d67901d17e54ad48f7af8c070184f3774c8e85854eb66"></a>Right&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Documentation des constructeurs et destructeur</h2>
+<a id="a5801a247309da4b032e24676914306f9" name="a5801a247309da4b032e24676914306f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5801a247309da4b032e24676914306f9">&#9670;&#160;</a></span>__construct()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__construct </td>
+          <td>(</td>
+          <td class="paramtype">private <a class="el" href="class_twig_1_1_parser.html">Parser</a></td>          <td class="paramname"><span class="paramname"><em>$parser</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">private <a class="el" href="class_twig_1_1_environment.html">Environment</a></td>          <td class="paramname"><span class="paramname"><em>$env</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Documentation des fonctions membres</h2>
+<a id="a7d9e9372bc6498d076030a4caf7bc188" name="a7d9e9372bc6498d076030a4caf7bc188"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d9e9372bc6498d076030a4caf7bc188">&#9670;&#160;</a></span>parseArguments()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parseArguments </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Parses arguments.</p>
+<dl class="section return"><dt>Renvoie</dt><dd>Node</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">SyntaxError</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000020">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.19 Use <a class="el" href="namespace_twig.html">Twig</a>\ExpressionParser\Infix\ArgumentsTrait::parseNamedArguments() instead </dd></dl>
+
+</div>
+</div>
+<a id="ac8125f8f7746662e24757a1207fe9986" name="ac8125f8f7746662e24757a1207fe9986"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8125f8f7746662e24757a1207fe9986">&#9670;&#160;</a></span>parseArrayExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parseArrayExpression </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000012">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.11, use parseExpression() instead </dd></dl>
+
+</div>
+</div>
+<a id="a9d63b236eb972c8932a82eb72b6b74d2" name="a9d63b236eb972c8932a82eb72b6b74d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d63b236eb972c8932a82eb72b6b74d2">&#9670;&#160;</a></span>parseAssignmentExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parseAssignmentExpression </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000021">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.21, use "AbstractTokenParser::parseAssignmentExpression()" instead </dd></dl>
+
+</div>
+</div>
+<a id="a7071b8b73762e33627251e6515b0fe20" name="a7071b8b73762e33627251e6515b0fe20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7071b8b73762e33627251e6515b0fe20">&#9670;&#160;</a></span>parseExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parseExpression </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>$precedence</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa34dd7e6733af986a5d59be68e0cc24e" name="aa34dd7e6733af986a5d59be68e0cc24e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa34dd7e6733af986a5d59be68e0cc24e">&#9670;&#160;</a></span>parseFilterExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parseFilterExpression </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>$node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000018">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.21 </dd></dl>
+
+</div>
+</div>
+<a id="a5cc9906017cdf081b15a6d02b6f2581c" name="a5cc9906017cdf081b15a6d02b6f2581c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cc9906017cdf081b15a6d02b6f2581c">&#9670;&#160;</a></span>parseFilterExpressionRaw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parseFilterExpressionRaw </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>$node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000019">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.21 </dd></dl>
+
+</div>
+</div>
+<a id="aa1ab124f21f6eb72bdda3f835a747237" name="aa1ab124f21f6eb72bdda3f835a747237"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1ab124f21f6eb72bdda3f835a747237">&#9670;&#160;</a></span>parseHashExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parseHashExpression </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000014">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.11, use parseExpression() instead </dd></dl>
+
+</div>
+</div>
+<a id="ab615af4799d39b3141fe019395bd42a9" name="ab615af4799d39b3141fe019395bd42a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab615af4799d39b3141fe019395bd42a9">&#9670;&#160;</a></span>parseMappingExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parseMappingExpression </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000015">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.21 </dd></dl>
+
+</div>
+</div>
+<a id="a723d955922d5703cae23f36dcdbfdc06" name="a723d955922d5703cae23f36dcdbfdc06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a723d955922d5703cae23f36dcdbfdc06">&#9670;&#160;</a></span>parseMultitargetExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parseMultitargetExpression </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000022">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.21 </dd></dl>
+
+</div>
+</div>
+<a id="a7a959294127ffd957c00f8ba1263cf55" name="a7a959294127ffd957c00f8ba1263cf55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a959294127ffd957c00f8ba1263cf55">&#9670;&#160;</a></span>parseOnlyArguments()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parseOnlyArguments </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000023">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.19 Use <a class="el" href="namespace_twig.html">Twig</a>\ExpressionParser\Infix\ArgumentsTrait::parseNamedArguments() instead </dd></dl>
+
+</div>
+</div>
+<a id="ad6aaf1c175652606d37f74ef5e008664" name="ad6aaf1c175652606d37f74ef5e008664"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6aaf1c175652606d37f74ef5e008664">&#9670;&#160;</a></span>parsePostfixExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parsePostfixExpression </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>$node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000016">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.21 </dd></dl>
+
+</div>
+</div>
+<a id="af4649c23ab84785567030a0673a9ee76" name="af4649c23ab84785567030a0673a9ee76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4649c23ab84785567030a0673a9ee76">&#9670;&#160;</a></span>parsePrimaryExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parsePrimaryExpression </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000010">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.21 </dd></dl>
+
+</div>
+</div>
+<a id="ab0aadda3022fcd4afff8d7ce4d01bbfc" name="ab0aadda3022fcd4afff8d7ce4d01bbfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0aadda3022fcd4afff8d7ce4d01bbfc">&#9670;&#160;</a></span>parseSequenceExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parseSequenceExpression </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000013">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.21 </dd></dl>
+
+</div>
+</div>
+<a id="a99a1301121a1b6e34fb7ce044baef1cf" name="a99a1301121a1b6e34fb7ce044baef1cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99a1301121a1b6e34fb7ce044baef1cf">&#9670;&#160;</a></span>parseStringExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parseStringExpression </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000011">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.21 </dd></dl>
+
+</div>
+</div>
+<a id="a39de613eaf1404c8b0e3e676feaf5131" name="a39de613eaf1404c8b0e3e676feaf5131"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39de613eaf1404c8b0e3e676feaf5131">&#9670;&#160;</a></span>parseSubscriptExpression()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">parseSubscriptExpression </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>$node</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000017">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.21 </dd></dl>
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Documentation des champs</h2>
+<a id="abe5a3390382bf3aba3867940eec28a61" name="abe5a3390382bf3aba3867940eec28a61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe5a3390382bf3aba3867940eec28a61">&#9670;&#160;</a></span>OPERATOR_LEFT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const OPERATOR_LEFT = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000008">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.21 </dd></dl>
+
+</div>
+</div>
+<a id="a90a1202797b2ac98156a907ac86d0052" name="a90a1202797b2ac98156a907ac86d0052"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90a1202797b2ac98156a907ac86d0052">&#9670;&#160;</a></span>OPERATOR_RIGHT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const OPERATOR_RIGHT = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000009">Obsolète</a></b></dt><dd>since <a class="el" href="namespace_twig.html">Twig</a> 3.21 </dd></dl>
+
+</div>
+</div>
+<hr/>La documentation de cette classe a été générée à partir des fichiers suivants :<ul>
+<li>vendor/twig/twig/src/<a class="el" href="_expression_parser_8php.html">ExpressionParser.php</a></li>
+<li>vendor/twig/twig/src/ExpressionParser/<a class="el" href="_expression_parser_type_8php.html">ExpressionParserType.php</a></li>
+<li>vendor/twig/twig/src/ExpressionParser/<a class="el" href="_infix_associativity_8php.html">InfixAssociativity.php</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

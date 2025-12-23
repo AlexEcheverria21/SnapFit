@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file    recherche.dao.php
+ * @author  Team SnapFit
+ * @brief   DAO pour l'historique des recherches.
+ * @details Gère le CRUD de la table RECHERCHE et le nettoyage automatique.
+ * @version 1.0
+ * @date    2025-12-23
+ */
 
 require_once 'include.php';
 

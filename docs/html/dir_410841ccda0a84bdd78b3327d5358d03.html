@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Snapfit: Répertoire de référence de tarteaucitron/tarteaucitron</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Snapfit
+   </div>
+   <div id="projectbrief">Documentation de Snapfit, application web qui a pour but de guider les utilisateurs dans un shopping plus simple, écoresponsable et sécurisé.</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="dir_74c4326ea5cb6d1c889f43c8b01b171a.html">tarteaucitron</a></li><li class="navelem"><a href="dir_410841ccda0a84bdd78b3327d5358d03.html">tarteaucitron</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle"><div class="title">Répertoire de référence de tarteaucitron</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description détaillée</h2>
+<p><a href="https://www.jsdelivr.com/package/npm/tarteaucitronjs"><img src="https://data.jsdelivr.com/v1/package/npm/tarteaucitronjs/badge" alt="" class="inline"/></a> <a href="https://www.npmjs.com/package/tarteaucitronjs"><img src="https://img.shields.io/npm/v/tarteaucitronjs.svg" alt="npm" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/AmauriC/tarteaucitron.js/graphs/contributors"><img src="https://img.shields.io/github/contributors/AmauriC/tarteaucitron.js.svg" alt="GitHub contributors" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/sponsors/AmauriC"><img src="https://img.shields.io/static/v1?label=Sponsor&amp;message=%E2%9D%A4&amp;logo=GitHub" alt="Sponsor" class="inline"/></a></p>
+<p>👋 Hey, I'm Amauri, a french dev that build a GDPR friendly cookie manager.</p>
+<p>tarteaucitron was initially a simple script for my personal blog (in 2013), a few months later, the Github repository is opened and tarteaucitron is now reliable and recognized.</p>
+<p>The european cookie law regulates the management of cookies and you should ask your visitors their consent before exposing them to third party services.</p>
+<p>Clearly this script will:</p><ul>
+<li>Disable all services by default,</li>
+<li>Display a banner on the first page view and a small one on other pages,</li>
+<li>Display a panel to allow or deny each services one by one,</li>
+<li>Store the consent in a cookie for 365 days.</li>
+</ul>
+<p>Bonus:</p><ul>
+<li>Load service when user click on Allow (without reload of the page),</li>
+<li>Incorporate a fallback system (display a link instead of social button and a static banner instead of advertising).</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md66"></a>
+How to use</h1>
+<div class="fragment"><div class="line">&lt;script src=&quot;/tarteaucitron/tarteaucitron.js&quot;&gt;&lt;/script&gt;</div>
+<div class="line"> </div>
+<div class="line">&lt;script&gt;</div>
+<div class="line">tarteaucitron.init({</div>
+<div class="line">    &quot;privacyUrl&quot;: &quot;&quot;, /* Privacy policy url */</div>
+<div class="line">    &quot;bodyPosition&quot;: &quot;bottom&quot;, /* or top to bring it as first element for accessibility */</div>
+<div class="line"> </div>
+<div class="line">    &quot;hashtag&quot;: &quot;#tarteaucitron&quot;, /* Open the panel with this hashtag */</div>
+<div class="line">    &quot;cookieName&quot;: &quot;tarteaucitron&quot;, /* Cookie name */</div>
+<div class="line"> </div>
+<div class="line">    &quot;orientation&quot;: &quot;middle&quot;, /* Banner position (top - bottom - middle - popup) */</div>
+<div class="line"> </div>
+<div class="line">    &quot;groupServices&quot;: false, /* Group services by category */</div>
+<div class="line">    &quot;showDetailsOnClick&quot;: true, /* Click to expand the description */</div>
+<div class="line">    &quot;serviceDefaultState&quot;: &quot;wait&quot;, /* Default state (true - wait - false) */</div>
+<div class="line"> </div>
+<div class="line">    &quot;showAlertSmall&quot;: false, /* Show the small banner on bottom right */</div>
+<div class="line">    &quot;cookieslist&quot;: false, /* Show the cookie list in a mini banner */</div>
+<div class="line">    &quot;cookieslistEmbed&quot;: false, /* Show the cookie list on the control panel */</div>
+<div class="line">    </div>
+<div class="line">    &quot;showIcon&quot;: true, /* Show cookie icon to manage cookies */</div>
+<div class="line">    // &quot;iconSrc&quot;: &quot;&quot;, /* Optional: URL or base64 encoded image */</div>
+<div class="line">    &quot;iconPosition&quot;: &quot;BottomRight&quot;, /* Position of the icon between BottomRight, BottomLeft, TopRight and TopLeft */</div>
+<div class="line"> </div>
+<div class="line">    &quot;adblocker&quot;: false, /* Show a Warning if an adblocker is detected */</div>
+<div class="line"> </div>
+<div class="line">    &quot;DenyAllCta&quot; : true, /* Show the deny all button */</div>
+<div class="line">    &quot;AcceptAllCta&quot; : true, /* Show the accept all button when highPrivacy on */</div>
+<div class="line">    &quot;highPrivacy&quot;: true, /* HIGHLY RECOMMANDED Disable auto consent */</div>
+<div class="line">    &quot;alwaysNeedConsent&quot;: false, /* Ask the consent for &quot;Privacy by design&quot; services */</div>
+<div class="line">    </div>
+<div class="line">    &quot;handleBrowserDNTRequest&quot;: false, /* If Do Not Track == 1, disallow all */</div>
+<div class="line"> </div>
+<div class="line">    &quot;removeCredit&quot;: false, /* Remove credit link */</div>
+<div class="line">    &quot;moreInfoLink&quot;: true, /* Show more info link */</div>
+<div class="line">    &quot;useExternalCss&quot;: false, /* If false, the tarteaucitron.css file will be loaded */</div>
+<div class="line">    &quot;useExternalJs&quot;: false, /* If false, the tarteaucitron.services.js file and lang files will be loaded */</div>
+<div class="line"> </div>
+<div class="line">    // &quot;cookieDomain&quot;: &quot;.my-multisite-domaine.fr&quot;, /* Shared cookie for subdomain website */</div>
+<div class="line"> </div>
+<div class="line">    &quot;readmoreLink&quot;: &quot;&quot;, /* Change the default readmore link pointing to tarteaucitron.io */</div>
+<div class="line">    </div>
+<div class="line">    &quot;mandatory&quot;: true, /* Show a message about mandatory cookies */</div>
+<div class="line">    &quot;mandatoryCta&quot;: true, /* Show the disabled accept button when mandatory on */</div>
+<div class="line">    </div>
+<div class="line">    // &quot;customCloserId&quot;: &quot;&quot;, /* Optional a11y: Custom element ID used to open the panel */</div>
+<div class="line"> </div>
+<div class="line">    &quot;googleConsentMode&quot;: true, /* Enable Google Consent Mode v2 for Google ads and GA4 */</div>
+<div class="line">    &quot;bingConsentMode&quot;: true, /* Enable Bing Consent Mode for Clarity and Bing Ads */</div>
+<div class="line">    &quot;softConsentMode&quot;: false, /* Soft consent mode (consent is required to load the services) */</div>
+<div class="line"> </div>
+<div class="line">    &quot;dataLayer&quot;: false, /* Send an event to dataLayer with the services status */</div>
+<div class="line">    &quot;serverSide&quot;: false, /* Server side only, tags are not loaded client side */</div>
+<div class="line">    </div>
+<div class="line">    &quot;partnersList&quot;: false /* Details the number of partners on the popup and middle banner */</div>
+<div class="line">});</div>
+<div class="line">&lt;/script&gt;</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md67"></a>
+Add a service</h1>
+<p><a href="https://tarteaucitron.io/en/free-installation-open-source/">Installation guide</a></p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md68"></a>
+Customization</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md69"></a>
+Create custom service</h2>
+<div class="fragment"><div class="line">tarteaucitron.services.mycustomservice = {</div>
+<div class="line">  &quot;key&quot;: &quot;mycustomservice&quot;,</div>
+<div class="line">  &quot;type&quot;: &quot;ads|analytic|api|comment|other|social|support|video&quot;,</div>
+<div class="line">  &quot;name&quot;: &quot;MyCustomService&quot;,</div>
+<div class="line">  &quot;needConsent&quot;: true,</div>
+<div class="line">  &quot;cookies&quot;: [&#39;cookie&#39;, &#39;cookie2&#39;],</div>
+<div class="line">  &quot;readmoreLink&quot;: &quot;/custom_read_more&quot;, // If you want to change readmore link</div>
+<div class="line">  &quot;js&quot;: function () {</div>
+<div class="line">    &quot;use strict&quot;;</div>
+<div class="line">    // When user allow cookie</div>
+<div class="line">  },</div>
+<div class="line">  &quot;fallback&quot;: function () {</div>
+<div class="line">    &quot;use strict&quot;;</div>
+<div class="line">    // when use deny cookie</div>
+<div class="line">  }</div>
+<div class="line">};</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md70"></a>
+Events</h2>
+<p>The following events are available:</p><ul>
+<li>(document) <span class="tt">{SERVICE_KEY}_added</span> for each enabled service</li>
+<li>(document) <span class="tt">{SERVICE_KEY}_loaded</span> for each enabled service</li>
+<li>(document) <span class="tt">{SERVICE_KEY}_allowed</span> for each service when allowed</li>
+<li>(document) <span class="tt">{SERVICE_KEY}_disallowed </span> for each service when disallowed</li>
+<li>(window) <span class="tt">tac.root_available</span>: the root element with panel has been created, services will be loaded</li>
+<li>(window) <span class="tt">tac.open_alert</span></li>
+<li>(window) <span class="tt">tac.close_alert</span></li>
+<li>(window) <span class="tt">tac.open_panel</span></li>
+<li>(window) <span class="tt">tac.close_panel</span></li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md71"></a>
+Customize text</h2>
+<p>To change a translation, use <span class="tt">tarteaucitronCustomText</span> variable. It will be merge with the translation shipping with TAC. This variable must be defined before the initialization. For example: </p><div class="fragment"><div class="line">tarteaucitronCustomText = {</div>
+<div class="line">  &#39;support&#39;: {</div>
+<div class="line">    &#39;title&#39;: &#39;Support client&#39;,</div>
+<div class="line">  },</div>
+<div class="line">  &#39;close&#39;: &#39;Enregistrer et fermer&#39;,</div>
+<div class="line">};</div>
+<div class="line">tarteaucitron.init(...);</div>
+</div><!-- fragment --><p>There is a special case for engagement text. By the default, the engagement text is _{SERVICE_NAME} is disabled._, however you can change it per service. For example: </p><div class="fragment"><div class="line">tarteaucitronCustomText = {</div>
+<div class="line">  &#39;engage-twitter&#39;: &#39;Follow us on Twitter!&#39;</div>
+<div class="line">};</div>
+</div><!-- fragment -->        </div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

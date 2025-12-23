@@ -1,4 +1,13 @@
 <?php
+/**
+ * @file    utilisateur.dao.php
+ * @author  Alex Echeverria
+ * @brief   DAO pour la gestion des Utilisateurs.
+ * @details Gère le CRUD, la recherche par email et l'hydratation des objets Utilisateur.
+ * @version 1.0
+ * @date    2025-12-23
+ */
+
 class UtilisateurDao {
     //Attributs privés
     private ?PDO $pdo;

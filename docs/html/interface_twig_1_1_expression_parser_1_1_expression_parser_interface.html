@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Snapfit: Référence de l&#39;interface ExpressionParserInterface</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Snapfit
+   </div>
+   <div id="projectbrief">Documentation de Snapfit, application web qui a pour but de guider les utilisateurs dans un shopping plus simple, écoresponsable et sécurisé.</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="namespace_twig.html">Twig</a></li><li class="navelem"><a href="namespace_twig_1_1_expression_parser.html">ExpressionParser</a></li><li class="navelem"><a href="interface_twig_1_1_expression_parser_1_1_expression_parser_interface.html">ExpressionParserInterface</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Fonctions membres publiques</a>  </div>
+  <div class="headertitle"><div class="title">Référence de l'interface ExpressionParserInterface</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="dynheader">
+Graphe d'héritage de ExpressionParserInterface:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="interface_twig_1_1_expression_parser_1_1_expression_parser_interface.png" usemap="#ExpressionParserInterface_map" alt=""/>
+  <map id="ExpressionParserInterface_map" name="ExpressionParserInterface_map">
+<area href="class_twig_1_1_expression_parser_1_1_abstract_expression_parser.html" alt="AbstractExpressionParser" shape="rect" coords="0,56,220,80"/>
+<area href="interface_twig_1_1_expression_parser_1_1_infix_expression_parser_interface.html" alt="InfixExpressionParserInterface" shape="rect" coords="460,56,680,80"/>
+<area href="interface_twig_1_1_expression_parser_1_1_prefix_expression_parser_interface.html" alt="PrefixExpressionParserInterface" shape="rect" coords="920,56,1140,80"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_arrow_expression_parser.html" alt="ArrowExpressionParser" shape="rect" coords="230,112,450,136"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_binary_operator_expression_parser.html" alt="BinaryOperatorExpressionParser" shape="rect" coords="230,168,450,192"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_conditional_ternary_expression_parser.html" alt="ConditionalTernaryExpressionParser" shape="rect" coords="230,224,450,248"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_dot_expression_parser.html" alt="DotExpressionParser" shape="rect" coords="230,280,450,304"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_filter_expression_parser.html" alt="FilterExpressionParser" shape="rect" coords="230,336,450,360"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_function_expression_parser.html" alt="FunctionExpressionParser" shape="rect" coords="230,392,450,416"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_is_expression_parser.html" alt="IsExpressionParser" shape="rect" coords="230,448,450,472"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_square_bracket_expression_parser.html" alt="SquareBracketExpressionParser" shape="rect" coords="230,504,450,528"/>
+<area href="class_twig_1_1_expression_parser_1_1_prefix_1_1_grouping_expression_parser.html" alt="GroupingExpressionParser" shape="rect" coords="230,560,450,584"/>
+<area href="class_twig_1_1_expression_parser_1_1_prefix_1_1_literal_expression_parser.html" alt="LiteralExpressionParser" shape="rect" coords="230,616,450,640"/>
+<area href="class_twig_1_1_expression_parser_1_1_prefix_1_1_unary_operator_expression_parser.html" alt="UnaryOperatorExpressionParser" shape="rect" coords="230,672,450,696"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_arrow_expression_parser.html" alt="ArrowExpressionParser" shape="rect" coords="690,112,910,136"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_binary_operator_expression_parser.html" alt="BinaryOperatorExpressionParser" shape="rect" coords="690,168,910,192"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_conditional_ternary_expression_parser.html" alt="ConditionalTernaryExpressionParser" shape="rect" coords="690,224,910,248"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_dot_expression_parser.html" alt="DotExpressionParser" shape="rect" coords="690,280,910,304"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_filter_expression_parser.html" alt="FilterExpressionParser" shape="rect" coords="690,336,910,360"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_function_expression_parser.html" alt="FunctionExpressionParser" shape="rect" coords="690,392,910,416"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_is_expression_parser.html" alt="IsExpressionParser" shape="rect" coords="690,448,910,472"/>
+<area href="class_twig_1_1_expression_parser_1_1_infix_1_1_square_bracket_expression_parser.html" alt="SquareBracketExpressionParser" shape="rect" coords="690,504,910,528"/>
+<area href="class_twig_1_1_expression_parser_1_1_prefix_1_1_grouping_expression_parser.html" alt="GroupingExpressionParser" shape="rect" coords="1150,112,1370,136"/>
+<area href="class_twig_1_1_expression_parser_1_1_prefix_1_1_literal_expression_parser.html" alt="LiteralExpressionParser" shape="rect" coords="1150,168,1370,192"/>
+<area href="class_twig_1_1_expression_parser_1_1_prefix_1_1_unary_operator_expression_parser.html" alt="UnaryOperatorExpressionParser" shape="rect" coords="1150,224,1370,248"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Fonctions membres publiques</h2></td></tr>
+<tr class="memitem:a7516ca30af0db3cdbf9a7739b48ce91d" id="r_a7516ca30af0db3cdbf9a7739b48ce91d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7516ca30af0db3cdbf9a7739b48ce91d">__toString</a> ()</td></tr>
+<tr class="memitem:a3d0963e68bb313b163a73f2803c64600" id="r_a3d0963e68bb313b163a73f2803c64600"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d0963e68bb313b163a73f2803c64600">getName</a> ()</td></tr>
+<tr class="memitem:a06aba5981785075a5a24e9b4aff8cc5a" id="r_a06aba5981785075a5a24e9b4aff8cc5a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a06aba5981785075a5a24e9b4aff8cc5a">getPrecedence</a> ()</td></tr>
+<tr class="memitem:a45eee50055197c60ccd4a2a587fe2748" id="r_a45eee50055197c60ccd4a2a587fe2748"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a45eee50055197c60ccd4a2a587fe2748">getPrecedenceChange</a> ()</td></tr>
+<tr class="memitem:a1e9e143d493aedb855d3c5edadb17bb2" id="r_a1e9e143d493aedb855d3c5edadb17bb2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e9e143d493aedb855d3c5edadb17bb2">getAliases</a> ()</td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Documentation des fonctions membres</h2>
+<a id="a7516ca30af0db3cdbf9a7739b48ce91d" name="a7516ca30af0db3cdbf9a7739b48ce91d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7516ca30af0db3cdbf9a7739b48ce91d">&#9670;&#160;</a></span>__toString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__toString </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implémenté dans <a class="el" href="class_twig_1_1_expression_parser_1_1_abstract_expression_parser.html#a7516ca30af0db3cdbf9a7739b48ce91d">AbstractExpressionParser</a>.</p>
+
+</div>
+</div>
+<a id="a1e9e143d493aedb855d3c5edadb17bb2" name="a1e9e143d493aedb855d3c5edadb17bb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e9e143d493aedb855d3c5edadb17bb2">&#9670;&#160;</a></span>getAliases()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">getAliases </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Renvoie</dt><dd>array&lt;string&gt; </dd></dl>
+
+<p>Implémenté dans <a class="el" href="class_twig_1_1_expression_parser_1_1_abstract_expression_parser.html#a1e9e143d493aedb855d3c5edadb17bb2">AbstractExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_binary_operator_expression_parser.html#a1e9e143d493aedb855d3c5edadb17bb2">BinaryOperatorExpressionParser</a>, et <a class="el" href="class_twig_1_1_expression_parser_1_1_prefix_1_1_unary_operator_expression_parser.html#a1e9e143d493aedb855d3c5edadb17bb2">UnaryOperatorExpressionParser</a>.</p>
+
+</div>
+</div>
+<a id="a3d0963e68bb313b163a73f2803c64600" name="a3d0963e68bb313b163a73f2803c64600"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d0963e68bb313b163a73f2803c64600">&#9670;&#160;</a></span>getName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">getName </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implémenté dans <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_arrow_expression_parser.html#a3d0963e68bb313b163a73f2803c64600">ArrowExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_binary_operator_expression_parser.html#a3d0963e68bb313b163a73f2803c64600">BinaryOperatorExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_conditional_ternary_expression_parser.html#a3d0963e68bb313b163a73f2803c64600">ConditionalTernaryExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_dot_expression_parser.html#a3d0963e68bb313b163a73f2803c64600">DotExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_filter_expression_parser.html#a3d0963e68bb313b163a73f2803c64600">FilterExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_function_expression_parser.html#a3d0963e68bb313b163a73f2803c64600">FunctionExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_is_expression_parser.html#a3d0963e68bb313b163a73f2803c64600">IsExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_is_not_expression_parser.html#a3d0963e68bb313b163a73f2803c64600">IsNotExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_square_bracket_expression_parser.html#a3d0963e68bb313b163a73f2803c64600">SquareBracketExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_prefix_1_1_grouping_expression_parser.html#a3d0963e68bb313b163a73f2803c64600">GroupingExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_prefix_1_1_literal_expression_parser.html#a3d0963e68bb313b163a73f2803c64600">LiteralExpressionParser</a>, et <a class="el" href="class_twig_1_1_expression_parser_1_1_prefix_1_1_unary_operator_expression_parser.html#a3d0963e68bb313b163a73f2803c64600">UnaryOperatorExpressionParser</a>.</p>
+
+</div>
+</div>
+<a id="a06aba5981785075a5a24e9b4aff8cc5a" name="a06aba5981785075a5a24e9b4aff8cc5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06aba5981785075a5a24e9b4aff8cc5a">&#9670;&#160;</a></span>getPrecedence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">getPrecedence </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implémenté dans <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_arrow_expression_parser.html#a06aba5981785075a5a24e9b4aff8cc5a">ArrowExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_binary_operator_expression_parser.html#a06aba5981785075a5a24e9b4aff8cc5a">BinaryOperatorExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_conditional_ternary_expression_parser.html#a06aba5981785075a5a24e9b4aff8cc5a">ConditionalTernaryExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_dot_expression_parser.html#a06aba5981785075a5a24e9b4aff8cc5a">DotExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_filter_expression_parser.html#a06aba5981785075a5a24e9b4aff8cc5a">FilterExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_function_expression_parser.html#a06aba5981785075a5a24e9b4aff8cc5a">FunctionExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_is_expression_parser.html#a06aba5981785075a5a24e9b4aff8cc5a">IsExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_square_bracket_expression_parser.html#a06aba5981785075a5a24e9b4aff8cc5a">SquareBracketExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_prefix_1_1_grouping_expression_parser.html#a06aba5981785075a5a24e9b4aff8cc5a">GroupingExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_prefix_1_1_literal_expression_parser.html#a06aba5981785075a5a24e9b4aff8cc5a">LiteralExpressionParser</a>, et <a class="el" href="class_twig_1_1_expression_parser_1_1_prefix_1_1_unary_operator_expression_parser.html#a06aba5981785075a5a24e9b4aff8cc5a">UnaryOperatorExpressionParser</a>.</p>
+
+</div>
+</div>
+<a id="a45eee50055197c60ccd4a2a587fe2748" name="a45eee50055197c60ccd4a2a587fe2748"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45eee50055197c60ccd4a2a587fe2748">&#9670;&#160;</a></span>getPrecedenceChange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">getPrecedenceChange </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implémenté dans <a class="el" href="class_twig_1_1_expression_parser_1_1_abstract_expression_parser.html#a45eee50055197c60ccd4a2a587fe2748">AbstractExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_binary_operator_expression_parser.html#a45eee50055197c60ccd4a2a587fe2748">BinaryOperatorExpressionParser</a>, <a class="el" href="class_twig_1_1_expression_parser_1_1_infix_1_1_filter_expression_parser.html#a45eee50055197c60ccd4a2a587fe2748">FilterExpressionParser</a>, et <a class="el" href="class_twig_1_1_expression_parser_1_1_prefix_1_1_unary_operator_expression_parser.html#a45eee50055197c60ccd4a2a587fe2748">UnaryOperatorExpressionParser</a>.</p>
+
+</div>
+</div>
+<hr/>La documentation de cette interface a été générée à partir du fichier suivant :<ul>
+<li>vendor/twig/twig/src/ExpressionParser/<a class="el" href="_expression_parser_interface_8php.html">ExpressionParserInterface.php</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

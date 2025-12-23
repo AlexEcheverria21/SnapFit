@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file    constantes.php
+ * @author  Team SnapFit
+ * @brief   Gestion des constantes de configuration.
+ * @details Charge le fichier config.yaml et définit les constantes globales (BDD, etc.).
+ * @version 1.0
+ * @date    2025-12-23
+ */
 
 use Symfony\Component\Yaml\Yaml;
 

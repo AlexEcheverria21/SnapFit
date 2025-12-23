@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file    favori.class.php
+ * @author  Team SnapFit
+ * @brief   Classe représentant une liaison Favori (Utilisateur <-> Article).
+ *          Utilisée pour lier un article à un utilisateur dans l'historique des favoris.
+ * @version 1.0
+ * @date    2025-12-23
+ */
 class favori {
     private int|null $id_favori;
     private string|null $url;

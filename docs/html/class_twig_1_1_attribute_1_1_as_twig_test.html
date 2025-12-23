@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Snapfit: Référence de la classe AsTwigTest</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Snapfit
+   </div>
+   <div id="projectbrief">Documentation de Snapfit, application web qui a pour but de guider les utilisateurs dans un shopping plus simple, écoresponsable et sécurisé.</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="namespace_twig.html">Twig</a></li><li class="navelem"><a href="namespace_twig_1_1_attribute.html">Attribute</a></li><li class="navelem"><a href="class_twig_1_1_attribute_1_1_as_twig_test.html">AsTwigTest</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Fonctions membres publiques</a>  </div>
+  <div class="headertitle"><div class="title">Référence de la classe AsTwigTest</div></div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Fonctions membres publiques</h2></td></tr>
+<tr class="memitem:a8ff24d0bb92bc68861feb2f068484232" id="r_a8ff24d0bb92bc68861feb2f068484232"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ff24d0bb92bc68861feb2f068484232">__construct</a> (public string $name, public ?bool $needsCharset=null, public ?bool $needsEnvironment=null, public ?bool $needsContext=null, public ?<a class="el" href="class_twig_1_1_deprecated_callable_info.html">DeprecatedCallableInfo</a> $deprecationInfo=null,)</td></tr>
+</table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Registers a method as template test.</p>
+<p>The first argument is the value to test and the other arguments are the arguments passed to the test in the template. </p><pre class="fragment">#[AsTwigTest(name: 'foo')]
+public function fooTest($value, $arg1 = null) { ... }
+
+{% if value is foo(arg1) %}
+</pre><dl class="section see"><dt>Voir également</dt><dd>TwigTest </dd></dl>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Documentation des constructeurs et destructeur</h2>
+<a id="a8ff24d0bb92bc68861feb2f068484232" name="a8ff24d0bb92bc68861feb2f068484232"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ff24d0bb92bc68861feb2f068484232">&#9670;&#160;</a></span>__construct()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__construct </td>
+          <td>(</td>
+          <td class="paramtype">public string</td>          <td class="paramname"><span class="paramname"><em>$name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">public ?bool</td>          <td class="paramname"><span class="paramname"><em>$needsCharset</em></span><span class="paramdefsep"> = </span><span class="paramdefval">null</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">public ?bool</td>          <td class="paramname"><span class="paramname"><em>$needsEnvironment</em></span><span class="paramdefsep"> = </span><span class="paramdefval">null</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">public ?bool</td>          <td class="paramname"><span class="paramname"><em>$needsContext</em></span><span class="paramdefsep"> = </span><span class="paramdefval">null</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">public ?<a class="el" href="class_twig_1_1_deprecated_callable_info.html">DeprecatedCallableInfo</a></td>          <td class="paramname"><span class="paramname"><em>$deprecationInfo</em></span><span class="paramdefsep"> = </span><span class="paramdefval">null</span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">non-empty-string</td><td class="paramname">$name</td><td>The name of the test in <a class="el" href="namespace_twig.html">Twig</a> </td></tr>
+    <tr><td class="paramtype">bool&#160;|&#160;null</td><td class="paramname">$needsCharset</td><td>Whether the test needs the charset passed as the first argument </td></tr>
+    <tr><td class="paramtype">bool&#160;|&#160;null</td><td class="paramname">$needsEnvironment</td><td>Whether the test needs the environment passed as the first argument, or after the charset </td></tr>
+    <tr><td class="paramtype">bool&#160;|&#160;null</td><td class="paramname">$needsContext</td><td>Whether the test needs the context array passed as the first argument, or after the charset and the environment </td></tr>
+    <tr><td class="paramtype">DeprecatedCallableInfo&#160;|&#160;null</td><td class="paramname">$deprecationInfo</td><td>Information about the deprecation </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>La documentation de cette classe a été générée à partir du fichier suivant :<ul>
+<li>vendor/twig/twig/src/Attribute/<a class="el" href="_as_twig_test_8php.html">AsTwigTest.php</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file    controller.class.php
+ * @author  Team SnapFit
+ * @brief   Classe abstraite parente de tous les contrôleurs.
+ * @details Fournit l'accès partagé à Twig, à la BDD (PDO) et aux variables de requête (GET/POST).
+ * @version 1.0
+ * @date    2025-12-23
+ */
 class Controller {
     protected PDO $pdo;
     protected Twig\Loader\FilesystemLoader $loader;
@@ -6,6 +14,11 @@ class Controller {
     protected ?array $get = null;
     protected ?array $post = null;
 
+    /**
+     * @brief   Constructeur du contrôleur de base.
+     * @param   Twig\Environment $twig Instance de l'environnement Twig
+     * @param   Twig\Loader\FilesystemLoader $loader Instance du chargeur de fichiers Twig
+     */
     public function __construct(Twig\Environment $twig, Twig\Loader\FilesystemLoader $loader) {
         $db = Bd::getInstance();
         $this->pdo = $db->getConnexion();
@@ -23,6 +36,12 @@ class Controller {
 
     }
 
+    /**
+     * @brief   Appelle une méthode du contrôleur.
+     * @param   string $methode Nom de la méthode à exécuter
+     * @return  mixed Retourne le résultat de la méthode appelée
+     * @throws  Exception Si la méthode n'existe pas
+     */
     public function call (string $methode): mixed {
         if (!method_exists($this, $methode)) {
             throw new Exception("La méthode $methode n'existe pas dans le controller __CLASS__".__CLASS__);
@@ -32,7 +51,8 @@ class Controller {
 
 
     /**
-     * Get the value of pdo
+     * @brief   Récupère l'instance PDO.
+     * @return  PDO|null
      */ 
     public function getPdo(): ?PDO
     {
@@ -40,7 +60,8 @@ class Controller {
     }
 
     /**
-     * Set the value of pdo
+     * @brief   Définit l'instance PDO.
+     * @param   PDO|null $pdo
      */ 
     public function setPdo(?PDO $pdo): void
     {
@@ -48,7 +69,8 @@ class Controller {
     }
 
     /**
-     * Get the value of loader
+     * @brief   Récupère le loader Twig.
+     * @return  Twig\Loader\FilesystemLoader
      */ 
     public function getLoader(): Twig\Loader\FilesystemLoader
     {
@@ -56,7 +78,8 @@ class Controller {
     }
 
     /**
-     * Set the value of loader
+     * @brief   Définit le loader Twig.
+     * @param   Twig\Loader\FilesystemLoader $loader
      */ 
     public function setLoader(Twig\Loader\FilesystemLoader $loader): void
     {
@@ -64,7 +87,8 @@ class Controller {
     }
 
     /**
-     * Get the value of twig
+     * @brief   Récupère l'environnement Twig.
+     * @return  Twig\Environment
      */ 
     public function getTwig(): Twig\Environment
     {
@@ -72,7 +96,8 @@ class Controller {
     }
 
     /**
-     * Set the value of twig
+     * @brief   Définit l'environnement Twig.
+     * @param   Twig\Environment $twig
      */ 
     public function setTwig(Twig\Environment $twig): void
     {
@@ -80,7 +105,8 @@ class Controller {
     }
 
     /**
-     * Get the value of get
+     * @brief   Récupère le tableau $_GET.
+     * @return  array|null
      */ 
     public function getGet(): ?array
     {
@@ -88,7 +114,8 @@ class Controller {
     }
 
     /**
-     * Set the value of get
+     * @brief   Définit le tableau $_GET.
+     * @param   array|null $get
      */ 
     public function setGet(?array $get): void
     {
@@ -96,7 +123,8 @@ class Controller {
     }
 
     /**
-     * Get the value of post
+     * @brief   Récupère le tableau $_POST.
+     * @return  array|null
      */ 
     public function getPost(): ?array
     {
@@ -104,7 +132,8 @@ class Controller {
     }
 
     /**
-     * Set the value of post
+     * @brief   Définit le tableau $_POST.
+     * @param   array|null $post
      */ 
     public function setPost(?array $post): void
     {
