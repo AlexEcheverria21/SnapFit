@@ -1,7 +1,7 @@
 <?php
 /**
  * @file    SerpApiService.php
- * @author  Paul (Team SnapFit)
+ * @author  Paul 
  * @brief   Service gérant les appels à SerpAPI (Google Lens).
  *          Gère l'upload direct d'image locale (POST) pour éviter les soucis de localhost.
  * @version 1.1

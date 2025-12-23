@@ -1,25 +1,39 @@
+/**
+ * style.css
+ * Ce fichier surcharge les styles par défaut de Bootstrap.
+ * Il est chargé APRÈS Bootstrap dans le layout.
+ */
+
 :root {
+    /* Définition de nos variables CSS personnalisées */
     --primary-color: #007bff;
     --secondary-color: #6c757d;
 }
 
 body {
+    /* Fond gris clair pour casser le blanc pur de Bootstrap */
     background-color: #f8f9fa;
 }
 
+/* Surcharge des composants Cards de Bootstrap */
 .card {
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    /* Ajout d'une ombre douce pour un effet "Material Design" */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Personnalisation de la marque dans la Navbar */
 .navbar-brand {
     font-weight: bold;
+    /* !important force l'override si Bootstrap est trop spécifique */
     color: var(--primary-color) !important;
 }
 
+/* UX : Curseur main sur les coeurs (Favoris) */
 .fa-heart {
     cursor: pointer;
 }
 
+/* Force la couleur rouge (utilisé pour le coeur favori actif) */
 .text-danger {
     color: #dc3545 !important;
 }
