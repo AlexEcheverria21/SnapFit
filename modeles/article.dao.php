@@ -57,7 +57,11 @@ class ArticleDao {
         ]);
     }
 
-    // Helpers d'hydratation (Privés)
+    /**
+     * @brief   Hydrate un objet Article à partir d'un tableau associatif.
+     * @param   array $ligne Ligne de la BDD.
+     * @return  Article Objet hydraté.
+     */
     private function hydrate(array $ligne): Article {
         return new Article(
             $ligne['id'] ?? null,
@@ -70,6 +74,11 @@ class ArticleDao {
         );
     }
 
+    /**
+     * @brief   Hydrate une liste d'Articles.
+     * @param   array $lignes Tableau de lignes BDD.
+     * @return  Article[] Tableau d'objets.
+     */
     private function hydrateMany(array $lignes): array {
         $articles = [];
         foreach ($lignes as $ligne) {

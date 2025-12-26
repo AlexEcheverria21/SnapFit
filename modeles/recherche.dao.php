@@ -159,6 +159,11 @@ class RechercheDAO {
         return $stmt->execute([':days' => $days]);
     }
 
+    /**
+     * @brief   Hydrate un objet Recherche à partir d'un tableau associatif.
+     * @param   array $row Ligne brute de la BDD.
+     * @return  Recherche Objet hydraté.
+     */
     private function hydrate(array $row): Recherche {
         return new Recherche(
             isset($row['id_utilisateur']) ? (int)$row['id_utilisateur'] : null,
