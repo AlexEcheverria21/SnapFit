@@ -8,6 +8,9 @@
  * @date    2025-12-23
  */
 
+//Démarrage de la session (avant tout contenu HTML)
+session_start();
+
 //Ajout de vendor
 require_once 'vendor/autoload.php';
 

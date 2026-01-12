@@ -46,54 +46,6 @@ class Utilisateur {
     }
 
     // Méthode pour vérifier si l'email existe déjà dans la base de données
-    // (Cette méthode devrait idéalement être dans le DAO, mais mise ici pour le TP)
-    public static function emailExiste(string $email, $pdo): bool {
-        // ... (Logique existante à conserver si incluse dans la plage, ici je simplifie car je remplace toute la classe ou la plage)
-        // ATTENTION : Je ne remplace que les attributs et getters/setters, je dois faire gaffe à ne pas virer les autres méthodes.
-        // Je vais utiliser "replace_file_content" plus ciblé ou remplacer le bloc attributs + getters.
-        return false; 
-    }
-    
-    // --- GETTERS & SETTERS (Cleaned) ---
-
-    // ID
-    public function getIdUtilisateur(): ?int { return $this->id_utilisateur; }
-    public function setIdUtilisateur(?int $id): void { $this->id_utilisateur = $id; }
-
-    // Nom
-    public function getNom(): ?string { return $this->nom; }
-    public function setNom(?string $nom): void { $this->nom = $nom; }
-
-    // Prenom
-    public function getPrenom(): ?string { return $this->prenom; }
-    public function setPrenom(?string $prenom): void { $this->prenom = $prenom; }
-
-    // Email
-    public function getEmail(): ?string { return $this->email; }
-    public function setEmail(string $email): void { $this->email = $email; }
-
-    // Password
-    public function getMotDePasseHash(): ?string { return $this->mot_de_passe_hash; }
-    public function setMotDePasseHash(string $hash): void { $this->mot_de_passe_hash = $hash; }
-
-    // Role
-    public function getRole(): string { return $this->role; }
-    public function setRole(string $role): void { $this->role = $role; }
-
-    // Login
-    public function getNomConnexion(): ?string { return $this->nom_connexion; }
-    public function setNomConnexion(?string $nom_connexion): void { $this->nom_connexion = $nom_connexion; }
-
-    // Date
-    public function getDateInscription(): ?string { return $this->date_inscription; }
-    public function setDateInscription(?string $date): void { $this->date_inscription = $date; }
-
-    // -- Methodes Metier (Inscription/Auth) restées inchangées --
-    // Je dois m'assurer de ne pas les écraser avec ce replace.
-    // LE MIEUX est de cibler spécifiquement les zones à supprimer.
-}
-
-    // Méthode pour vérifier si l'email existe déjà dans la base de données
     public function emailExiste(): bool {
         $pdo = Bd::getInstance()->getConnexion();
         $req = $pdo->prepare('SELECT COUNT(*) FROM UTILISATEUR WHERE email = :email');
@@ -101,11 +53,11 @@ class Utilisateur {
         return $req->fetchColumn() > 0;
     }
 
-
-    // MÉTHODES PUBLICS
+    // MÉTHODES PUBLIQUES
+    
     // Méthode pour vérifier la robustesse du mot de passe
     public function estRobuste(string $password): bool {
-        $regex = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/';
+        $regex = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/';
         return preg_match($regex, $password) === 1;
     }
 
@@ -128,8 +80,9 @@ class Utilisateur {
             $this->nom_connexion = explode('@', $this->email)[0] . uniqid();
         }
 
-        $sql = "INSERT INTO UTILISATEUR (email, mot_de_passe_hash, role, nom_connexion, nom, prenom, sexe, pays, date_inscription) 
-                VALUES (:email, :mdp, :role, :login, :nom, :prenom, 'N-A', 'France', NOW())";
+        // Suppression de sexe et pays de l'INSERT
+        $sql = "INSERT INTO UTILISATEUR (email, mot_de_passe_hash, role, nom_connexion, nom, prenom, date_inscription) 
+                VALUES (:email, :mdp, :role, :login, :nom, :prenom, NOW())";
         
         $req = $pdo->prepare($sql);
         $req->execute([
@@ -239,78 +192,38 @@ class Utilisateur {
         return max(0, DELAI_ATTENTE_CONNEXION - (time() - $dernierEchec));
     }
 
-    //Getters
-    public function getIdUtilisateur(): ?int {
-        return $this->id_utilisateur;
-    }
+    // --- GETTERS & SETTERS (Cleaned) ---
 
-    public function getNom(): ?string {
-        return $this->nom;
-    }
+    // ID
+    public function getIdUtilisateur(): ?int { return $this->id_utilisateur; }
+    public function setIdUtilisateur(?int $id): void { $this->id_utilisateur = $id; }
 
-    public function getPrenom(): ?string {
-        return $this->prenom;
-    }
+    // Nom
+    public function getNom(): ?string { return $this->nom; }
+    public function setNom(?string $nom): void { $this->nom = $nom; }
 
-    public function getMotDePasseHash(): ?string {
-        return $this->mot_de_passe_hash;
-    }
+    // Prenom
+    public function getPrenom(): ?string { return $this->prenom; }
+    public function setPrenom(?string $prenom): void { $this->prenom = $prenom; }
 
-    public function getRole(): ?string {
-        return $this->role;
-    }
+    // Email
+    public function getEmail(): ?string { return $this->email; }
+    public function setEmail(string $email): void { $this->email = $email; }
 
-    public function getDateInscription(): ?string {
-        return $this->date_inscription;
-    }
+    // Password
+    public function getMotDePasseHash(): ?string { return $this->mot_de_passe_hash; }
+    public function setMotDePasseHash(string $hash): void { $this->mot_de_passe_hash = $hash; }
 
-    public function getEmail(): ?string {
-        return $this->email;
-    }
+    // Role
+    public function getRole(): string { return $this->role; }
+    public function setRole(string $role): void { $this->role = $role; }
 
-    public function getNomConnexion(): ?string {
-        return $this->nom_connexion;
-    }
+    // Login
+    public function getNomConnexion(): ?string { return $this->nom_connexion; }
+    public function setNomConnexion(?string $nom_connexion): void { $this->nom_connexion = $nom_connexion; }
 
-    //Setters
-    public function setNom(?string $nom): void {
-        $this->nom = $nom;
-    }
-
-    public function setPrenom(?string $prenom): void {
-        $this->prenom = $prenom;
-    }
-
-    public function setMotDePasseHash(?string $mot_de_passe_hash): void {
-        $this->mot_de_passe_hash = $mot_de_passe_hash;
-    }
-
-    public function setEmail(?string $email): void {
-        $this->email = $email;
-    }
-
-    public function setNomConnexion(?string $nom_connexion): void {
-        $this->nom_connexion = $nom_connexion;
-    }
-
-    public function setSexe(?string $sexe): void {
-        $this->sexe = $sexe;
-    }
-
-    public function setPays(?string $pays): void {
-        $this->pays = $pays;
-    }
-
-    public function setIdUtilisateur(?int $id_utilisateur): void {
-        $this->id_utilisateur = $id_utilisateur;
-    }
-
-    public function setRole(?string $role): void {
-        $this->role = $role;
-    }
-
-    public function setDateInscription(?string $date_inscription): void {
-        $this->date_inscription = $date_inscription;
-    }
+    // Date
+    public function getDateInscription(): ?string { return $this->date_inscription; }
+    public function setDateInscription(?string $date): void { $this->date_inscription = $date; }
 
 }

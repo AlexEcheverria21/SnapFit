@@ -46,7 +46,7 @@ class RechercheDAO {
      * @throws PDOException En cas d'erreur lors de l'exécution de la requête SQL.
      */
     public function add(Recherche $recherche): bool {
-        $sql = "INSERT INTO RECHERCHE (id_utilisateur, image, date_recherche, api_id) 
+        $sql = "INSERT INTO RECHERCHE (id_utilisateur, image_scan, date_recherche, api_id) 
                 VALUES (:id_utilisateur, :image, :date_recherche, :api_id)";
 
         $stmt = $this->pdo->prepare($sql);
@@ -82,7 +82,7 @@ class RechercheDAO {
         if ($row) {
             return new Recherche(
                 $row['id_utilisateur'],
-                $row['image'],
+                $row['image_scan'],
                 $row['api_id'],
                 $row['date_recherche'],
                 $row['id_recherche']
@@ -167,7 +167,7 @@ class RechercheDAO {
     private function hydrate(array $row): Recherche {
         return new Recherche(
             isset($row['id_utilisateur']) ? (int)$row['id_utilisateur'] : null,
-            $row['image'] ?? null,
+            $row['image_scan'] ?? null,
             $row['api_id'] ?? null,
             $row['date_recherche'] ?? null,
             isset($row['id_recherche']) ? (int)$row['id_recherche'] : null,

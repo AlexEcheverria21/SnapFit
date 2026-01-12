@@ -22,6 +22,9 @@ $twig = new Twig\Environment($loader, [
     //...
 ]);
 
+// Ajout de la variable session globale pour les vues
+$twig->addGlobal('session', $_SESSION);
+
 //Définition de la timezone pour que les filtres date tiennent compte du fuseau horaire français.
 $twig->getExtension(\Twig\Extension\CoreExtension::class)->setTimezone('Europe/Paris');
 
