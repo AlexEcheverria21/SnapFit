@@ -50,8 +50,8 @@ class ControllerFavori extends Controller {
             $article = new Article();
             $article->setUrl($url);
             $article->setImage($image);
-            $article->setCategorie($titre); // On utilise categorie pour le titre/nom du produit
-            $article->setMarque('Inconnue'); // Par défaut car pas toujours dispo en hidden field
+            // $article->setCategorie($titre); // Nettoyé : Non stocké en BDD
+            // $article->setMarque('Inconnue'); // Nettoyé : Non stocké en BDD
 
             $pdo = Bd::getInstance()->getConnexion();
             $favoriDao = new FavoriDao($pdo);

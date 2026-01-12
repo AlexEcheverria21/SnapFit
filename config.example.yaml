@@ -5,3 +5,7 @@ bdd:
   user: "name" # ex : pgimenez003_pro 
   password: "password" # ex : pgimenez003_pro
 
+# Clés API
+api:
+  serpapi_key: "TA_CLE_SERPAPI_ICI"
+

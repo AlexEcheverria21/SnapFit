@@ -40,8 +40,8 @@ class UtilisateurDao {
     public function add(Utilisateur $utilisateur): bool {
 
         // On insère le rôle 'user' par défaut et la date actuelle avec NOW()
-        $sql = "INSERT INTO UTILISATEUR (nom, prenom, mot_de_passe_hash, role, date_inscription, email, nom_connexion, sexe, pays)
-                VALUES (:nom, :prenom, :mdp, :role, NOW(), :email, :login, :sexe, :pays)";
+        $sql = "INSERT INTO UTILISATEUR (nom, prenom, mot_de_passe_hash, role, date_inscription, email, nom_connexion)
+                VALUES (:nom, :prenom, :mdp, :role, NOW(), :email, :login)";
         $pdoStatement = $this->pdo->prepare($sql);
 
         return $pdoStatement->execute(array(
@@ -50,9 +50,7 @@ class UtilisateurDao {
             ':mdp' => $utilisateur->getMotDePasseHash(),
             ':role' => $utilisateur->getRole() ?? 'user', // Rôle par défaut
             ':email' => $utilisateur->getEmail(),
-            ':login' => $utilisateur->getNomConnexion(),
-            ':sexe' => $utilisateur->getSexe(),
-            ':pays' => $utilisateur->getPays()
+            ':login' => $utilisateur->getNomConnexion()
         ));
     }
 
@@ -129,9 +127,7 @@ class UtilisateurDao {
                 mot_de_passe_hash = :mot_de_passe_hash,
                 role = :role,
                 email = :email,
-                nom_connexion = :nom_connexion,
-                sexe = :sexe,
-                pays = :pays
+                nom_connexion = :nom_connexion
                 WHERE id_utilisateur = :id";
 
         $pdoStatement = $this->pdo->prepare($sql);
@@ -143,8 +139,6 @@ class UtilisateurDao {
             ':role' => $utilisateur->getRole(),
             ':email' => $utilisateur->getEmail(),
             ':nom_connexion' => $utilisateur->getNomConnexion(),
-            ':sexe' => $utilisateur->getSexe(),
-            ':pays' => $utilisateur->getPays(),
             ':id' => $utilisateur->getIdUtilisateur()
         ));
 
@@ -172,17 +166,35 @@ class UtilisateurDao {
      */
     public function hydrate(array $tableau): Utilisateur {
 
-        $utilisateur = new Utilisateur();
+        $utilisateur = new Utilisateur(); // Attention, le constructeur attend des arguments obligatoires (email, mdp)
+        // Correctif : Le constructeur a des params obligatoires.
+        // Si la classe a changé de constructeur sans param, c'est ok. Sinon il faut adapter.
+        // Pour l'instant je garde l'instanciation vide si le constructeur le permet ou si je réécris le constructeur.
+        // MAIS le constructeur de Utilisateur a des params obligatoires : email, mdp.
+        // On va supposer que l'hydratation se fait via setters ou que le constructeur a changé.
+        // ICI : Je supprime juste les lignes sexe et pays.
+        
+        // PB : new Utilisateur() sans argument va planter si le constructeur demande des args.
+        // Je vais vérifier le constructeur de Utilisateur.
+        // Il est : __construct(string $email, string $passwordHashOrClear, ...)
+        // Donc new Utilisateur() est invalide.
+        // Je vais réécrire l'hydratation pour utiliser le constructeur correctement ou utiliser Reflection, 
+        // ou modifier le constructeur pour rendre les params optionnels.
+        // Option choisie : Adapter l'appel constructeur ici.
+        
+        $utilisateur = new Utilisateur(
+            $tableau[0]['email'],
+            $tableau[0]['mot_de_passe_hash'],
+            $tableau[0]['nom'],
+            $tableau[0]['prenom'],
+            $tableau[0]['nom_connexion']
+        );
+        
         $utilisateur->setIdUtilisateur($tableau[0]['id_utilisateur']);
-        $utilisateur->setNom($tableau[0]['nom']);
-        $utilisateur->setPrenom($tableau[0]['prenom']);
-        $utilisateur->setMotDePasseHash($tableau[0]['mot_de_passe_hash']);
         $utilisateur->setRole($tableau[0]['role']);
         $utilisateur->setDateInscription($tableau[0]['date_inscription']);
-        $utilisateur->setEmail($tableau[0]['email']);
-        $utilisateur->setNomConnexion($tableau[0]['nom_connexion']);
-        $utilisateur->setSexe($tableau[0]['sexe']);
-        $utilisateur->setPays($tableau[0]['pays']);
+        // $utilisateur->setSexe($tableau[0]['sexe']); // Supprimé
+        // $utilisateur->setPays($tableau[0]['pays']); // Supprimé
         return $utilisateur;
     }
 

@@ -11,16 +11,12 @@ class favori {
     private int|null $id_favori;
     private string|null $url;
     private string|null $image;
-    private string|null $categorie;
-    private string|null $marque;
     private string|null $date_fav;
 
-    public function __construct(?int $id_favori, ?string $url, ?string $image, ?string $categorie, ?string $marque, ?string $date_fav) {
+    public function __construct(?int $id_favori, ?string $url, ?string $image, ?string $date_fav) {
         $this->id_favori = $id_favori;
         $this->url = $url;
         $this->image = $image;
-        $this->categorie = $categorie;
-        $this->marque = $marque;
         $this->date_fav = $date_fav;
     }
 
@@ -76,42 +72,6 @@ class favori {
     public function setImage(?string $image): void
     {
         $this->image = $image;
-
-    }
-
-    /**
-     * Get the value of categorie
-     */
-    public function getCategorie(): ?string
-    {
-        return $this->categorie;
-    }
-
-    /**
-     * Set the value of categorie
-     *
-     */
-    public function setCategorie(?string $categorie): void
-    {
-        $this->categorie = $categorie;
-
-    }
-
-    /**
-     * Get the value of marque
-     */
-    public function getMarque(): ?string
-    {
-        return $this->marque;
-    }
-
-    /**
-     * Set the value of marque
-     *
-     */
-    public function setMarque(?string $marque): void
-    {
-        $this->marque = $marque;
 
     }
 

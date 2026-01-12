@@ -22,7 +22,7 @@ class FavoriDao {
      * @return  Article[]
      */
     public function findAllByUser(int $idUtilisateur): array {
-        $sql = "SELECT A.id_article as id, A.url, A.image, A.categorie, A.marque, A.api_ref_id, A.date_creation 
+        $sql = "SELECT A.id_article as id, A.url, A.image, A.api_ref_id, A.date_creation 
                 FROM ARTICLE A
                 JOIN FAVORI F ON A.id_article = F.id_article
                 WHERE F.id_utilisateur = :id_u
@@ -40,8 +40,6 @@ class FavoriDao {
                 $ligne['id'],
                 $ligne['url'],
                 $ligne['image'],
-                $ligne['categorie'],
-                $ligne['marque'],
                 $ligne['api_ref_id'],
                 $ligne['date_creation']
             );

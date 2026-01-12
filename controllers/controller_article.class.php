@@ -53,23 +53,20 @@ class ControllerArticle extends Controller {
             // 1. Récupération de la clé API
             $apiKey = $config['api']['serpapi_key'] ?? '';
             
-            // Si pas de clé, on utilise le mode démo de base (pour éviter l'écran blanc)
-            if (empty($apiKey) || $apiKey === 'TA_CLE_SERPAPI_ICI') {
-                $articles = $this->getMockResults(); // Fallback
-            } else {
-                // 2. Appel du Service API
-                $dossierUpload = 'public/uploads/';
-                // On récupère le chemin absolu du fichier local
-                $cheminLocal = realpath($dossierUpload . $imageScan);
-                
-                // Stratégie : Upload vers un hôte éphémère (file.io) pour que l'API puisse lire l'image
-                // Cela garantit la "Privacité" (Fichier supprimé après lecture unique) et permet le localhost.
-                $urlImageApi = $this->uploadToEphemeralHost($cheminLocal);
+            // 2. Appel du Service API
+            $dossierUpload = 'public/uploads/';
+            // On récupère le chemin absolu du fichier local
+            $cheminLocal = realpath($dossierUpload . $imageScan);
+            
+            // Stratégie : Upload vers un hôte éphémère (file.io) pour que l'API puisse lire l'image
+            // Cela garantit la "Privacité" (Fichier supprimé après lecture unique) et permet le localhost.
+            $urlImageApi = $this->uploadToEphemeralHost($cheminLocal);
 
-                // Fallback si l'upload échoue : Image de démo User
-                if (!$urlImageApi) {
-                    $urlImageApi = "https://i.imgur.com/HBrB8p0.png";
-                }
+            // Fallback si l'upload échoue : Image de démo User
+            if (!$urlImageApi) {
+                // Si l'upload échoue, on ne peut pas scanner
+                 $articles = [];
+            } else {
 
                 $service = new SerpApiService($apiKey);
                 $rawResults = $service->search($urlImageApi);
@@ -99,6 +96,7 @@ class ControllerArticle extends Controller {
                     }
                 }
             }
+
             // 4. Enregistrement dans l'historique (Si connecté)
             if (isset($_SESSION['user_id'])) {
                 $rechercheDao = new RechercheDao($pdo);
@@ -116,24 +114,6 @@ class ControllerArticle extends Controller {
             'articles' => $articles,
             'nbBloques' => $nbBloques
         ]);
-    }
-    
-    /**
-     * @brief   Génère des faux résultats si l'API n'est pas configurée.
-     */
-    private function getMockResults() {
-        $articles = [];
-        $marques = ['Nike', 'Adidas', 'Zara', 'H&M', 'Uniqlo'];
-        for ($i = 0; $i < 10; $i++) {
-            $articles[] = [
-                'titre' => 'Article Mode Tendance ' . $i,
-                'source' => $marques[array_rand($marques)] . '.com',
-                'image' => 'https://picsum.photos/300/400?random=' . $i,
-                'url' => '#',
-                'prix' => rand(20, 100) . ' €'
-            ];
-        }
-        return $articles;
     }
 
     /**
