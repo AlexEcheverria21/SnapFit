@@ -102,8 +102,7 @@ class ControllerArticle extends Controller {
                 $rechercheDao = new RechercheDao($pdo);
                 $recherche = new Recherche(
                     $_SESSION['user_id'], 
-                    $imageScan, 
-                    'scan_' . date('YmdHis')
+                    $imageScan
                 );
                 $rechercheDao->add($recherche);
             }

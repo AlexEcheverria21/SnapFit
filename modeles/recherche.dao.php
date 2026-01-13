@@ -46,16 +46,15 @@ class RechercheDAO {
      * @throws PDOException En cas d'erreur lors de l'exécution de la requête SQL.
      */
     public function add(Recherche $recherche): bool {
-        $sql = "INSERT INTO RECHERCHE (id_utilisateur, image_scan, date_recherche, api_id) 
-                VALUES (:id_utilisateur, :image, :date_recherche, :api_id)";
+        $sql = "INSERT INTO RECHERCHE (id_utilisateur, image_scan, date_recherche) 
+                VALUES (:id_utilisateur, :image, :date_recherche)";
 
         $stmt = $this->pdo->prepare($sql);
 
         $result = $stmt->execute([
             ':id_utilisateur' => $recherche->getIdUtilisateur(),
             ':image'          => $recherche->getImage(),
-            ':date_recherche' => $recherche->getDateRecherche(),
-            ':api_id'         => $recherche->getApiId()
+            ':date_recherche' => $recherche->getDateRecherche()
         ]);
 
         // Vérification du succès de l'insertion pour hydrater l'ID de l'objet
@@ -79,11 +78,11 @@ class RechercheDAO {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // Si une ligne correspondante est trouvée, on instancie l'objet
+        // Si une ligne correspondante est trouvée, on instancie l'objet
         if ($row) {
             return new Recherche(
                 $row['id_utilisateur'],
                 $row['image_scan'],
-                $row['api_id'],
                 $row['date_recherche'],
                 $row['id_recherche']
             );
@@ -168,7 +167,6 @@ class RechercheDAO {
         return new Recherche(
             isset($row['id_utilisateur']) ? (int)$row['id_utilisateur'] : null,
             $row['image_scan'] ?? null,
-            $row['api_id'] ?? null,
             $row['date_recherche'] ?? null,
             isset($row['id_recherche']) ? (int)$row['id_recherche'] : null,
         );
