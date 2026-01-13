@@ -15,7 +15,7 @@
                         <div class="alert alert-danger">{{ error }}</div>
                     {% endif %}
 
-                    <form method="post" action="index.php?controleur=utilisateur&methode=register">
+                    <form method="post" action="index.php?controleur=utilisateur&methode=register" id="registerForm" novalidate>
                         <div class="mb-3">
                             <label for="nom" class="form-label">Nom</label>
                             <input type="text" class="form-control" id="nom" name="nom" required>
@@ -46,4 +46,84 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registerForm');
+    if (!form) return;
+
+    const fields = {
+        nom: { 
+            element: document.getElementById('nom'),
+            validate: (v) => v.length >= 2 && /^[a-zA-ZÀ-ÿ\s-]+$/.test(v),
+            message: 'Le nom doit contenir au moins 2 lettres'
+        },
+        prenom: { 
+            element: document.getElementById('prenom'),
+            validate: (v) => v.length >= 2 && /^[a-zA-ZÀ-ÿ\s-]+$/.test(v),
+            message: 'Le prénom doit contenir au moins 2 lettres'
+        },
+        login: { 
+            element: document.getElementById('login'),
+            validate: (v) => v.length >= 3 && /^[a-zA-Z0-9_]+$/.test(v),
+            message: 'Le login doit contenir au moins 3 caractères alphanumériques'
+        },
+        email: { 
+            element: document.getElementById('email'),
+            validate: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+            message: 'Veuillez entrer un email valide'
+        },
+        mdp: { 
+            element: document.getElementById('mdp'),
+            validate: (v) => v.length >= 8 && /[A-Z]/.test(v) && /[a-z]/.test(v) && /[0-9]/.test(v),
+            message: 'Le mot de passe doit contenir 8+ caractères, une majuscule, une minuscule et un chiffre'
+        }
+    };
+
+    Object.keys(fields).forEach(key => {
+        const field = fields[key];
+        if (!field.element) return;
+        field.element.addEventListener('blur', () => validateField(key));
+        field.element.addEventListener('input', () => {
+            if (field.element.classList.contains('is-invalid')) validateField(key);
+        });
+    });
+
+    function validateField(key) {
+        const field = fields[key];
+        const value = field.element.value.trim();
+        const isValid = field.validate(value);
+        
+        const existingFeedback = field.element.parentNode.querySelector('.invalid-feedback');
+        if (existingFeedback) existingFeedback.remove();
+
+        if (isValid) {
+            field.element.classList.remove('is-invalid');
+            field.element.classList.add('is-valid');
+        } else {
+            field.element.classList.remove('is-valid');
+            field.element.classList.add('is-invalid');
+            const feedback = document.createElement('div');
+            feedback.className = 'invalid-feedback';
+            feedback.textContent = field.message;
+            field.element.parentNode.appendChild(feedback);
+        }
+        return isValid;
+    }
+
+    form.addEventListener('submit', function(e) {
+        let allValid = true;
+        Object.keys(fields).forEach(key => {
+            if (!validateField(key)) allValid = false;
+        });
+        if (!allValid) {
+            e.preventDefault();
+            const firstInvalid = form.querySelector('.is-invalid');
+            if (firstInvalid) firstInvalid.focus();
+        }
+    });
+});
+</script>
 {% endblock %}

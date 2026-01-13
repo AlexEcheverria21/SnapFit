@@ -16,7 +16,7 @@
                     </div>
                     {% endif %}
                     
-                    <form method="post" action="index.php?controleur=utilisateur&methode=login">
+                    <form method="post" action="index.php?controleur=utilisateur&methode=login" id="loginForm" novalidate>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email" required>
@@ -35,4 +35,69 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('loginForm');
+    if (!form) return;
+
+    const fields = {
+        email: { 
+            element: document.getElementById('email'),
+            validate: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+            message: 'Veuillez entrer un email valide'
+        },
+        mdp: { 
+            element: document.getElementById('mdp'),
+            validate: (v) => v.length >= 1,
+            message: 'Le mot de passe est requis'
+        }
+    };
+
+    Object.keys(fields).forEach(key => {
+        const field = fields[key];
+        if (!field.element) return;
+        field.element.addEventListener('blur', () => validateField(key));
+        field.element.addEventListener('input', () => {
+            if (field.element.classList.contains('is-invalid')) validateField(key);
+        });
+    });
+
+    function validateField(key) {
+        const field = fields[key];
+        const value = field.element.value.trim();
+        const isValid = field.validate(value);
+        
+        const existingFeedback = field.element.parentNode.querySelector('.invalid-feedback');
+        if (existingFeedback) existingFeedback.remove();
+
+        if (isValid) {
+            field.element.classList.remove('is-invalid');
+            field.element.classList.add('is-valid');
+        } else {
+            field.element.classList.remove('is-valid');
+            field.element.classList.add('is-invalid');
+            const feedback = document.createElement('div');
+            feedback.className = 'invalid-feedback';
+            feedback.textContent = field.message;
+            field.element.parentNode.appendChild(feedback);
+        }
+        return isValid;
+    }
+
+    form.addEventListener('submit', function(e) {
+        let allValid = true;
+        Object.keys(fields).forEach(key => {
+            if (!validateField(key)) allValid = false;
+        });
+        if (!allValid) {
+            e.preventDefault();
+            const firstInvalid = form.querySelector('.is-invalid');
+            if (firstInvalid) firstInvalid.focus();
+        }
+    });
+});
+</script>
 {% endblock %}
