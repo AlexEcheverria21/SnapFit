@@ -57,7 +57,6 @@ CREATE TABLE RECHERCHE (
     id_utilisateur INT,
     image_scan VARCHAR(255) NOT NULL,
     date_recherche DATETIME DEFAULT CURRENT_TIMESTAMP,
-    api_id VARCHAR(100), -- Pour reprendre l'image de l'article recherché
     CONSTRAINT fk_rech_user FOREIGN KEY (id_utilisateur) REFERENCES UTILISATEUR(id_utilisateur) ON DELETE CASCADE
 )
 
