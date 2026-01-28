@@ -25,4 +25,8 @@ class ControllerHome extends Controller {
             'login_success' => $loginSuccess
         ));
     }
+
+    public function labels_info() {
+        echo $this->twig->render('labels_info.html.twig');
+    }
 }

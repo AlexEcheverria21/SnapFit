@@ -1,0 +1,65 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Information Labels - SnapFit{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <h1 class="mb-5 text-center"><i class="fas fa-tags text-primary"></i> Comprendre nos Labels</h1>
+
+            <div class="row g-4">
+                <!-- Section Eco-responsable -->
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm border-success border-2">
+                        <div class="card-header bg-success text-white">
+                            <h3 class="mb-0"><i class="fas fa-leaf"></i> Eco-responsable</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="lead">Ce label identifie les produits issus de marques engagées pour l'environnement.</p>
+                            <hr>
+                            <h5><i class="fas fa-check-circle"></i> Nos Critères</h5>
+                            <ul class="list-unstyled mt-3">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Utilisation de matériaux durables (Coton bio, Recyclé).</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Production éthique et respectueuse des travailleurs.</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Second-main favorisée (Vinted, Vestiaire Collective).</li>
+                            </ul>
+                            <div class="alert alert-success mt-4">
+                                <strong>Exemples :</strong> Patagonia, Veja, Vinted, Dedicated...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Scam / Fast-Fashion -->
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm border-danger border-2">
+                        <div class="card-header bg-danger text-white">
+                            <h3 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Scam / Risque</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="lead">Nous filtrons automatiquement les sites identifiés comme frauduleux ou de "Fast-Fashion" extrême.</p>
+                            <hr>
+                            <h5><i class="fas fa-shield-alt"></i> Pourquoi sont-ils masqués ?</h5>
+                            <ul class="list-unstyled mt-3">
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i>Risque d'arnaque (Produit non reçu, contrefaçon).</li>
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i>Qualité médiocre et matériaux polluants.</li>
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i>Conditions de travail déplorables.</li>
+                            </ul>
+                            <div class="alert alert-danger mt-4">
+                                <strong>Exemples :</strong> Shein, Temu, AliExpress, Wish...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="index.php?controleur=recherche" class="btn btn-primary btn-lg">
+                    <i class="fas fa-search"></i> Retourner à la recherche
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
