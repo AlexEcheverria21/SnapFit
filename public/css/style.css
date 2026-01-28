@@ -8,6 +8,8 @@
     /* Définition de nos variables CSS personnalisées */
     --primary-color: #007bff;
     --secondary-color: #6c757d;
+    --navbar-color: #244031;
+    --button-color: #5a893a;
 }
 
 body {
@@ -22,10 +24,13 @@ body {
 }
 
 /* Personnalisation de la marque dans la Navbar */
-.navbar-brand {
-    font-weight: bold;
-    /* !important force l'override si Bootstrap est trop spécifique */
-    color: var(--primary-color) !important;
+.custom-navbar {
+    background-color: var(--navbar-color) !important;
+}
+
+/* Pour s'assurer que le logo et les liens sont bien visibles */
+.navbar-brand, .nav-link {
+    color: #ffffff !important;
 }
 
 /* UX : Curseur main sur les coeurs (Favoris) */
