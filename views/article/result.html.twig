@@ -45,6 +45,14 @@
                 
                 <div class="card-body">
                     <h5 class="card-title">{{ article.categorie }}</h5>
+                    {% if article.prix != 'N/C' %}
+                    <p class="card-text fw-bold text-primary">{{ article.prix|replace({'*': ''}) }}</p>
+                    {% endif %}
+                    {% if article.prix == 'N/C' %}
+                    <p class="card-text">Prix non communiqué</p>
+                    {% endif %}
+                    {% set domain = article.url|split('//')|last|split('/')|first|replace({'www.': ''}) %}
+                    <p class="card-text text-muted small"><i class="fas fa-globe"></i> {{ domain }}</p>
                     <p class="card-text text-muted">Identifié avec certitude.</p>
                     
                     <a href="{{ article.url }}" target="_blank" class="btn btn-outline-primary w-100 mb-2">
