@@ -110,6 +110,20 @@ class ControllerArticle extends Controller {
                         $articles[] = $res;
                     }
                 }
+
+                // Tri des articles : Eco en premier
+                usort($articles, function($a, $b) {
+                    $isEcoA = isset($a['label']) && $a['label'] === 'eco';
+                    $isEcoB = isset($b['label']) && $b['label'] === 'eco';
+
+                    if ($isEcoA && !$isEcoB) {
+                        return -1; // A (Eco) avant B (Pas Eco)
+                    } elseif (!$isEcoA && $isEcoB) {
+                        return 1; // B (Eco) avant A (Pas Eco)
+                    } else {
+                        return 0; // Même priorité
+                    }
+                });
             }
 
             // 4. Enregistrement dans l'historique (Si connecté)
