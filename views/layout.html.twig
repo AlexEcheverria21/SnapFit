@@ -9,12 +9,12 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Custom CSS -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="public/css/style.css" rel="stylesheet">
   </head>
   <body class="d-flex flex-column min-vh-100">
     
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg custom-navbar">
       <div class="container">
         <a class="navbar-brand fw-bold" href="index.php">SnapFit <i class="fas fa-camera-retro"></i></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -45,7 +45,7 @@
                     <span class="nav-link text-light">Bonjour {{ session.user.login }}</span>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn btn-outline-light btn-sm px-3 ms-2" href="index.php?controleur=utilisateur&methode=logout">Déconnexion</a>
+                    <a class="nav-link" href="index.php?controleur=utilisateur&methode=logout">Déconnexion</a>
                 </li>
              {% else %}
                 <li class="nav-item">
