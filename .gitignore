@@ -8,6 +8,7 @@ Thumbs.db
 
 .idea/
 .vscode/
-
+composer.phar
 /cache/
 /uploads/
+/public/uploads/

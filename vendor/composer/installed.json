@@ -98,7 +98,7 @@
             },
             "time": "2025-11-27T13:27:24+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\Intl\\": ""
@@ -441,7 +441,7 @@
             },
             "time": "2025-11-02T11:00:49+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "Twig\\Extra\\Intl\\": ""

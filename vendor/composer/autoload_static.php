@@ -17,12 +17,12 @@ class ComposerStaticInit19b0974c8ed31292a8cd7bea470e26f5
     );
 
     public static $prefixLengthsPsr4 = array (
-        'T' => 
+        'T' =>
         array (
             'Twig\\Extra\\Intl\\' => 16,
             'Twig\\' => 5,
         ),
-        'S' => 
+        'S' =>
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
@@ -32,27 +32,27 @@ class ComposerStaticInit19b0974c8ed31292a8cd7bea470e26f5
     );
 
     public static $prefixDirsPsr4 = array (
-        'Twig\\Extra\\Intl\\' => 
+        'Twig\\Extra\\Intl\\' =>
         array (
             0 => __DIR__ . '/..' . '/twig/intl-extra',
         ),
-        'Twig\\' => 
+        'Twig\\' =>
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
         ),
-        'Symfony\\Polyfill\\Mbstring\\' => 
+        'Symfony\\Polyfill\\Mbstring\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
-        'Symfony\\Polyfill\\Ctype\\' => 
+        'Symfony\\Polyfill\\Ctype\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
-        'Symfony\\Component\\Yaml\\' => 
+        'Symfony\\Component\\Yaml\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/yaml',
         ),
-        'Symfony\\Component\\Intl\\' => 
+        'Symfony\\Component\\Intl\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/intl',
         ),

@@ -75,9 +75,14 @@ class ControllerArticle extends Controller {
                 $pdo = Bd::getInstance()->getConnexion();
                 
                 // Récupération de la liste des domaines SCAM en cache
-                $sql = "SELECT url_racine FROM DOMAINE WHERE statut = 'scam'";
-                $stmt = $pdo->query($sql);
-                $scamDomains = $stmt->fetchAll(PDO::FETCH_COLUMN); // ['shein.com', 'temu.com'...]
+                $sqlScam = "SELECT url_racine FROM DOMAINE WHERE statut = 'scam'";
+                $stmtScam = $pdo->query($sqlScam);
+                $scamDomains = $stmtScam->fetchAll(PDO::FETCH_COLUMN); // ['shein.com', 'temu.com'...]
+
+                // Récupération de la liste des domaines ECO en cache
+                $sqlEco = "SELECT url_racine FROM DOMAINE WHERE statut = 'eco'";
+                $stmtEco = $pdo->query($sqlEco);
+                $ecoDomains = $stmtEco->fetchAll(PDO::FETCH_COLUMN); // ['patagonia.com', 'veja-store.com'...]
                 
                 foreach ($rawResults as $res) {
                     $estScam = false;
@@ -85,13 +90,23 @@ class ControllerArticle extends Controller {
                         // Si la source contient le nom du scam (ex: "fr.shein.com" contient "shein.com")
                         if (stripos($res['source'], $scam) !== false || stripos($res['url'], $scam) !== false) {
                             $estScam = true;
-                            break;
+                            // On peut arrêter la boucle scam si trouvé
+                            break; 
                         }
                     }
                     
                     if ($estScam) {
                         $nbBloques++;
                     } else {
+                        // Vérification Eco
+                        $res['label'] = null; // Par défaut pas de label
+                        foreach ($ecoDomains as $eco) {
+                             if (stripos($res['source'], $eco) !== false || stripos($res['url'], $eco) !== false) {
+                                 $res['label'] = 'eco';
+                                 break;
+                             }
+                        }
+                        
                         $articles[] = $res;
                     }
                 }

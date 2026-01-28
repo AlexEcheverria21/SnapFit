@@ -1,7 +1,7 @@
 <?php
 /**
  * @file    twig.php
- * @author  Team SnapFit
+ * @author  Team SnapFita
  * @brief   Initialisation du moteur de template Twig.
  * @details Configure le loader, l'environnement et les extensions (Debug, Intl) pour les vues.
  * @version 1.0
@@ -18,8 +18,6 @@ $twig = new Twig\Environment($loader, [
     /*passe en mode debug à enlever en environnement de prod : permet d'utiliser dans un views {{dump
     (variable)}} pour afficher le contenu d'une variable. Nécessite l'utilisation de l'extension debug*/
     'debug' => true,
-    // Il est possible de définir d'autre variable d'environnement
-    //...
 ]);
 
 // Ajout de la variable session globale pour les vues
