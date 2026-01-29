@@ -24,7 +24,7 @@
                         <p class="text-muted small">Ajouté le {{ article.dateCreation|date("d/m/Y") }}</p>
                         
                         <div class="d-grid gap-2">
-                            <a href="{{ article.url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <a href="{{ article.url }}" target="_blank" class="btn btn-sm" style="background-color: #5a893a; border-color: #5a893a; color: #ffffff;">
                                 <i class="fas fa-external-link-alt"></i> Voir l'offre
                             </a>
                             <a href="index.php?controleur=favori&methode=delete&id={{ article.id }}" 
