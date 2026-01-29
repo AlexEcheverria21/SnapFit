@@ -31,7 +31,7 @@ class AnnuaireDao {
      * @brief   Récupère les domaines par statut (eco ou scam).
      */
     public function findByStatut(string $statut): array {
-        $sql = "SELECT id_domaine as id, url_racine, nom, statut, description 
+        $sql = "SELECT id_domaine as id, url_racine, nom, statut
                 FROM DOMAINE WHERE statut = :statut ORDER BY nom ASC";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':statut' => $statut]);
@@ -47,7 +47,6 @@ class AnnuaireDao {
             $ligne['url_racine'] ?? null,
             $ligne['nom'] ?? null,
             $ligne['statut'] ?? null,
-            $ligne['description'] ?? null
         );
     }
 
