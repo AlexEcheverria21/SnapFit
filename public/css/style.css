@@ -55,3 +55,43 @@ body {
     border-color: #4a7230 !important;
     color: #ffffff !important;
 }
+
+/* Styles pour la zone de drop (Scanner un vêtement) */
+.drop-zone {
+    min-height: 200px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    border: 3px dashed #ccc;
+    border-radius: 15px;
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+}
+
+.drop-zone:hover {
+    border-color: #5a893a;
+    background-color: #f0f8f0;
+}
+
+.drop-zone--over {
+    border-color: #5a893a;
+    background-color: #e8f5e8;
+}
+
+.drop-zone__input {
+    display: none;
+}
+
+.drop-zone__prompt {
+    color: #888;
+}
+
+.preview-image {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}

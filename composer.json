@@ -1,6 +1,6 @@
 {
     "require": {
-        "twig/twig": "^3.22",
+        "twig/twig": "^3.23",
         "symfony/yaml": "^7.3",
         "twig/intl-extra": "^3.22"
     }
