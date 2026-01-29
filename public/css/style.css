@@ -29,7 +29,8 @@ body {
 }
 
 /* Pour s'assurer que le logo et les liens sont bien visibles */
-.navbar-brand, .nav-link {
+.navbar-brand,
+.nav-link {
     color: #ffffff !important;
 }
 
@@ -41,4 +42,17 @@ body {
 /* Force la couleur rouge (utilisé pour le coeur favori actif) */
 .text-danger {
     color: #dc3545 !important;
+}
+
+/* Style personnalisé pour les boutons Acheter */
+.btn-acheter {
+    background-color: var(--button-color) !important;
+    border-color: var(--button-color) !important;
+    color: #ffffff !important;
+}
+
+.btn-acheter:hover {
+    background-color: #4a7230 !important;
+    border-color: #4a7230 !important;
+    color: #ffffff !important;
 }
