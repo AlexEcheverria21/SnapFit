@@ -9,7 +9,7 @@
     --primary-color: #007bff;
     --secondary-color: #6c757d;
     --navbar-color: #244031;
-    --button-color: #5a893a;
+    --boutton-color: #5A893A;
 }
 
 body {
@@ -23,14 +23,13 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Personnalisation de la marque dans la Navbar */
 .custom-navbar {
     background-color: var(--navbar-color) !important;
 }
 
-/* Pour s'assurer que le logo et les liens sont bien visibles */
+/* Personnalisation de la marque dans la Navbar */
 .navbar-brand, .nav-link {
-    color: #ffffff !important;
+    color: #ffffff;
 }
 
 /* UX : Curseur main sur les coeurs (Favoris) */
@@ -41,4 +40,99 @@ body {
 /* Force la couleur rouge (utilisé pour le coeur favori actif) */
 .text-danger {
     color: #dc3545 !important;
+}
+
+.drop-zone {
+    width: 100%;
+    max-width: 600px;
+    height: 250px;
+    padding: 25px;
+    margin: 0 auto 20px auto; /* Centré horizontalement */
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 500;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #6c757d; /* Gris secondaire */
+    
+    /* Design de la zone */
+    background-color: #ffffff; /* Fond blanc pour contraster avec le body */
+    border: 3px dashed #ced4da; /* Pointillés gris standard */
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Légère ombre cohérente avec tes cards */
+}
+
+/* État interactif : Quand on survole avec un fichier */
+.drop-zone--over {
+    border-style: solid; /* Les pointillés deviennent solides */
+    border-color: var(--primary-color); /* Utilise ton bleu Bootstrap */
+    background-color: #e9ecef; /* Gris très clair */
+    color: var(--primary-color);
+    transform: scale(1.02); /* Petit effet de zoom "pop" */
+}
+
+/* On cache l'input file moche par défaut */
+.drop-zone__input {
+    display: none; 
+}
+    
+/* Zone de dépôt (Drag & Drop) */
+.drop-zone {
+     width: 100%;
+    max-width: 600px;
+    height: 250px;
+    padding: 20px;
+    margin: 0 auto 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+    border: 3px dashed #ced4da; /* Bordure pointillée */
+    border-radius: 15px;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Effet au survol ou quand on glisse un fichier */
+.drop-zone:hover, .drop-zone.drop-zone--over {
+    border-color: #0d6efd; /* Bleu Bootstrap */
+    background-color: #f1f8ff;
+}
+
+/* Masquer l'input file moche de base */
+.drop-zone__input {
+    display: none !important;
+}
+
+/* Texte et icône dans la zone */
+.drop-zone__prompt i {
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+    
+.drop-zone__prompt strong {
+    font-size: 1.2rem;
+    color: #343a40;
+}
+
+/* Image de prévisualisation (Pour qu'elle ne soit pas géante) */
+.preview-image {
+    max-width: 100%;
+    max-height: 300px;       /* Hauteur max fixée */
+    object-fit: contain;     /* Garde les proportions */
+    display: block;
+    margin: 15px auto;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
