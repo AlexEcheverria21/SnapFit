@@ -9,7 +9,7 @@
     --primary-color: #007bff;
     --secondary-color: #6c757d;
     --navbar-color: #244031;
-    --button-color: #5a893a;
+    --boutton-color: #5A893A;
 }
 
 body {
@@ -23,7 +23,6 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Personnalisation de la marque dans la Navbar */
 .custom-navbar {
     background-color: var(--navbar-color) !important;
 }

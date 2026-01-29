@@ -3,23 +3,128 @@
 {% block title %}Scanner une tenue - SnapFit{% endblock %}
 
 {% block content %}
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8 text-center">
-            <h1 class="mb-4">Trouver ce look <i class="fas fa-search"></i></h1>
-            <div class="card shadow-lg p-5">
-                <form method="post" enctype="multipart/form-data">
-                    <div class="mb-4">
-                        <label for="photo" class="form-label h4">Télécharger une photo</label>
-                        <input class="form-control form-control-lg mt-3" type="file" id="photo" name="photo" accept="image/*" required>
-                        <div class="form-text mt-2">Nous analysons l'image pour trouver les vêtements similaires.</div>
+            
+            <h1 class="mb-4">Scanner un vêtement <i class="fas fa-search"></i></h1>
+            <p class="text-muted mb-4">Glissez une photo pour identifier un vêtement et vérifier sa fiabilité.</p>
+
+            <div class="card shadow-lg p-4">
+                
+                <form action="index.php?controleur=article&methode=add" method="post" enctype="multipart/form-data" id="scanForm">
+                
+                    <div class="drop-zone" id="drop-zone">
+                        <span class="drop-zone__prompt">
+                            <i class="fas fa-cloud-upload-alt fa-3x"></i><br>
+                            <strong>Glissez votre image ici</strong><br>
+                            <small class="text-muted">ou cliquez pour parcourir</small>
+                        </span>
+                        
+                        <input type="file" name="photo" id="photoInput" class="drop-zone__input" accept="image/*" required>
+                    </div>
+
+                    <div id="preview-container" style="display: none;">
+                        <p class="text-success fw-bold"><i class="fas fa-check-circle"></i> Image prête à l'envoi !</p>
+                        <img src="" alt="Aperçu" class="preview-image" id="image-preview">
+                        
+                        <div class="mt-3">
+                            <button type="button" class="btn btn-outline-secondary me-2" id="btnReset">Choisir une autre</button>
+                            <button type="submit" class="btn btn-primary px-5">
+                                <i class="fas fa-camera"></i> Lancer l'analyse
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-lg w-100 rounded-pill" style="background-color: #5a893a; border-color: #5a893a; color: #ffffff;">
                         <i class="fas fa-camera"></i> Lancer l'analyse
                     </button>
                 </form>
             </div>
+
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. On récupère les éléments par leur ID
+    const dropZone = document.getElementById("drop-zone");
+    const inputElement = document.getElementById("photoInput");
+    const previewContainer = document.getElementById("preview-container");
+    const previewImage = document.getElementById("image-preview");
+    const btnReset = document.getElementById("btnReset");
+    const form = document.getElementById("scanForm"); // Le formulaire
+    const submitBtn = form.querySelector("button[type='submit']"); // Le bouton envoyer
+
+    // 2. Clic sur la zone = Ouvre l'explorateur
+    dropZone.addEventListener("click", () => {
+        inputElement.click();
+    });
+
+    // 3. Quand un fichier est choisi
+    inputElement.addEventListener("change", () => {
+        if (inputElement.files.length) {
+            updateThumbnail(inputElement.files[0]);
+        }
+    });
+
+    // 4. Gestion visuelle du Drag & Drop
+    dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("drop-zone--over");
+    });
+
+    ["dragleave", "dragend"].forEach(type => {
+        dropZone.addEventListener(type, () => {
+            dropZone.classList.remove("drop-zone--over");
+        });
+    });
+
+    dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("drop-zone--over");
+        if (e.dataTransfer.files.length) {
+            inputElement.files = e.dataTransfer.files;
+            updateThumbnail(e.dataTransfer.files[0]);
+        }
+    });
+
+    // 5. Fonction d'affichage de l'image
+    function updateThumbnail(file) {
+        if (file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                previewImage.src = reader.result;
+                dropZone.style.display = "none";
+                previewContainer.style.display = "block";
+            };
+        } else {
+            alert("Veuillez sélectionner une image valide.");
+        }
+    }
+
+    // 6. Bouton Reset
+    btnReset.addEventListener("click", () => {
+        inputElement.value = "";
+        dropZone.style.display = "flex";
+        previewContainer.style.display = "none";
+        
+        // On remet le bouton comme avant (si on avait annulé un envoi)
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-camera"></i> Lancer l\'analyse';
+    });
+
+    // 7. C'EST ICI QUE CA MANQUAIT : L'animation au clic sur "Envoyer"
+    form.addEventListener("submit", () => {
+        // On change le texte du bouton et on le désactive pour éviter le double-clic
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Analyse en cours...';
+        submitBtn.disabled = true;
+        
+        // Note : Pas besoin de bloquer l'envoi (e.preventDefault) car on veut que la page recharge
+    });
+});
+</script>
+
 {% endblock %}
