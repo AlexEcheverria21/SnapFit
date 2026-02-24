@@ -69,11 +69,25 @@
 
                             <div class="col-12">
                                 <p class="text-muted small mb-3">
-                                    <i class="fas fa-info-circle me-1"></i> Laissez vide si vous ne souhaitez pas changer votre mot de passe.
+                                    <i class="fas fa-lock me-1"></i> Remplissez ces champs uniquement si vous souhaitez changer votre mot de passe.
                                 </p>
+                                <div class="form-floating mb-3">
+                                    <input type="password" name="old_mdp" class="form-control" id="old_mdp" placeholder="Ancien mot de passe">
+                                    <label for="old_mdp">Ancien mot de passe</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
                                 <div class="form-floating mb-3">
                                     <input type="password" name="new_mdp" class="form-control" id="new_mdp" placeholder="Nouveau mot de passe">
                                     <label for="new_mdp">Nouveau mot de passe</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="password" name="confirm_mdp" class="form-control" id="confirm_mdp" placeholder="Confirmer le nouveau mot de passe">
+                                    <label for="confirm_mdp">Confirmer le nouveau mot de passe</label>
                                 </div>
                             </div>
 

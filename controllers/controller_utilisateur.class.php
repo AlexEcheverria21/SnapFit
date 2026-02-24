@@ -137,7 +137,10 @@ class ControllerUtilisateur extends Controller {
             $prenom = $_POST['prenom'] ?? '';
             $email  = $_POST['email'] ?? '';
             $login  = $_POST['login'] ?? '';
+            
+            $oldMdp = $_POST['old_mdp'] ?? '';
             $newMdp = $_POST['new_mdp'] ?? '';
+            $confirmMdp = $_POST['confirm_mdp'] ?? '';
 
             try {
                 // Vérifier si l'email a changé et s'il est déjà pris
@@ -148,17 +151,31 @@ class ControllerUtilisateur extends Controller {
                     }
                 }
 
+                // Si l'un des champs de mot de passe est rempli, on exige une validation complète
+                if (!empty($oldMdp) || !empty($newMdp) || !empty($confirmMdp)) {
+                    // 1. Vérifier l'ancien mot de passe
+                    if (!password_verify($oldMdp, $user->getMotDePasseHash())) {
+                        throw new Exception("L'ancien mot de passe est incorrect.");
+                    }
+
+                    // 2. Vérifier que les deux nouveaux sont identiques
+                    if ($newMdp !== $confirmMdp) {
+                        throw new Exception("Les nouveaux mots de passe ne correspondent pas.");
+                    }
+
+                    // 3. Vérifier la robustesse
+                    if (!$user->estRobuste($newMdp)) {
+                        throw new Exception("Le nouveau mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.");
+                    }
+
+                    // Tout est OK, on hache le nouveau
+                    $user->setMotDePasseHash(password_hash($newMdp, PASSWORD_BCRYPT));
+                }
+
                 $user->setNom($nom);
                 $user->setPrenom($prenom);
                 $user->setEmail($email);
                 $user->setNomConnexion($login);
-
-                if (!empty($newMdp)) {
-                    if (!$user->estRobuste($newMdp)) {
-                        throw new Exception("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.");
-                    }
-                    $user->setMotDePasseHash(password_hash($newMdp, PASSWORD_BCRYPT));
-                }
 
                 if ($dao->update($user)) {
                     $succes = "Profil mis à jour avec succès !";
