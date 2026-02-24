@@ -4,7 +4,7 @@
  * @author  Clément 
  * @brief   Point d'entrée de l'application (Routeur)
  *          Redirige vers le bon contrôleur en fonction des paramètres GET.
- * @version 0.2
+ * @version 0.3
  * @date    17/12/2025
  */
 require_once 'include.php';
@@ -42,5 +42,12 @@ try  {
     $controleur->call($nomMethode);
 
 } catch (Exception $e) {
-   die('Erreur : ' . $e->getMessage());
+    // Graceful error handling with Twig 
+    // On masque les détails techniques en production (ici debug = true pour le dev)
+    $debugMode = true; 
+    
+    echo $twig->render('error.html.twig', [
+        'message' => $e->getMessage(),
+        'debug'   => $debugMode
+    ]);
 }
