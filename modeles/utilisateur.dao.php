@@ -165,36 +165,20 @@ class UtilisateurDao {
      * @throws Aucun
      */
     public function hydrate(array $tableau): Utilisateur {
+        $data = $tableau[0];
 
-        $utilisateur = new Utilisateur(); // Attention, le constructeur attend des arguments obligatoires (email, mdp)
-        // Correctif : Le constructeur a des params obligatoires.
-        // Si la classe a changé de constructeur sans param, c'est ok. Sinon il faut adapter.
-        // Pour l'instant je garde l'instanciation vide si le constructeur le permet ou si je réécris le constructeur.
-        // MAIS le constructeur de Utilisateur a des params obligatoires : email, mdp.
-        // On va supposer que l'hydratation se fait via setters ou que le constructeur a changé.
-        // ICI : Je supprime juste les lignes sexe et pays.
-        
-        // PB : new Utilisateur() sans argument va planter si le constructeur demande des args.
-        // Je vais vérifier le constructeur de Utilisateur.
-        // Il est : __construct(string $email, string $passwordHashOrClear, ...)
-        // Donc new Utilisateur() est invalide.
-        // Je vais réécrire l'hydratation pour utiliser le constructeur correctement ou utiliser Reflection, 
-        // ou modifier le constructeur pour rendre les params optionnels.
-        // Option choisie : Adapter l'appel constructeur ici.
-        
         $utilisateur = new Utilisateur(
-            $tableau[0]['email'],
-            $tableau[0]['mot_de_passe_hash'],
-            $tableau[0]['nom'],
-            $tableau[0]['prenom'],
-            $tableau[0]['nom_connexion']
+            $data['email'],
+            $data['mot_de_passe_hash'],
+            $data['nom'] ?? null,
+            $data['prenom'] ?? null,
+            $data['nom_connexion'] ?? null
         );
         
-        $utilisateur->setIdUtilisateur($tableau[0]['id_utilisateur']);
-        $utilisateur->setRole($tableau[0]['role']);
-        $utilisateur->setDateInscription($tableau[0]['date_inscription']);
-        // $utilisateur->setSexe($tableau[0]['sexe']); // Supprimé
-        // $utilisateur->setPays($tableau[0]['pays']); // Supprimé
+        $utilisateur->setIdUtilisateur((int)$data['id_utilisateur']);
+        $utilisateur->setRole($data['role']);
+        $utilisateur->setDateInscription($data['date_inscription']);
+        
         return $utilisateur;
     }
 
