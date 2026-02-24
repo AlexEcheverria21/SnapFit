@@ -199,4 +199,46 @@ class UtilisateurDao {
         
         return $listeUtilisateurs;
     }
+
+    /**
+     * @brief Enregistre un jeton de réinitialisation
+     */
+    public function saveResetToken(int $idUtilisateur, string $token, string $expiry): bool {
+        $sql = "UPDATE UTILISATEUR SET token_reinitialisation = :token, expiration_token = :expiry 
+                WHERE id_utilisateur = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':token' => $token,
+            ':expiry' => $expiry,
+            ':id' => $idUtilisateur
+        ]);
+    }
+
+    /**
+     * @brief Trouve un utilisateur par son jeton de réinitialisation (non expiré)
+     */
+    public function findByToken(string $token): ?Utilisateur {
+        $sql = "SELECT * FROM UTILISATEUR 
+                WHERE token_reinitialisation = :token 
+                AND expiration_token > NOW() LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':token' => $token]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row ? $this->hydrate([$row]) : null;
+    }
+
+    /**
+     * @brief Met à jour uniquement le mot de passe d'un utilisateur
+     */
+    public function updatePassword(int $idUtilisateur, string $hash): bool {
+        $sql = "UPDATE UTILISATEUR SET mot_de_passe_hash = :mdp, 
+                token_reinitialisation = NULL, expiration_token = NULL 
+                WHERE id_utilisateur = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':mdp' => $hash,
+            ':id' => $idUtilisateur
+        ]);
+    }
 }

@@ -15,6 +15,18 @@
                         <i class="fas fa-exclamation-circle me-2"></i> {{ error }}
                     </div>
                     {% endif %}
+
+                    {% if success %}
+                    <div class="alert alert-success" role="alert">
+                        <i class="fas fa-check-circle me-2"></i> {{ success }}
+                    </div>
+                    {% endif %}
+
+                    {% if msg == 'reset_success' %}
+                    <div class="alert alert-success" role="alert">
+                        <i class="fas fa-check-circle me-2"></i> Nouveau mot de passe enregistré ! Connectez-vous.
+                    </div>
+                    {% endif %}
                     
                     <form method="post" action="index.php?controleur=utilisateur&methode=login{% if returnTo %}&return_to={{ returnTo|url_encode }}{% endif %}" id="loginForm" novalidate>
                         {% if returnTo %}
@@ -27,6 +39,9 @@
                         <div class="mb-3">
                             <label for="mdp" class="form-label">Mot de passe</label>
                             <input type="password" class="form-control" id="mdp" name="mdp" required>
+                            <div class="text-end mt-1">
+                                <a href="index.php?controleur=utilisateur&methode=forgotPassword" class="small text-muted">Mot de passe oublié ?</a>
+                            </div>
                         </div>
                         <button type="submit" class="btn w-100" style="background-color: #5a893a; border-color: #5a893a; color: #ffffff;">Se connecter</button>
                     </form>

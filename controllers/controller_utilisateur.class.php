@@ -200,4 +200,93 @@ class ControllerUtilisateur extends Controller {
             'success' => $succes
         ]);
     }
+
+    /**
+     * @brief   Gère la demande de mot de passe oublié.
+     */
+    public function forgotPassword() {
+        $erreur = null;
+        $succes = null;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'] ?? '';
+            $dao = new UtilisateurDao($this->pdo);
+            $user = $dao->findByEmail($email);
+
+            if ($user) {
+                $token = bin2hex(random_bytes(32));
+                $expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
+
+                if ($dao->saveResetToken($user->getIdUtilisateur(), $token, $expiry)) {
+                    // Préparation mail
+                    $sujet = "SnapFit - Réinitialisation de mot de passe";
+                    $lien = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/index.php?controleur=utilisateur&methode=resetPassword&token=" . $token;
+                    
+                    $message = "Bonjour " . $user->getPrenom() . ",\n\nVous avez demande la reinitialisation de votre mot de passe.\nCliquez ici : " . $lien . "\n\nL'equipe SnapFit";
+                    
+                    $headers = "From: no-reply@snapfit.com";
+
+                    // Envoi (Peut échouer en local sans SMTP configuré)
+                    @mail($email, $sujet, $message, $headers);
+                    
+                    $succes = "Si cet e-mail existe, un lien de réinitialisation vous a été envoyé.";
+                }
+            } else {
+                // Pour la sécurité, on affiche le même message même si l'email n'existe pas
+                $succes = "Si cet e-mail existe, un lien de réinitialisation vous a été envoyé.";
+            }
+        }
+
+        echo $this->twig->render('auth/forgot_password.html.twig', [
+            'error' => $erreur,
+            'success' => $succes
+        ]);
+    }
+
+    /**
+     * @brief   Gère la réinitialisation effective du mot de passe.
+     */
+    public function resetPassword() {
+        $token = $_GET['token'] ?? $_POST['token'] ?? null;
+        if (!$token) {
+            header('Location: index.php');
+            exit;
+        }
+
+        $dao = new UtilisateurDao($this->pdo);
+        $user = $dao->findByToken($token);
+
+        if (!$user) {
+            echo "Lien invalide ou expiré.";
+            exit;
+        }
+
+        $erreur = null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $mdp = $_POST['mdp'] ?? '';
+            $confirm = $_POST['confirm'] ?? '';
+
+            try {
+                if ($mdp !== $confirm) {
+                    throw new Exception("Les mots de passe ne correspondent pas.");
+                }
+                if (!$user->estRobuste($mdp)) {
+                    throw new Exception("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.");
+                }
+
+                $hash = password_hash($mdp, PASSWORD_BCRYPT);
+                if ($dao->updatePassword($user->getIdUtilisateur(), $hash)) {
+                    header('Location: index.php?controleur=utilisateur&methode=login&msg=reset_success');
+                    exit;
+                }
+            } catch (Exception $e) {
+                $erreur = $e->getMessage();
+            }
+        }
+
+        echo $this->twig->render('auth/reset_password.html.twig', [
+            'token' => $token,
+            'error' => $erreur
+        ]);
+    }
 }
