@@ -1,0 +1,103 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Mon Profil - SnapFit{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm overflow-hidden">
+                <div class="card-header bg-white border-0 py-3 d-flex align-items-center justify-content-between">
+                    <h2 class="h4 fw-bold mb-0" style="color: var(--navbar-color);">
+                        <i class="fas fa-user-edit me-2" style="color: #5a893a;"></i>Mon Profil
+                    </h2>
+                    <span class="badge" style="background-color: #e9f5e0; color: #5a893a;">Membre depuis le {{ user.dateInscription|date("d/m/Y") }}</span>
+                </div>
+                
+                <div class="card-body p-4 p-md-5">
+                    {% if error %}
+                        <div class="alert alert-danger shadow-sm border-0 d-flex align-items-center">
+                            <i class="fas fa-exclamation-triangle me-2"></i> {{ error }}
+                        </div>
+                    {% endif %}
+
+                    {% if success %}
+                        <div class="alert alert-success shadow-sm border-0 d-flex align-items-center">
+                            <i class="fas fa-check-circle me-2"></i> {{ success }}
+                        </div>
+                    {% endif %}
+
+                    <form method="POST" action="index.php?controleur=utilisateur&methode=profile">
+                        <div class="row g-4">
+                            <!-- Section: Informations Personnelles -->
+                            <div class="col-12 mb-2">
+                                <h5 class="fw-bold border-bottom pb-2 mb-3" style="color: #244031;">Informations Personnelles</h5>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="prenom" class="form-control" id="prenom" placeholder="Prénom" value="{{ user.prenom }}" required>
+                                    <label for="prenom">Prénom</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="nom" class="form-control" id="nom" placeholder="Nom" value="{{ user.nom }}" required>
+                                    <label for="nom">Nom</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="login" class="form-control" id="login" placeholder="Nom d'utilisateur" value="{{ user.nomConnexion }}" required>
+                                    <label for="login">Nom d'utilisateur</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="{{ user.email }}" required>
+                                    <label for="email">Adresse Email</label>
+                                </div>
+                            </div>
+
+                            <!-- Section: Sécurité -->
+                            <div class="col-12 mt-4 mb-2">
+                                <h5 class="fw-bold border-bottom pb-2 mb-3" style="color: #244031;">Sécurité</h5>
+                            </div>
+
+                            <div class="col-12">
+                                <p class="text-muted small mb-3">
+                                    <i class="fas fa-info-circle me-1"></i> Laissez vide si vous ne souhaitez pas changer votre mot de passe.
+                                </p>
+                                <div class="form-floating mb-3">
+                                    <input type="password" name="new_mdp" class="form-control" id="new_mdp" placeholder="Nouveau mot de passe">
+                                    <label for="new_mdp">Nouveau mot de passe</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-acheter btn-lg px-5 shadow-sm">
+                                    <i class="fas fa-save me-2"></i>Enregistrer les modifications
+                                </button>
+                                <a href="index.php" class="btn btn-link text-muted ms-3 text-decoration-none">Annuler</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus {
+        border-color: #5a893a;
+        box-shadow: 0 0 0 0.25rem rgba(90, 137, 58, 0.25);
+    }
+    .form-floating > label {
+        color: #6c757d;
+    }
+</style>
+{% endblock %}

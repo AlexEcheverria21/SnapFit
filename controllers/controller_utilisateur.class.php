@@ -111,4 +111,69 @@ class ControllerUtilisateur extends Controller {
         header('Location: index.php');
         exit;
     }
+
+    /**
+     * @brief   Affiche et permet de modifier le profil utilisateur.
+     */
+    public function profile() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: index.php?controleur=utilisateur&methode=login');
+            exit;
+        }
+
+        $dao = new UtilisateurDao($this->pdo);
+        $user = $dao->find($_SESSION['user_id']);
+        
+        $erreur = null;
+        $succes = null;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nom    = $_POST['nom'] ?? '';
+            $prenom = $_POST['prenom'] ?? '';
+            $email  = $_POST['email'] ?? '';
+            $login  = $_POST['login'] ?? '';
+            $newMdp = $_POST['new_mdp'] ?? '';
+
+            try {
+                // Vérifier si l'email a changé et s'il est déjà pris
+                if ($email !== $user->getEmail()) {
+                    $tempUser = new Utilisateur($email, '');
+                    if ($tempUser->emailExiste()) {
+                        throw new Exception("Cet email est déjà utilisé par un autre compte.");
+                    }
+                }
+
+                $user->setNom($nom);
+                $user->setPrenom($prenom);
+                $user->setEmail($email);
+                $user->setNomConnexion($login);
+
+                if (!empty($newMdp)) {
+                    if (!$user->estRobuste($newMdp)) {
+                        throw new Exception("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.");
+                    }
+                    $user->setMotDePasseHash(password_hash($newMdp, PASSWORD_BCRYPT));
+                }
+
+                if ($dao->update($user)) {
+                    $succes = "Profil mis à jour avec succès !";
+                    // Mettre à jour les données en session
+                    $_SESSION['user']['nom'] = $nom;
+                    $_SESSION['user']['prenom'] = $prenom;
+                    $_SESSION['user']['email'] = $email;
+                    $_SESSION['user']['login'] = $login;
+                } else {
+                    $erreur = "Erreur lors de la mise à jour en base de données.";
+                }
+            } catch (Exception $e) {
+                $erreur = $e->getMessage();
+            }
+        }
+
+        echo $this->twig->render('auth/profile.html.twig', [
+            'user' => $user,
+            'error' => $erreur,
+            'success' => $succes
+        ]);
+    }
 }
