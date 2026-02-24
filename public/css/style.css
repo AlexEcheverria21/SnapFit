@@ -12,8 +12,16 @@
     --boutton-color: #5A893A;
 }
 
+html,
 body {
-    /* Fond gris clair pour casser le blanc pur de Bootstrap */
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none;
+    /* Bloque le rebond haut/bas */
+    height: 100%;
+}
+
+body {
     background-color: #f8f9fa;
 }
 
@@ -33,6 +41,59 @@ body {
     color: #ffffff !important;
 }
 
+/* Effet de soulignement au survol pour TOUS les éléments de la navbar */
+.custom-navbar .navbar-brand:hover {
+    text-decoration: none !important;
+}
+
+.custom-navbar .nav-link {
+    position: relative;
+    padding-bottom: 2px;
+}
+
+.custom-navbar .nav-link:hover {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    /* On retire le soulignement standard */
+}
+
+/* Soulignement propre avec border-bottom */
+.custom-navbar .nav-item .nav-link {
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-navbar .nav-item .nav-link:hover {
+    border-bottom: 2px solid #ffffff;
+}
+
+/* Pas de soulignage pour le toggle du dropdown ni pour le logo */
+.custom-navbar .dropdown-toggle:hover,
+.custom-navbar .navbar-brand:hover {
+    border-bottom: 2px solid transparent !important;
+}
+
+.dropdown-menu {
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.dropdown-item:active {
+    background-color: var(--boutton-color);
+}
+
+/* Annule tout style de bouton résiduel */
+.custom-navbar .nav-link.btn,
+.custom-navbar .nav-link.btn:hover {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 2px solid transparent;
+}
+
+.custom-navbar .nav-link.btn:hover {
+    border-bottom: 2px solid #ffffff !important;
+}
+
 /* UX : Curseur main sur les coeurs (Favoris) */
 .fa-heart {
     cursor: pointer;
@@ -43,17 +104,68 @@ body {
     color: #dc3545 !important;
 }
 
-/* Style personnalisé pour les boutons Acheter */
+/* Style for the main green action button with high specificity */
+a.btn-acheter,
 .btn-acheter {
-    background-color: var(--button-color) !important;
-    border-color: var(--button-color) !important;
+    background-color: #5A893A !important;
+    border-color: #5A893A !important;
     color: #ffffff !important;
+    opacity: 1 !important;
 }
 
+a.btn-acheter:hover,
 .btn-acheter:hover {
     background-color: #4a7230 !important;
     border-color: #4a7230 !important;
     color: #ffffff !important;
+}
+
+/* Styles pour la zone de drag & drop */
+.drop-zone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    padding: 2rem;
+    border: 3px dashed #ddd;
+    border-radius: 12px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.drop-zone:hover {
+    border-color: var(--boutton-color);
+    background-color: #e9f5e0;
+}
+
+.drop-zone--over {
+    border-color: var(--boutton-color);
+    background-color: #d4edda;
+}
+
+.drop-zone__prompt {
+    text-align: center;
+    color: #6c757d;
+}
+
+/* IMPORTANT: Cache l'input file par défaut */
+.drop-zone__input {
+    position: absolute;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+/* Style pour l'aperçu de l'image */
+.preview-image {
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Styles pour la zone de drop (Scanner un vêtement) */
@@ -79,6 +191,77 @@ body {
 .drop-zone--over {
     border-color: #5a893a;
     background-color: #e8f5e8;
+}
+
+/* --- Styles pour la Page d'Accueil --- */
+
+.hero-section {
+    padding: 50px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--navbar-color);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    color: #495057;
+    margin-bottom: 1.5rem;
+}
+
+.hero-image-container {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.hero-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.feature-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 12px;
+    height: 100%;
+    padding: 1.5rem !important;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+.feature-icon {
+    width: 45px;
+    height: 45px;
+    background-color: #e9f5e0;
+    color: var(--boutton-color);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.feature-card p {
+    font-size: 0.9rem;
+    line-height: 1.4;
 }
 
 .drop-zone__input {

@@ -32,7 +32,13 @@ class ControllerAnnuaire extends Controller {
      * @brief   Gère la soumission d'une suggestion de site (placeholder).
      */
     public function suggérer() {
-        // Logique pour plus tard
+        $to      = 'snapfit.dev@gmail.com';
+        $subject = 'Suggestion';
+        $message = $_POST['nom'] . ' ' . $_POST['url'] . ' ' . $_POST['statut'];
+
+        mail($to, $subject, $message);
+
         header('Location: index.php?controleur=annuaire&methode=index&success=1');
+        exit();
     }
 }

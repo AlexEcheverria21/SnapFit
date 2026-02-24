@@ -14,7 +14,7 @@
   <body class="d-flex flex-column min-vh-100">
     
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg custom-navbar">
+    <nav class="navbar navbar-expand-lg custom-navbar shadow-sm">
       <div class="container">
         <a class="navbar-brand fw-bold" href="index.php">SnapFit <i class="fas fa-camera-retro"></i></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -22,37 +22,42 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="index.php">Accueil</a>
-            </li>
-            
             {% if session.user %}
             <li class="nav-item">
-              <a class="nav-link" href="index.php?controleur=article&methode=add">Scanner une tenue</a>
+              <a class="nav-link" href="index.php?controleur=article&methode=add">Scanner un vêtement</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="index.php?controleur=favori&methode=index">Mes Favoris</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="index.php?controleur=recherche&methode=index">Historique</a>
-            </li>
             {% endif %}
           </ul>
           
-          <ul class="navbar-nav ms-auto">
+          <ul class="navbar-nav ms-auto align-items-center">
              {% if session.user %}
-                <li class="nav-item">
-                    <span class="nav-link text-light">Bonjour {{ session.user.login }}</span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php?controleur=utilisateur&methode=logout">Déconnexion</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle me-1"></i> {{ session.user.login }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown">
+                        <li>
+                            <a class="dropdown-item" href="index.php?controleur=recherche&methode=index">
+                                <i class="fas fa-history me-2"></i>Historique
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="index.php?controleur=utilisateur&methode=logout">
+                                <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                            </a>
+                        </li>
+                    </ul>
                 </li>
              {% else %}
                 <li class="nav-item">
                   <a class="nav-link" href="index.php?controleur=utilisateur&methode=login">Connexion</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link btn btn-primary text-white ms-2" href="index.php?controleur=utilisateur&methode=register">Inscription</a>
+                  <a class="nav-link" href="index.php?controleur=utilisateur&methode=register">Inscription</a>
                 </li>
              {% endif %}
           </ul>
@@ -61,14 +66,65 @@
     </nav>
 
     <!-- Contenu Principal -->
-    <main class="flex-grow-1">
+    <main class="flex-grow-1 pb-5">
         {% block content %}{% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer class="bg-light text-center text-lg-start mt-auto py-3">
-      <div class="container text-center text-muted">
-        © 2026 SnapFit - Projet IUT - Paul, Thomas, Clément, Louis, Alex
+    <footer class="mt-auto py-5" style="background-color: #1a2e23; color: #c8d8c0;">
+      <div class="container">
+        <div class="row g-4">
+          <!-- Colonne 1 : À propos -->
+          <div class="col-lg-4">
+            <h5 class="text-white mb-3">SnapFit <i class="fas fa-camera-retro ms-1"></i></h5>
+            <p class="small" style="color: #a3b899;">
+              SnapFit est un projet étudiant de l'IUT de Bayonne visant à aider les utilisateurs à identifier et vérifier la fiabilité de leurs vêtements grâce à l'intelligence artificielle.
+            </p>
+            <div class="d-flex gap-3 mt-3">
+              <a href="#" class="text-decoration-none" style="color: #8fbf6f;"><i class="fab fa-instagram fa-lg"></i></a>
+              <a href="#" class="text-decoration-none" style="color: #8fbf6f;"><i class="fab fa-twitter fa-lg"></i></a>
+              <a href="#" class="text-decoration-none" style="color: #8fbf6f;"><i class="fab fa-linkedin fa-lg"></i></a>
+            </div>
+          </div>
+
+          <!-- Colonne 2 : Navigation rapide -->
+          <div class="col-md-4 col-lg-2">
+            <h6 class="text-white mb-3 text-uppercase small fw-bold">Navigation</h6>
+            <ul class="list-unstyled small">
+              <li class="mb-2"><a href="index.php" class="text-decoration-none" style="color: #a3b899;">Accueil</a></li>
+              <li class="mb-2"><a href="index.php?controleur=article&methode=add" class="text-decoration-none" style="color: #a3b899;">Scanner un vêtement</a></li>
+              <li class="mb-2"><a href="index.php?controleur=favori&methode=index" class="text-decoration-none" style="color: #a3b899;">Mes Favoris</a></li>
+              <li class="mb-2"><a href="index.php?controleur=annuaire&methode=index" class="text-decoration-none" style="color: #a3b899;">Annuaire de confiance</a></li>
+            </ul>
+          </div>
+
+          <!-- Colonne 3 : Légal -->
+          <div class="col-md-4 col-lg-3">
+            <h6 class="text-white mb-3 text-uppercase small fw-bold">Légal & Aide</h6>
+            <ul class="list-unstyled small">
+              <li class="mb-2"><a href="index.php?controleur=home&methode=mentions_legales" class="text-decoration-none" style="color: #a3b899;">Mentions légales</a></li>
+              <li class="mb-2"><a href="obligations.html" target="_blank" class="text-decoration-none" style="color: #a3b899;">Obligations de transparence</a></li>
+              <li class="mb-2"><a href="#" class="text-decoration-none" style="color: #a3b899;">Politique de confidentialité</a></li>
+              <li class="mb-2"><a href="index.php?controleur=home&methode=faq" class="text-decoration-none" style="color: #a3b899;">Aide & FAQ</a></li>
+            </ul>
+          </div>
+
+          <!-- Colonne 4 : Contact -->
+          <div class="col-md-4 col-lg-3">
+            <h6 class="text-white mb-3 text-uppercase small fw-bold">Établissement</h6>
+            <ul class="list-unstyled small" style="color: #a3b899;">
+              <li class="mb-2"><i class="fas fa-university me-2"></i> IUT de Bayonne et du Pays Basque</li>
+              <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> 2 Allée du Parc Montaury, Anglet</li>
+              <li class="mb-2"><i class="fas fa-users me-2"></i> Paul, Thomas, Clément, Louis, Alex</li>
+            </ul>
+          </div>
+        </div>
+
+        <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+
+        <div class="text-center small" style="color: #7a8c72;">
+          &copy; 2026 <strong>SnapFit</strong> &mdash; Réalisé avec <i class="fas fa-heart mx-1 text-danger"></i> pour l'IUT de Bayonne.
+        </div>
       </div>
     </footer>
 

@@ -29,4 +29,12 @@ class ControllerHome extends Controller {
     public function labels_info() {
         echo $this->twig->render('labels_info.html.twig');
     }
+
+    public function mentions_legales() {
+        echo $this->twig->render('mentions_legales.html.twig');
+    }
+
+    public function faq() {
+        echo $this->twig->render('faq.html.twig');
+    }
 }
