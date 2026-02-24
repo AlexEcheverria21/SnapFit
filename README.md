@@ -10,7 +10,6 @@
 *   **Espace Membre** : Historique, Favoris.
 
 ## 📊 Modélisation des Données (Diagramme de Classes)
-*   *(Insérer ici l'image du diagramme UML ou le lien)*
 *   **Entités Principales** : `Utilisateur`, `Article`, `Domaine`, `Favori`.
 
 ## 🛠️ Technologies
