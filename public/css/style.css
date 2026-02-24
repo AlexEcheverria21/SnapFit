@@ -6,10 +6,57 @@
 
 :root {
     /* Définition de nos variables CSS personnalisées */
-    --primary-color: #007bff;
+    --primary-color: #5A893A;
+    /* Changé du bleu au vert SnapFit */
     --secondary-color: #6c757d;
     --navbar-color: #244031;
     --boutton-color: #5A893A;
+}
+
+/* Surcharge globale pour remplacer le bleu de Bootstrap par notre vert */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.btn-primary:hover {
+    background-color: #4a7230 !important;
+    border-color: #4a7230 !important;
+}
+
+.btn-outline-primary {
+    color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color) !important;
+    color: #fff !important;
+}
+
+/* Bordures des inputs au focus */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(90, 137, 58, 0.25);
+}
+
+/* Radio et Checkbox */
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(90, 137, 58, 0.25);
 }
 
 html,
