@@ -76,7 +76,7 @@
                         </button>
                     </form>
                     {% else %}
-                    <a href="index.php?controleur=utilisateur&methode=login" class="btn btn-light w-100 text-muted" title="Connectez-vous pour sauvegarder">
+                    <a href="index.php?controleur=utilisateur&methode=login&return_to={{ ('index.php?controleur=article&methode=result&scan=' ~ scanImage)|url_encode }}" class="btn btn-light w-100 text-muted" title="Connectez-vous pour sauvegarder">
                         <i class="far fa-heart"></i> (Connexion requise)
                     </a>
                     {% endif %}

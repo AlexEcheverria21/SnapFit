@@ -19,25 +19,25 @@ class ControllerUtilisateur extends Controller {
         $erreur = null;
         $succes = null;
         
+        $returnTo = $_GET['return_to'] ?? $_POST['return_to'] ?? null;
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email  = $_POST['email'] ?? '';
-            // CORRECTION ICI : Vérifiez le 'name' dans votre register.html.twig. 
-            // Si c'est <input name="mot_de_passe">, il faut utiliser 'mot_de_passe' ici.
             $mdp    = $_POST['mot_de_passe'] ?? $_POST['mdp'] ?? ''; 
             $nom    = $_POST['nom'] ?? '';
             $prenom = $_POST['prenom'] ?? '';
             $login  = $_POST['login'] ?? '';
 
             try {
-                // Création de l'utilisateur
-                // On passe une chaîne vide pour le mot de passe au constructeur car il sera défini par inscription()
                 $user = new Utilisateur($email, '', $nom, $prenom, $login);
-                
-                // Appel de la méthode métier qui valide, hache le mdp et insère en BDD
                 $user->inscription($mdp);
 
-                // Redirection
-                header('Location: index.php?controleur=utilisateur&methode=login&msg=registered');
+                // Redirection avec return_to si présent
+                $redirectUrl = 'index.php?controleur=utilisateur&methode=login&msg=registered';
+                if ($returnTo) {
+                    $redirectUrl .= '&return_to=' . urlencode($returnTo);
+                }
+                header('Location: ' . $redirectUrl);
                 exit;
 
             } catch (Exception $e) {
@@ -52,7 +52,8 @@ class ControllerUtilisateur extends Controller {
         }
 
         echo $this->twig->render('auth/register.html.twig', [
-            'error' => $erreur
+            'error' => $erreur,
+            'returnTo' => $returnTo
         ]);
     }
 
@@ -63,9 +64,10 @@ class ControllerUtilisateur extends Controller {
         $erreur = null;
         $msg = $_GET['msg'] ?? null;
 
+        $returnTo = $_GET['return_to'] ?? $_POST['return_to'] ?? null;
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
-            // Même vérification ici pour le login
             $mdp = $_POST['mot_de_passe'] ?? $_POST['mdp'] ?? '';
 
             try {
@@ -82,7 +84,9 @@ class ControllerUtilisateur extends Controller {
                         'login' => $user->getNomConnexion()
                     ];
                     
-                    header('Location: index.php?controleur=home&methode=index&login=success'); 
+                    // Redirection : return_to en priorité, sinon accueil
+                    $target = $returnTo ? $returnTo : 'index.php?controleur=home&methode=index&login=success';
+                    header('Location: ' . $target); 
                     exit;
                 } else {
                     $erreur = "Identifiant ou mot de passe incorrect.";
@@ -99,7 +103,8 @@ class ControllerUtilisateur extends Controller {
 
         echo $this->twig->render('auth/login.html.twig', [
             'error' => $erreur,
-            'success' => ($msg == 'registered') ? 'Compte créé avec succès ! Connectez-vous.' : null
+            'success' => ($msg == 'registered') ? 'Compte créé avec succès ! Connectez-vous.' : null,
+            'returnTo' => $returnTo
         ]);
     }
 

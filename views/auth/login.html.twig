@@ -16,7 +16,10 @@
                     </div>
                     {% endif %}
                     
-                    <form method="post" action="index.php?controleur=utilisateur&methode=login" id="loginForm" novalidate>
+                    <form method="post" action="index.php?controleur=utilisateur&methode=login{% if returnTo %}&return_to={{ returnTo|url_encode }}{% endif %}" id="loginForm" novalidate>
+                        {% if returnTo %}
+                            <input type="hidden" name="return_to" value="{{ returnTo }}">
+                        {% endif %}
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email" required>
@@ -29,7 +32,7 @@
                     </form>
                 </div>
                 <div class="card-footer text-center">
-                    <small><a href="index.php?controleur=utilisateur&methode=register" style="color: #5a893a;">Pas encore de compte ?</a></small>
+                    <small><a href="index.php?controleur=utilisateur&methode=register{% if returnTo %}&return_to={{ returnTo|url_encode }}{% endif %}" style="color: #5a893a;">Pas encore de compte ?</a></small>
                 </div>
             </div>
         </div>

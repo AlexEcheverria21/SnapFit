@@ -15,7 +15,10 @@
                         <div class="alert alert-danger">{{ error }}</div>
                     {% endif %}
 
-                    <form method="post" action="index.php?controleur=utilisateur&methode=register" id="registerForm" novalidate>
+                    <form method="post" action="index.php?controleur=utilisateur&methode=register{% if returnTo %}&return_to={{ returnTo|url_encode }}{% endif %}" id="registerForm" novalidate>
+                        {% if returnTo %}
+                            <input type="hidden" name="return_to" value="{{ returnTo }}">
+                        {% endif %}
                         <div class="mb-3">
                             <label for="nom" class="form-label">Nom</label>
                             <input type="text" class="form-control" id="nom" name="nom" required>
@@ -40,7 +43,7 @@
                     </form>
                 </div>
                 <div class="card-footer text-center">
-                    <small>Déjà un compte ? <a href="index.php?controleur=utilisateur&methode=login" style="color: #5a893a;">Se connecter</a></small>
+                    <small>Déjà un compte ? <a href="index.php?controleur=utilisateur&methode=login{% if returnTo %}&return_to={{ returnTo|url_encode }}{% endif %}" style="color: #5a893a;">Se connecter</a></small>
                 </div>
             </div>
         </div>
