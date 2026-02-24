@@ -4,7 +4,7 @@
  * @author  Louis (Team SnapFit)
  * @brief   Définit un contrôleur gérant les articles (scan, upload, recherche).
  *          Intègre l'API Google Lens (SerpAPI) et le filtrage Anti-Scam.
- * @version 1.0
+ * @version 1.1
  * @date    16/12/2025
  */
 class ControllerArticle extends Controller {
@@ -39,121 +39,117 @@ class ControllerArticle extends Controller {
     }
 
     /**
-     * @brief   Affiche les résultats de la recherche Google Lens.
-     *          Filtre les sites arnaques (SCAM) via la table DOMAINE.
+     * @brief   Affiche le squelette des résultats de la recherche.
+     *          La recherche réelle est effectuée en AJAX via api_results().
      */
     public function result() {
         $imageScan = $_GET['scan'] ?? null;
-        global $config; // Récupération de la clé API depuis config_local.yaml
         
-        $articles = [];
-        $nbBloques = 0; // Compteur de sites bloqués
-        
-        if ($imageScan) {
-            // 1. Récupération de la clé API
-            $apiKey = $config['api']['serpapi_key'] ?? '';
-            
-            // 2. Appel du Service API
-            $dossierUpload = 'public/uploads/';
-            // On récupère le chemin absolu du fichier local
-            $cheminLocal = realpath($dossierUpload . $imageScan);
-            
-            // Stratégie : Upload vers un hôte éphémère (file.io) pour que l'API puisse lire l'image
-            // Cela garantit la "Privacité" (Fichier supprimé après lecture unique) et permet le localhost.
-            $urlImageApi = $this->uploadToEphemeralHost($cheminLocal);
-
-            // Fallback si l'upload échoue : Image de démo User
-            if (!$urlImageApi) {
-                // Si l'upload échoue, on ne peut pas scanner
-                 $articles = [];
-            } else {
-
-                $service = new SerpApiService($apiKey);
-                $rawResults = $service->search($urlImageApi);
-                
-                // 3. Filtrage Anti-Scam (Logique V3)
-                $pdo = Bd::getInstance()->getConnexion();
-                
-                // Récupération de la liste des domaines SCAM en cache
-                $sqlScam = "SELECT url_racine FROM DOMAINE WHERE statut = 'scam'";
-                $stmtScam = $pdo->query($sqlScam);
-                $scamDomains = $stmtScam->fetchAll(PDO::FETCH_COLUMN); // ['shein.com', 'temu.com'...]
-
-                // Récupération de la liste des domaines ECO en cache
-                $sqlEco = "SELECT url_racine FROM DOMAINE WHERE statut = 'eco'";
-                $stmtEco = $pdo->query($sqlEco);
-                $ecoDomains = $stmtEco->fetchAll(PDO::FETCH_COLUMN); // ['patagonia.com', 'veja-store.com'...]
-                
-                foreach ($rawResults as $res) {
-                    $estScam = false;
-                    foreach ($scamDomains as $scam) {
-                        // Si la source contient le nom du scam (ex: "fr.shein.com" contient "shein.com")
-                        if (stripos($res['source'], $scam) !== false || stripos($res['url'], $scam) !== false) {
-                            $estScam = true;
-                            // On peut arrêter la boucle scam si trouvé
-                            break; 
-                        }
-                    }
-                    
-                    if ($estScam) {
-                        $nbBloques++;
-                    } else {
-                        // Vérification Eco
-                        $res['label'] = null; // Par défaut pas de label
-                        foreach ($ecoDomains as $eco) {
-                             if (stripos($res['source'], $eco) !== false || stripos($res['url'], $eco) !== false) {
-                                 $res['label'] = 'eco';
-                                 break;
-                             }
-                        }
-                        
-                        $articles[] = $res;
-                    }
-                }
-
-                // Tri des articles : Eco en premier
-                usort($articles, function($a, $b) {
-                    $isEcoA = isset($a['label']) && $a['label'] === 'eco';
-                    $isEcoB = isset($b['label']) && $b['label'] === 'eco';
-
-                    if ($isEcoA && !$isEcoB) {
-                        return -1; // A (Eco) avant B (Pas Eco)
-                    } elseif (!$isEcoA && $isEcoB) {
-                        return 1; // B (Eco) avant A (Pas Eco)
-                    } else {
-                        return 0; // Même priorité
-                    }
-                });
-            }
-
-            // 4. Enregistrement dans l'historique (Si connecté)
-            if (isset($_SESSION['user_id'])) {
-                $rechercheDao = new RechercheDao($pdo);
-                $recherche = new Recherche(
-                    $_SESSION['user_id'], 
-                    $imageScan
-                );
-                $rechercheDao->add($recherche);
-            }
-        }
-
         echo $this->twig->render('article/result.html.twig', [
             'scanImage' => $imageScan,
-            'articles' => $articles,
-            'nbBloques' => $nbBloques
+            'articles' => [],
+            'nbBloques' => 0
         ]);
     }
 
     /**
-     * @brief   Upload l'image vers un service temporaire (file.io) pour obtenir une URL publique.
-     *          L'image est supprimée automatiquement après le premier téléchargement par l'API.
+     * @brief   Endpoint API retournant les résultats de recherche au format JSON.
+     *          Utilisé pour permettre l'interruption de la recherche côté client.
+     */
+    public function api_results() {
+        header('Content-Type: application/json');
+        
+        $imageScan = $_GET['scan'] ?? null;
+        if (!$imageScan) {
+            echo json_encode(['error' => 'Aucune image spécifiée']);
+            exit;
+        }
+
+        global $config;
+        $apiKey = $config['api']['serpapi_key'] ?? '';
+        
+        $dossierUpload = 'public/uploads/';
+        $cheminLocal = realpath($dossierUpload . $imageScan);
+        
+        if (!$cheminLocal || !file_exists($cheminLocal)) {
+            echo json_encode(['error' => 'Image introuvable']);
+            exit;
+        }
+
+        $urlImageApi = $this->uploadToEphemeralHost($cheminLocal);
+
+        if (!$urlImageApi) {
+            echo json_encode(['error' => 'Erreur lors de l\'upload temporaire']);
+            exit;
+        }
+
+        $service = new SerpApiService($apiKey);
+        $rawResults = $service->search($urlImageApi);
+        
+        $pdo = Bd::getInstance()->getConnexion();
+        $sqlScam = "SELECT url_racine FROM DOMAINE WHERE statut = 'scam'";
+        $stmtScam = $pdo->query($sqlScam);
+        $scamDomains = $stmtScam->fetchAll(PDO::FETCH_COLUMN);
+
+        $sqlEco = "SELECT url_racine FROM DOMAINE WHERE statut = 'eco'";
+        $stmtEco = $pdo->query($sqlEco);
+        $ecoDomains = $stmtEco->fetchAll(PDO::FETCH_COLUMN);
+        
+        $articles = [];
+        $nbBloques = 0;
+
+        foreach ($rawResults as $res) {
+            $estScam = false;
+            foreach ($scamDomains as $scam) {
+                if (stripos($res['source'], $scam) !== false || stripos($res['url'], $scam) !== false) {
+                    $estScam = true;
+                    break;
+                }
+            }
+            
+            if ($estScam) {
+                $nbBloques++;
+            } else {
+                $res['label'] = null;
+                foreach ($ecoDomains as $eco) {
+                     if (stripos($res['source'], $eco) !== false || stripos($res['url'], $eco) !== false) {
+                         $res['label'] = 'eco';
+                         break;
+                     }
+                }
+                $articles[] = $res;
+            }
+        }
+
+        // Tri Eco
+        usort($articles, function($a, $b) {
+            $isEcoA = isset($a['label']) && $a['label'] === 'eco';
+            $isEcoB = isset($b['label']) && $b['label'] === 'eco';
+            return $isEcoB <=> $isEcoA; 
+        });
+
+        // Enregistrement historique
+        if (isset($_SESSION['user_id'])) {
+            $rechercheDao = new RechercheDao($pdo);
+            $recherche = new Recherche($_SESSION['user_id'], $imageScan);
+            $rechercheDao->add($recherche);
+        }
+
+        echo json_encode([
+            'articles' => $articles,
+            'nbBloques' => $nbBloques
+        ]);
+        exit;
+    }
+
+    /**
+     * @brief   Upload l'image vers un service temporaire (tmpfiles.org) pour obtenir une URL publique.
      * @param   string $filePath Chemin local du fichier.
      * @return  string|null L'URL publique ou null en cas d'échec.
      */
     private function uploadToEphemeralHost($filePath) {
         if (!file_exists($filePath)) return null;
 
-        // On bascule sur tmpfiles.org qui est souvent plus permissif que file.io
         $ch = curl_init("https://tmpfiles.org/api/v1/upload");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -172,11 +168,6 @@ class ControllerArticle extends Controller {
         
         curl_close($ch);
         $json = json_decode($response, true);
-        
-        // tmpfiles.org retourne l'url de téléchargement
-        // Format : $json['data']['url'] -> https://tmpfiles.org/12345/image.jpg
-        // Mais pour l'affichage direct (raw), il faut changer l'URL :
-        // https://tmpfiles.org/dl/12345/image.jpg
         
         if (isset($json['data']['url'])) {
             return str_replace('tmpfiles.org/', 'tmpfiles.org/dl/', $json['data']['url']);

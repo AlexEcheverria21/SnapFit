@@ -10,132 +10,173 @@
         <div class="col-md-2 text-center">
             <img src="public/uploads/{{ scanImage }}" class="img-fluid rounded border border-3 border-white shadow-sm" style="max-height: 100px;">
         </div>
-        <div class="col-md-10">
-            <h3><i class="fas fa-check-circle text-success"></i> Analyse terminée !</h3>
-            <p class="mb-0 text-muted">Voici les articles que nous avons identifiés pour vous.</p>
+        <div class="col-md-10" id="searchHeader">
+            <h3><i class="fas fa-spinner fa-spin text-primary"></i> <span id="statusTitle">Analyse en cours...</span></h3>
+            <p class="mb-0 text-muted" id="statusMessage">SnapFit identifie les articles pour vous. Cela peut prendre quelques secondes.</p>
+            <div class="mt-2" id="interruptionControl">
+                <button id="btnInterrupt" class="btn btn-sm btn-outline-danger">
+                    <i class="fas fa-stop-circle"></i> Interrompre la recherche
+                </button>
+            </div>
         </div>
     </div>
     {% endif %}
 
-    <!-- Alerte Anti-Scam -->
-    {% if nbBloques > 0 %}
-    <div class="alert alert-warning d-flex align-items-center mb-4" role="alert">
+    <!-- Zone d'alerte (masquée par défaut) -->
+    <div id="scamAlert" class="alert alert-warning d-flex align-items-center mb-4 d-none" role="alert">
         <i class="fas fa-shield-alt fa-2x me-3"></i>
         <div>
             <strong>Sécurité SnapFit activée !</strong>
             <br>
-            Nous avons masqué <strong>{{ nbBloques }} résultat(s)</strong> provenant de sites identifiés comme frauduleux ou peu fiables (Scam).
+            Nous avons masqué <strong id="blockedCount">0</strong> résultat(s) provenant de sites identifiés comme frauduleux ou peu fiables (Scam).
         </div>
     </div>
-    {% endif %}
 
-    <!-- Grille de résultats -->
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% for article in articles %}
-        <div class="col">
-            <div class="card h-100 shadow-sm border-0">
-                <!-- Image Article (Si lien externe ou local) -->
-                <div class="position-relative" style="height: 250px; overflow: hidden;">
-                    <img src="{{ article.image }}" class="card-img-top w-100 h-100" style="object-fit: cover;" alt="{{ article.categorie }}">
-                    <span class="badge bg-dark position-absolute top-0 end-0 m-2">{{ article.marque }}</span>
-                    {% if article.label == 'eco' %}
-                        <span class="badge bg-success position-absolute top-0 start-0 m-2">
-                            <i class="fas fa-leaf"></i> Eco-responsable 
-                            <a href="index.php?controleur=home&methode=labels_info" class="text-white ms-1" title="Plus d'infos sur le label">
-                                <i class="fas fa-info-circle"></i>
-                            </a>
-                        </span>
-                    {% endif %}
-                </div>
-                
+    <!-- Grille de résultats (Sera remplie par JS) -->
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="resultsGrid">
+        <!-- Skeleton loader simple -->
+        <div class="col skeleton-placeholder">
+            <div class="card h-100 shadow-sm border-0 opacity-50">
+                <div style="height: 250px; background: #eee;"></div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ article.categorie }}</h5>
-                    {% if article.prix != 'N/C' %}
-                    <p class="card-text fw-bold text-primary">{{ article.prix|replace({'*': ''}) }}</p>
-                    {% endif %}
-                    {% if article.prix == 'N/C' %}
-                    <p class="card-text">Prix non communiqué</p>
-                    {% endif %}
-                    {% set domain_full = article.url|split('//')|last|split('/')|first|replace({'www.': ''}) %}
-                    {% set domain_name = domain_full|split('.')|slice(0, -1)|join('.')|capitalize %}
-                    <p class="card-text text-muted small"><i class="fas fa-globe"></i> {{ domain_name ?: domain_full }}</p>
-                    <p class="card-text text-muted">Identifié avec certitude.</p>
-                    
-                    <a href="{{ article.url }}" target="_blank" class="btn w-100 mb-2" style="background-color: #5a893a; border-color: #5a893a; color: #ffffff;">
-                        <i class="fas fa-shopping-bag"></i> Acheter
-                    </a>
-                    
-                    <!-- Bouton Favori Fonctionnel -->
-                    {% if session.user %}
-                    <form action="index.php?controleur=favori&methode=add" method="post" class="d-inline">
-                        <input type="hidden" name="url" value="{{ article.url }}">
-                        <input type="hidden" name="image" value="{{ article.image }}">
-                        <input type="hidden" name="titre" value="{{ article.titre }}">
-                        <input type="hidden" name="prix" value="{{ article.prix }}">
-                        <button type="submit" class="btn btn-light w-100 text-danger">
-                            <i class="far fa-heart"></i> Sauvegarder
-                        </button>
-                    </form>
-                    {% else %}
-                    <a href="index.php?controleur=utilisateur&methode=login&return_to={{ ('index.php?controleur=article&methode=result&scan=' ~ scanImage)|url_encode }}" class="btn btn-light w-100 text-muted" title="Connectez-vous pour sauvegarder">
-                        <i class="far fa-heart"></i> (Connexion requise)
-                    </a>
-                    {% endif %}
+                    <div style="height: 20px; background: #eee; width: 70%;" class="mb-2"></div>
+                    <div style="height: 20px; background: #eee; width: 40%;"></div>
                 </div>
             </div>
         </div>
-        {% else %}
-        <div class="col-12 text-center">
-            <p>Aucun résultat trouvé pour votre recherche.</p>
-        </div>
-        {% endfor %}
     </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const forms = document.querySelectorAll('form[action*="methode=add"]');
-    
-    forms.forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault(); // On bloque la redirection
-            
-            const btn = this.querySelector('button');
-            const icon = btn.querySelector('i');
-            const originalText = btn.innerHTML;
-            
-            // UI Feedback immédiat (Chargement)
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ...';
+    const resultsGrid = document.getElementById('resultsGrid');
+    const scamAlert = document.getElementById('scamAlert');
+    const blockedCount = document.getElementById('blockedCount');
+    const statusTitle = document.getElementById('statusTitle');
+    const statusMessage = document.getElementById('statusMessage');
+    const btnInterrupt = document.getElementById('btnInterrupt');
+    const interruptionControl = document.getElementById('interruptionControl');
+    const searchHeader = document.getElementById('searchHeader');
 
-            const formData = new FormData(this);
-            
-            // Appel AJAX
-            fetch(this.action + '&ajax=1', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Succès : Coeur plein Rouge + Texte "Sauvegardé"
-                    btn.className = "btn btn-outline-danger w-100"; // Style Outline Rouge
-                    btn.innerHTML = '<i class="fas fa-heart"></i> Sauvegardé';
-                } else {
-                    // Erreur technique
-                    alert("Erreur : " + (data.error || "Inconnue"));
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                alert("Erreur réseau");
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            });
-        });
+    // AbortController pour permettre l'interruption
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    // Fonction d'interruption
+    btnInterrupt.addEventListener('click', () => {
+        controller.abort();
+        statusTitle.textContent = "Recherche interrompue";
+        statusTitle.previousElementSibling.className = "fas fa-times-circle text-danger";
+        statusMessage.textContent = "L'analyse a été stoppée par vos soins.";
+        interruptionControl.innerHTML = '<a href="index.php?controleur=article&methode=add" class="btn btn-sm btn-acheter">Réessayer</a>';
+        resultsGrid.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">Aucun résultat affiché suite à l\'interruption.</p></div>';
     });
+
+    // Lancement de la recherche via AJAX
+    fetch('index.php?controleur=article&methode=api_results&scan={{ scanImage }}', { signal })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) throw new Error(data.error);
+
+            // Mise à jour du Header
+            statusTitle.textContent = "Analyse terminée !";
+            statusTitle.previousElementSibling.className = "fas fa-check-circle text-success";
+            statusMessage.textContent = "Voici les articles que nous avons identifiés pour vous.";
+            interruptionControl.classList.add('d-none');
+
+            // Gestion des scams
+            if (data.nbBloques > 0) {
+                scamAlert.classList.remove('d-none');
+                blockedCount.textContent = data.nbBloques;
+            }
+
+            // Affichage des articles
+            if (data.articles.length > 0) {
+                resultsGrid.innerHTML = ''; // On vide le skeleton
+                data.articles.forEach(article => {
+                    const domainFull = article.url.split('//').pop().split('/')[0].replace('www.', '');
+                    const domainName = domainFull.split('.').slice(0, -1).join('.').charAt(0).toUpperCase() + domainFull.split('.').slice(0, -1).join('.').slice(1);
+                    
+                    const ecoBadge = article.label === 'eco' ? `
+                        <span class="badge bg-success position-absolute top-0 start-0 m-2">
+                            <i class="fas fa-leaf"></i> Eco-responsable 
+                        </span>
+                    ` : '';
+
+                    const cardHtml = `
+                        <div class="col">
+                            <div class="card h-100 shadow-sm border-0">
+                                <div class="position-relative" style="height: 250px; overflow: hidden;">
+                                    <img src="${article.image}" class="card-img-top w-100 h-100" style="object-fit: cover;" alt="${article.titre}">
+                                    ${ecoBadge}
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title text-truncate" title="${article.titre}">${article.titre}</h5>
+                                    <p class="card-text fw-bold text-primary">${article.prix.replace('*', '')}</p>
+                                    <p class="card-text text-muted small"><i class="fas fa-globe"></i> ${domainName || domainFull}</p>
+                                    <a href="${article.url}" target="_blank" class="btn w-100 mb-2 btn-acheter">
+                                        <i class="fas fa-shopping-bag"></i> Acheter
+                                    </a>
+                                    {% if session.user %}
+                                    <button onclick="saveFavori(this, '${btoa(article.url)}', '${btoa(article.image)}', '${btoa(article.titre)}', '${article.prix}')" class="btn btn-light w-100 text-danger">
+                                        <i class="far fa-heart"></i> Sauvegarder
+                                    </button>
+                                    {% else %}
+                                    <a href="index.php?controleur=utilisateur&methode=login&return_to=${encodeURIComponent(window.location.href)}" class="btn btn-light w-100 text-muted small">
+                                        <i class="far fa-heart"></i> Connexion requise
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    resultsGrid.insertAdjacentHTML('beforeend', cardHtml);
+                });
+            } else {
+                resultsGrid.innerHTML = '<div class="col-12 text-center py-5"><p>Aucun résultat trouvé pour cette image.</p></div>';
+            }
+        })
+        .catch(err => {
+            if (err.name === 'AbortError') return; // Silence si on a annulé
+            console.error(err);
+            statusTitle.textContent = "Erreur lors de l'analyse";
+            statusTitle.previousElementSibling.className = "fas fa-exclamation-triangle text-warning";
+            statusMessage.textContent = "Nous n'avons pas pu contacter le service de recherche. Vérifiez votre connexion.";
+            resultsGrid.innerHTML = '';
+        });
 });
+
+// Fonction AJAX pour les favoris (puisqu'on génère les boutons en JS)
+function saveFavori(btn, urlB64, imgB64, titreB64, prix) {
+    const originalContent = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>...';
+
+    const formData = new FormData();
+    formData.append('url', atob(urlB64));
+    formData.append('image', atob(imgB64));
+    formData.append('titre', atob(titreB64));
+    formData.append('prix', prix);
+
+    fetch('index.php?controleur=favori&methode=add&ajax=1', {
+        method: 'POST',
+        body: formData
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            btn.className = "btn btn-outline-danger w-100";
+            btn.innerHTML = '<i class="fas fa-heart"></i> Sauvegardé';
+        } else {
+            alert("Erreur");
+            btn.disabled = false;
+            btn.innerHTML = originalContent;
+        }
+    })
+    .catch(() => {
+        btn.disabled = false;
+        btn.innerHTML = originalContent;
+    });
+}
 </script>
 {% endblock %}

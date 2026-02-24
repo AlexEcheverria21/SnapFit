@@ -80,6 +80,8 @@ body {
 
 .custom-navbar {
     background-color: var(--navbar-color) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 /* Pour s'assurer que le logo et les liens sont bien visibles */
@@ -324,4 +326,51 @@ a.btn-acheter:hover,
     max-height: 300px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* --- DataTables & Admin Design Support --- */
+
+/* Pagination DataTables en Vert */
+.page-item.active .page-link {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: white !important;
+}
+
+.page-link {
+    color: var(--primary-color) !important;
+}
+
+.page-link:focus {
+    box-shadow: 0 0 0 0.25rem rgba(90, 137, 58, 0.25) !important;
+}
+
+/* Surcharge pour les flèches de tri DataTables if present */
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_desc:after {
+    color: #5a893a !important;
+    opacity: 0.6;
+}
+
+/* Table compacte pour l'admin */
+.table-admin-compact td,
+.table-admin-compact th {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.85rem;
+    vertical-align: middle;
+}
+
+.admin-sidebar-link {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem !important;
+    transition: all 0.2s ease;
+}
+
+.admin-sidebar-link:hover:not(.active) {
+    background-color: #e9f5e0;
+    color: #5a893a !important;
 }

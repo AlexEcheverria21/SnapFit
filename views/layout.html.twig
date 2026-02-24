@@ -14,7 +14,7 @@
   <body class="d-flex flex-column min-vh-100">
     
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg custom-navbar shadow-sm">
+    <nav class="navbar navbar-expand-lg custom-navbar shadow-sm sticky-top">
       <div class="container">
         <a class="navbar-brand fw-bold" href="index.php">SnapFit <i class="fas fa-camera-retro"></i></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -44,6 +44,13 @@
                                 <i class="fas fa-id-card me-2"></i>Mon Profil
                             </a>
                         </li>
+                        {% if session.user.role == 'admin' %}
+                        <li>
+                            <a class="dropdown-item fw-bold" href="index.php?controleur=admin&methode=index" style="color: #5a893a;">
+                                <i class="fas fa-user-shield me-2"></i>Administration
+                            </a>
+                        </li>
+                        {% endif %}
                         <li>
                             <a class="dropdown-item" href="index.php?controleur=recherche&methode=index">
                                 <i class="fas fa-history me-2"></i>Historique

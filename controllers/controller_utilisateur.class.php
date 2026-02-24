@@ -128,7 +128,9 @@ class ControllerUtilisateur extends Controller {
 
         $dao = new UtilisateurDao($this->pdo);
         $user = $dao->find($_SESSION['user_id']);
-        
+        // Mettre à jour le rôle en session (au cas où il ait changé en BDD)
+        $_SESSION['user']['role'] = $user->getRole();
+
         $erreur = null;
         $succes = null;
 

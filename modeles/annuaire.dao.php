@@ -39,6 +39,28 @@ class AnnuaireDao {
     }
 
     /**
+     * @brief   Supprime un domaine par son ID.
+     */
+    public function delete(int $id): bool {
+        $sql = "DELETE FROM DOMAINE WHERE id_domaine = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
+
+    /**
+     * @brief   Ajoute un nouveau domaine.
+     */
+    public function add(Annuaire $domaine): bool {
+        $sql = "INSERT INTO DOMAINE (url_racine, nom, statut) VALUES (:url, :nom, :statut)";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':url' => $domaine->getUrlRacine(),
+            ':nom' => $domaine->getNom(),
+            ':statut' => $domaine->getStatut()
+        ]);
+    }
+
+    /**
      * @brief   Hydrate un objet Annuaire à partir d'un tableau associatif.
      */
     private function hydrate(array $ligne): Annuaire {
