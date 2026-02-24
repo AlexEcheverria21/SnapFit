@@ -4,7 +4,7 @@
  * @author  Team SnapFit
  * @brief   Gestionnaire de connexion Base de Données (Singleton).
  * @details Assure une unique connexion PDO pour toute l'application.
- * @version 1.0
+ * @version 1.1
  * @date    2025-12-23
  */
 
@@ -17,16 +17,17 @@ class Bd{
      * @brief   Constructeur privé (Singleton).
      * @details Initialise la connexion PDO avec les constantes globales.
      *          Configure le mode d'erreur sur Exception.
-     * @throws  PDOException En cas d'échec de connexion.
+     * @throws  Exception En cas d'échec de connexion.
      */
     private function __construct(){
         try {
             $this->pdo = new PDO('mysql:host='. DB_HOST . ';dbname='. DB_NAME, DB_USER, DB_PASS);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo->exec("set names utf8");
         }
         catch(PDOException $e){
-
-            die('Connexion à la base de données échouée : ' . $e->getMessage());
+            // On lève une exception générique pour que le routeur la capture
+            throw new Exception("Erreur de connexion à la base de données.");
         }
     }
 
