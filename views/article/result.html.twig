@@ -34,16 +34,20 @@
 
     <!-- Grille de résultats (Sera remplie par JS) -->
     <div class="row row-cols-1 row-cols-md-3 g-4" id="resultsGrid">
-        <!-- Skeleton loader simple -->
+        {% for i in 1..3 %}
         <div class="col skeleton-placeholder">
-            <div class="card h-100 shadow-sm border-0 opacity-50">
-                <div style="height: 250px; background: #eee;"></div>
-                <div class="card-body">
-                    <div style="height: 20px; background: #eee; width: 70%;" class="mb-2"></div>
-                    <div style="height: 20px; background: #eee; width: 40%;"></div>
+            <div class="skeleton-card">
+                <div class="skeleton-shimmer skeleton-img"></div>
+                <div class="card-body p-0">
+                    <div class="skeleton-shimmer skeleton-title"></div>
+                    <div class="skeleton-shimmer skeleton-price"></div>
+                    <div class="skeleton-shimmer skeleton-domain"></div>
+                    <div class="skeleton-shimmer skeleton-btn"></div>
+                    <div class="skeleton-shimmer skeleton-btn"></div>
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
 </div>
 
