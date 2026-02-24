@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <i class="fas fa-shopping-bag"></i> Acheter
                                     </a>
                                     {% if session.user %}
-                                    <button onclick="saveFavori(this, '${btoa(article.url)}', '${btoa(article.image)}', '${btoa(article.titre)}', '${article.prix}')" class="btn btn-light w-100 text-danger">
+                                    <button onclick="saveFavori(this, '${encodeURIComponent(article.url)}', '${encodeURIComponent(article.image)}', '${encodeURIComponent(article.titre)}', '${article.prix}')" class="btn btn-light w-100 text-danger">
                                         <i class="far fa-heart"></i> Sauvegarder
                                     </button>
                                     {% else %}
@@ -148,15 +148,15 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Fonction AJAX pour les favoris (puisqu'on génère les boutons en JS)
-function saveFavori(btn, urlB64, imgB64, titreB64, prix) {
+function saveFavori(btn, urlEnc, imgEnc, titreEnc, prix) {
     const originalContent = btn.innerHTML;
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>...';
 
     const formData = new FormData();
-    formData.append('url', atob(urlB64));
-    formData.append('image', atob(imgB64));
-    formData.append('titre', atob(titreB64));
+    formData.append('url', decodeURIComponent(urlEnc));
+    formData.append('image', decodeURIComponent(imgEnc));
+    formData.append('titre', decodeURIComponent(titreEnc));
     formData.append('prix', prix);
 
     fetch('index.php?controleur=favori&methode=add&ajax=1', {
