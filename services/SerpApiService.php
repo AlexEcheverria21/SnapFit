@@ -4,8 +4,8 @@
  * @author  Paul 
  * @brief   Service gérant les appels à SerpAPI (Google Lens).
  *          Gère l'upload direct d'image locale (POST) pour éviter les soucis de localhost.
- * @version 1.1
- * @date    14/12/2025
+ * @version 1.2
+ * @date    24/02/2026
  */
 
 class SerpApiService {
@@ -17,97 +17,62 @@ class SerpApiService {
 
     /**
      * @brief   Envoie une image à Google Lens via SerpAPI.
-     *          Supporte les URL ou les chemins locaux (via POST).
-     * @param   string $imageSource Chemin absolu local ou URL de l'image.
+     * @param   string $imageSource URL de l'image (doit être accessible publiquement).
      * @return  array Liste des résultats (titre, source, prix, image).
+     * @throws  Exception En cas de problème de connexion ou d'API.
      */
     public function search(string $imageSource): array {
-        // Détection : Fichier local ou URL ?
-        $isLocalFile = file_exists($imageSource);
-        
-        $url = "https://serpapi.com/search";
+        $ch = curl_init();
         
         $params = [
             'engine' => 'google_lens',
             'api_key' => $this->apiKey,
+            'url' => $imageSource
         ];
 
-        // Initialisation cURL
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        
-        if ($isLocalFile) {
-            // Upload direct via POST (Multipart)
-            // Note: CurlFile est nécessaire pour PHP 5.5+
-            $cfile = new CURLFile($imageSource, mime_content_type($imageSource), basename($imageSource));
-            $params['image_url'] = ''; // On vide image_url si on upload
-            // Paramètre non documenté mais standard multipart souvent supporté ou on passe par image_file si SDK
-            // SerpAPI supporte raw upload via un champ spécifique ? 
-            // Documentation SerpAPI : Pour upload, il faut souvent un lien. 
-            // Si on utilise pas le SDK, c'est complexe.
-            // WORKAROUND PRIVÉ : On utilise une API temporaire si SerpAPI raw non supporté ? 
-            // NON, on va tenter le POST standard sur l'endpoint.
-            
-            // Correction stratégie : SerpAPI "Google Lens" ne supporte pas l'upload direct RAW facilement sans SDK.
-            // MAIS pour ce projet, on va utiliser l'upload form-data si supporté.
-            // Si ça échoue, on revient au hack URL publique (ou on dit à l'user qu'il faut Ngrok).
-            
-            // Tentative POST standard
-            curl_setopt($ch, CURLOPT_POST, true);
-            // On tente d'envoyer le fichier sur le champ 'image_file' ou 'encoded_image' ?
-            // L'API Google Lens accepte encoded_image. On va essayer ça (Base64).
-            // C'est plus sur que le multipart hasardeux.
-            
-            /* -- Stratégie Base64 (Plus fiable sans lien public) -- */
-            // Malheureusement SerpAPI Google Lens ne documente pas bien 'encoded_image' pour Lens.
-            // On va rester sur le comportement : Si local -> On ne peut pas sans lien public.
-            // Le user a demandé une solution "Privée". 
-            // On va simuler l'envoi pour l'instant si c'est local, ou utiliser l'image demo.
-            
-            // REVIREMENT : Le code précédent utilisait l'image de démo. 
-            // Si je veux supporter le local, je dois utiliser l'astuce 'image_url' pointant sur l'image demo stockée en ligne
-            // OU dire au user d'utiliser Ngrok.
-            // Le User veut "Donner la vraie image".
-            // Seule solution technique simple : Envoyer les bytes.
-            
-            // Testons l'approche upload binaire si supporté par endpoint.
-            // Sinon fallback sur URL demo.
-            
-            // Pour l'instant, on remet le comportement "URL" car je ne peux pas garantir l'upload direct sans SDK.
-            // On va limiter les résultats à 20 ici.
-            
-            return []; // Erreur technique : Local file not supported without public URL
-        } else {
-            $url .= "?" . http_build_query($params) . "&url=" . urlencode($imageSource);
-        }
-
-        // Pour la version simple (Sans SDK), on reste en GET sur URL.
-        // Si le user veut du privé, on lui dira.
-        
-        // MAIS j'ai promis de changer.
-        // Si je ne peux pas upload, je vais utiliser l'image de DEMO fournie par l'user
-        // MAIS je vais limiter les résultats.
-        
-        // Refaisons simple : On garde le code URL, on ajoute la limite.
-        // On traitera le cas "Local" dans le controleur (en envoyant l'url demo si local).
-        
-        // Code Legacy remis + LIMITATION
-        
-        $endpoint = "https://serpapi.com/search.json?engine=google_lens&api_key=" . $this->apiKey . "&url=" . urlencode($imageSource);
+        $endpoint = "https://serpapi.com/search.json?" . http_build_query($params);
         
         curl_setopt($ch, CURLOPT_URL, $endpoint);
-        
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Timeout de 30 secondes
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Timeout de connexion de 10s
+
         $response = curl_exec($ch);
+
+        // GESTION DES ERREURS DE CONNEXION
+        if (curl_errno($ch)) {
+            $errorNo = curl_errno($ch);
+            curl_close($ch);
+            
+            if ($errorNo === CURLE_COULDNT_RESOLVE_HOST || $errorNo === CURLE_COULDNT_CONNECT) {
+                throw new Exception("Erreur de connexion : Impossible de contacter SerpAPI. Vérifiez votre connexion Internet.");
+            } elseif ($errorNo === CURLE_OPERATION_TIMEDOUT) {
+                throw new Exception("Le service de recherche a mis trop de temps à répondre (Timeout).");
+            } else {
+                throw new Exception("Erreur réseau lors de l'appel à l'API : " . curl_error($ch));
+            }
+        }
+
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        
+
+        if ($httpCode !== 200) {
+            throw new Exception("Le service de recherche a retourné une erreur (Code HTTP $httpCode).");
+        }
+
         $data = json_decode($response, true);
         
+        if (!$data || isset($data['error'])) {
+            $errMsg = $data['error'] ?? "Réponse de l'API invalide.";
+            throw new Exception("Erreur SerpAPI : " . $errMsg);
+        }
+
         $results = [];
         if (isset($data['visual_matches']) && is_array($data['visual_matches'])) {
             $count = 0;
             foreach ($data['visual_matches'] as $match) {
-                if ($count >= 20) break; // LIMITATION 20 RÉSULTATS
+                if ($count >= 20) break; 
                 
                 $results[] = [
                     'titre'  => $match['title'] ?? 'Article inconnu',

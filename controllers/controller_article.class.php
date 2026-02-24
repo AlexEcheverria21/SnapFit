@@ -4,8 +4,8 @@
  * @author  Louis (Team SnapFit)
  * @brief   Définit un contrôleur gérant les articles (scan, upload, recherche).
  *          Intègre l'API Google Lens (SerpAPI) et le filtrage Anti-Scam.
- * @version 1.1
- * @date    16/12/2025
+ * @version 1.2
+ * @date    24/02/2026
  */
 class ControllerArticle extends Controller {
 
@@ -65,80 +65,84 @@ class ControllerArticle extends Controller {
             exit;
         }
 
-        global $config;
-        $apiKey = $config['api']['serpapi_key'] ?? '';
-        
-        $dossierUpload = 'public/uploads/';
-        $cheminLocal = realpath($dossierUpload . $imageScan);
-        
-        if (!$cheminLocal || !file_exists($cheminLocal)) {
-            echo json_encode(['error' => 'Image introuvable']);
-            exit;
-        }
-
-        $urlImageApi = $this->uploadToEphemeralHost($cheminLocal);
-
-        if (!$urlImageApi) {
-            echo json_encode(['error' => 'Erreur lors de l\'upload temporaire']);
-            exit;
-        }
-
-        $service = new SerpApiService($apiKey);
-        $rawResults = $service->search($urlImageApi);
-        
-        $pdo = Bd::getInstance()->getConnexion();
-        $sqlScam = "SELECT url_racine FROM DOMAINE WHERE statut = 'scam'";
-        $stmtScam = $pdo->query($sqlScam);
-        $scamDomains = $stmtScam->fetchAll(PDO::FETCH_COLUMN);
-
-        $sqlEco = "SELECT url_racine FROM DOMAINE WHERE statut = 'eco'";
-        $stmtEco = $pdo->query($sqlEco);
-        $ecoDomains = $stmtEco->fetchAll(PDO::FETCH_COLUMN);
-        
-        $articles = [];
-        $nbBloques = 0;
-
-        foreach ($rawResults as $res) {
-            $estScam = false;
-            foreach ($scamDomains as $scam) {
-                if (stripos($res['source'], $scam) !== false || stripos($res['url'], $scam) !== false) {
-                    $estScam = true;
-                    break;
-                }
-            }
+        try {
+            global $config;
+            $apiKey = $config['api']['serpapi_key'] ?? '';
             
-            if ($estScam) {
-                $nbBloques++;
-            } else {
-                $res['label'] = null;
-                foreach ($ecoDomains as $eco) {
-                     if (stripos($res['source'], $eco) !== false || stripos($res['url'], $eco) !== false) {
-                         $res['label'] = 'eco';
-                         break;
-                     }
-                }
-                $articles[] = $res;
+            $dossierUpload = 'public/uploads/';
+            $cheminLocal = realpath($dossierUpload . $imageScan);
+            
+            if (!$cheminLocal || !file_exists($cheminLocal)) {
+                throw new Exception("Image introuvable sur le serveur.");
             }
+
+            // Étape 1 : Upload vers hôte temporaire (Nécessite Internet)
+            $urlImageApi = $this->uploadToEphemeralHost($cheminLocal);
+
+            if (!$urlImageApi) {
+                throw new Exception("L'upload temporaire a échoué sans erreur précise.");
+            }
+
+            // Étape 2 : Appel SerpAPI (Nécessite Internet)
+            $service = new SerpApiService($apiKey);
+            $rawResults = $service->search($urlImageApi);
+            
+            $pdo = Bd::getInstance()->getConnexion();
+            $sqlScam = "SELECT url_racine FROM DOMAINE WHERE statut = 'scam'";
+            $stmtScam = $pdo->query($sqlScam);
+            $scamDomains = $stmtScam->fetchAll(PDO::FETCH_COLUMN);
+
+            $sqlEco = "SELECT url_racine FROM DOMAINE WHERE statut = 'eco'";
+            $stmtEco = $pdo->query($sqlEco);
+            $ecoDomains = $stmtEco->fetchAll(PDO::FETCH_COLUMN);
+            
+            $articles = [];
+            $nbBloques = 0;
+
+            foreach ($rawResults as $res) {
+                $estScam = false;
+                foreach ($scamDomains as $scam) {
+                    if (stripos($res['source'], $scam) !== false || stripos($res['url'], $scam) !== false) {
+                        $estScam = true;
+                        break;
+                    }
+                }
+                
+                if ($estScam) {
+                    $nbBloques++;
+                } else {
+                    $res['label'] = null;
+                    foreach ($ecoDomains as $eco) {
+                         if (stripos($res['source'], $eco) !== false || stripos($res['url'], $eco) !== false) {
+                             $res['label'] = 'eco';
+                             break;
+                         }
+                    }
+                    $articles[] = $res;
+                }
+            }
+
+            usort($articles, function($a, $b) {
+                $isEcoA = isset($a['label']) && $a['label'] === 'eco';
+                $isEcoB = isset($b['label']) && $b['label'] === 'eco';
+                return $isEcoB <=> $isEcoA; 
+            });
+
+            if (isset($_SESSION['user_id'])) {
+                $rechercheDao = new RechercheDao($pdo);
+                $recherche = new Recherche($_SESSION['user_id'], $imageScan);
+                $rechercheDao->add($recherche);
+            }
+
+            echo json_encode([
+                'articles' => $articles,
+                'nbBloques' => $nbBloques
+            ]);
+
+        } catch (Exception $e) {
+            // On renvoie l'erreur en JSON pour que le JS puisse l'afficher proprement
+            echo json_encode(['error' => $e->getMessage()]);
         }
-
-        // Tri Eco
-        usort($articles, function($a, $b) {
-            $isEcoA = isset($a['label']) && $a['label'] === 'eco';
-            $isEcoB = isset($b['label']) && $b['label'] === 'eco';
-            return $isEcoB <=> $isEcoA; 
-        });
-
-        // Enregistrement historique
-        if (isset($_SESSION['user_id'])) {
-            $rechercheDao = new RechercheDao($pdo);
-            $recherche = new Recherche($_SESSION['user_id'], $imageScan);
-            $rechercheDao->add($recherche);
-        }
-
-        echo json_encode([
-            'articles' => $articles,
-            'nbBloques' => $nbBloques
-        ]);
         exit;
     }
 
@@ -159,14 +163,23 @@ class ControllerArticle extends Controller {
         
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
         
         $response = curl_exec($ch);
         
         if (curl_errno($ch)) {
-            return null;
+            $err = curl_error($ch);
+            curl_close($ch);
+            throw new Exception("Problème de connexion : Votre ordinateur semble hors-ligne (Services d'upload inaccessibles).");
         }
         
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+
+        if ($httpCode !== 200) {
+            throw new Exception("Le serveur d'analyse est temporairement saturé ou indisponible (Code HTTP $httpCode).");
+        }
+        
         $json = json_decode($response, true);
         
         if (isset($json['data']['url'])) {

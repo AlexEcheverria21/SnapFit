@@ -137,12 +137,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(err => {
-            if (err.name === 'AbortError') return; // Silence si on a annulé
+            if (err.name === 'AbortError') return; 
             console.error(err);
-            statusTitle.textContent = "Erreur lors de l'analyse";
-            statusTitle.previousElementSibling.className = "fas fa-exclamation-triangle text-warning";
-            statusMessage.textContent = "Nous n'avons pas pu contacter le service de recherche. Vérifiez votre connexion.";
+            statusTitle.textContent = "Erreur d'analyse";
+            statusTitle.previousElementSibling.className = "fas fa-wifi text-danger";
+            statusMessage.innerHTML = `<span class="text-danger fw-bold">${err.message}</span><br>Vérifiez votre connexion Internet et réessayez.`;
             resultsGrid.innerHTML = '';
+            interruptionControl.innerHTML = '<a href="index.php?controleur=article&methode=add" class="btn btn-sm btn-acheter">Changer d\'image</a>';
         });
 });
 
