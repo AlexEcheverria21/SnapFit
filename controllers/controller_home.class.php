@@ -37,4 +37,12 @@ class ControllerHome extends Controller {
     public function faq() {
         echo $this->twig->render('faq.html.twig');
     }
+
+    public function politique_confidentialite() {
+        echo $this->twig->render('politique_confidentialite.html.twig');
+    }
+
+    public function obligations() {
+        echo $this->twig->render('obligations.html.twig');
+    }
 }

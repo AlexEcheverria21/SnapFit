@@ -1,0 +1,62 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Politique de Confidentialité - SnapFit{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <div class="card border-0 shadow-sm p-4 p-md-5">
+                <h1 class="fw-bold mb-4" style="color: var(--navbar-color); border-bottom: 3px solid #5a893a; padding-bottom: 10px; display: inline-block;">Politique de Confidentialité</h1>
+                
+                <p class="lead text-muted mb-5">Chez SnapFit, nous accordons une importance capitale à la protection de vos données personnelles et au respect de votre vie privée.</p>
+
+                <section class="mb-5">
+                    <h2 class="h4 fw-bold mb-3" style="color: #244031;"><i class="fas fa-user-shield me-2" style="color: #5a893a;"></i> 1. Responsable du traitement</h2>
+                    <p>Le responsable du traitement des données est l'équipe projet <strong>SnapFit</strong> de l'IUT de Bayonne et du Pays Basque, joignable à l'adresse email suivante : <a href="mailto:snapfit.dev@gmail.com" class="text-decoration-none" style="color: #5a893a;">snapfit.dev@gmail.com</a>.</p>
+                </section>
+
+                <section class="mb-5">
+                    <h2 class="h4 fw-bold mb-3" style="color: #244031;"><i class="fas fa-database me-2" style="color: #5a893a;"></i> 2. Données collectées</h2>
+                    <p>Nous collectons uniquement les données nécessaires au bon fonctionnement de nos services :</p>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item border-0 px-0"><i class="fas fa-check text-success me-2"></i> <strong>Informations de compte :</strong> Login et mot de passe (hashé) lors de votre inscription.</li>
+                        <li class="list-group-item border-0 px-0"><i class="fas fa-check text-success me-2"></i> <strong>Historique de scan :</strong> Les images que vous envoyez pour analyse et les résultats associés.</li>
+                        <li class="list-group-item border-0 px-0"><i class="fas fa-check text-success me-2"></i> <strong>Favoris :</strong> Les articles que vous choisissez d'enregistrer.</li>
+                    </ul>
+                </section>
+
+                <section class="mb-5">
+                    <h2 class="h4 fw-bold mb-3" style="color: #244031;"><i class="fas fa-info-circle me-2" style="color: #5a893a;"></i> 3. Utilisation des données</h2>
+                    <p>Vos données sont utilisées exclusivement pour :</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-chevron-right me-2 small"></i> Assurer le fonctionnement de votre compte personnel.</li>
+                        <li class="mb-2"><i class="fas fa-chevron-right me-2 small"></i> Vous permettre de retrouver vos recherches passées via l'historique.</li>
+                        <li class="mb-2"><i class="fas fa-chevron-right me-2 small"></i> Améliorer la précision de notre outil d'analyse visuelle.</li>
+                    </ul>
+                </section>
+
+                <section class="mb-5">
+                    <h2 class="h4 fw-bold mb-3" style="color: #244031;"><i class="fas fa-lock me-2" style="color: #5a893a;"></i> 4. Conservation et Sécurité</h2>
+                    <p>Vos données sont conservées tant que votre compte est actif. Nous mettons en œuvre des mesures de sécurité techniques pour protéger vos informations contre tout accès non autorisé ou toute perte. Nous n'utilisons aucun cookie de traçage publicitaire tiers, uniquement des cookies techniques nécessaires à la session.</p>
+                </section>
+
+                <section class="mb-5">
+                    <h2 class="h4 fw-bold mb-3" style="color: #244031;"><i class="fas fa-balance-scale me-2" style="color: #5a893a;"></i> 5. Vos droits (RGPD)</h2>
+                    <p>Conformément au Règlement Général sur la Protection des Données, vous disposez des droits suivants :</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item border-0 px-0"><strong>Droit d'accès :</strong> Consulter vos données stockées.</li>
+                        <li class="list-group-item border-0 px-0"><strong>Droit de rectification :</strong> Modifier vos informations personnelles.</li>
+                        <li class="list-group-item border-0 px-0"><strong>Droit à l'effacement :</strong> Supprimer votre compte et toutes les données associées.</li>
+                    </ul>
+                    <p class="mt-3">Pour exercer ces droits, contactez-nous par mail à <strong>snapfit.dev@gmail.com</strong>.</p>
+                </section>
+
+                <div class="alert mt-4" style="background-color: #f1f8eb; border-left: 5px solid #5a893a;">
+                    <small class="text-muted">Dernière mise à jour : 24 février 2026</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
