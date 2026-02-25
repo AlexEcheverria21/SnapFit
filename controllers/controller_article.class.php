@@ -142,7 +142,7 @@ class ControllerArticle extends Controller {
             $ecoDomains = $stmtEco->fetchAll(PDO::FETCH_COLUMN);
             
             $articles = [];
-            $nbBloques = 0;
+            $domainesBloques = [];
 
             foreach ($rawResults as $res) {
                 $estScam = false;
@@ -154,7 +154,9 @@ class ControllerArticle extends Controller {
                 }
                 
                 if ($estScam) {
-                    $nbBloques++;
+                    if (!in_array($res['source'], $domainesBloques)) {
+                        $domainesBloques[] = $res['source'];
+                    }
                 } else {
                     $res['label'] = null;
                     foreach ($ecoDomains as $eco) {
@@ -181,7 +183,8 @@ class ControllerArticle extends Controller {
 
             echo json_encode([
                 'articles' => $articles,
-                'nbBloques' => $nbBloques
+                'nbBloques' => count($domainesBloques),
+                'sitesBloques' => $domainesBloques
             ]);
 
         } catch (Exception $e) {

@@ -27,12 +27,29 @@
     {% endif %}
 
     <!-- Zone d'alerte (masquée par défaut) -->
-    <div id="scamAlert" class="alert alert-warning d-flex align-items-center mb-4 d-none" role="alert">
+    <div id="scamAlert" class="alert alert-warning d-flex align-items-center mb-4 d-none shadow-sm" role="alert">
         <i class="fas fa-shield-alt fa-2x me-3"></i>
-        <div>
+        <div class="flex-grow-1">
             <strong>Sécurité SnapFit activée !</strong>
             <br>
-            Nous avons masqué <strong id="blockedCount">0</strong> résultat(s) provenant de sites identifiés comme frauduleux ou peu fiables (Scam).
+            Nous avons masqué <strong id="blockedCount">0</strong> site(s) identifiés comme frauduleux ou peu fiables.
+        </div>
+        <button class="btn btn-sm btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBlockedSites" aria-expanded="false">
+            <i class="fas fa-eye"></i> Voir lesquels
+        </button>
+    </div>
+
+    <!-- Liste déroulante des sites bloqués -->
+    <div class="collapse mb-4" id="collapseBlockedSites">
+        <div class="card card-body bg-light border-warning shadow-sm">
+            <h6 class="fw-bold mb-2"><i class="fas fa-ban text-danger"></i> Domaines bloqués pour votre sécurité :</h6>
+            <ul id="blockedSitesList" class="list-unstyled mb-0 d-flex flex-wrap gap-2">
+                <!-- Rempli par JS -->
+            </ul>
+            <hr>
+            <p class="small text-muted mb-0">
+                <i class="fas fa-info-circle"></i> Ces sites sont connus pour des pratiques peu éco-responsables ou des risques de fraudes (Scam).
+            </p>
         </div>
     </div>
 
@@ -96,6 +113,15 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.nbBloques > 0) {
                 scamAlert.classList.remove('d-none');
                 blockedCount.textContent = data.nbBloques;
+
+                // On remplit la liste des sites bloqués
+                const blockedList = document.getElementById('blockedSitesList');
+                blockedList.innerHTML = '';
+                data.sitesBloques.forEach(site => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span class="badge bg-danger">${site}</span>`;
+                    blockedList.appendChild(li);
+                });
             }
 
             // Affichage des articles
