@@ -150,10 +150,13 @@ class ControllerArticle extends Controller {
             $rawResults = $service->search($urlImageApi, $pays, $langue);
             
             $pdo = Bd::getInstance()->getConnexion();
-            $sqlScam = "SELECT url_racine FROM DOMAINE WHERE statut = 'scam'";
+            
+            // On récupère les domaines Scam avec leurs noms
+            $sqlScam = "SELECT url_racine, nom FROM DOMAINE WHERE statut = 'scam'";
             $stmtScam = $pdo->query($sqlScam);
-            $scamDomains = $stmtScam->fetchAll(PDO::FETCH_COLUMN);
+            $scamDomains = $stmtScam->fetchAll(PDO::FETCH_ASSOC);
 
+            // On récupère les domaines Eco
             $sqlEco = "SELECT url_racine FROM DOMAINE WHERE statut = 'eco'";
             $stmtEco = $pdo->query($sqlEco);
             $ecoDomains = $stmtEco->fetchAll(PDO::FETCH_COLUMN);
@@ -162,17 +165,18 @@ class ControllerArticle extends Controller {
             $domainesBloques = [];
 
             foreach ($rawResults as $res) {
-                $estScam = false;
+                $nomSiteBloque = null;
+                
                 foreach ($scamDomains as $scam) {
-                    if (stripos($res['source'], $scam) !== false || stripos($res['url'], $scam) !== false) {
-                        $estScam = true;
+                    if (stripos($res['source'], $scam['url_racine']) !== false || stripos($res['url'], $scam['url_racine']) !== false) {
+                        $nomSiteBloque = $scam['nom'];
                         break;
                     }
                 }
                 
-                if ($estScam) {
-                    if (!in_array($res['source'], $domainesBloques)) {
-                        $domainesBloques[] = $res['source'];
+                if ($nomSiteBloque) {
+                    if (!in_array($nomSiteBloque, $domainesBloques)) {
+                        $domainesBloques[] = $nomSiteBloque;
                     }
                 } else {
                     $res['label'] = null;
