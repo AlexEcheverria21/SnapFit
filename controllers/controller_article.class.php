@@ -65,7 +65,24 @@ class ControllerArticle extends Controller {
                      }
                  }
              } elseif (isset($_FILES['photo']) && $_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                 $erreur = "Une erreur est survenue lors de l'envoi de l'image (code " . $_FILES['photo']['error'] . ").";
+                 switch ($_FILES['photo']['error']) {
+                     case UPLOAD_ERR_INI_SIZE:
+                     case UPLOAD_ERR_FORM_SIZE:
+                         $erreur = "Le fichier est trop lourd pour être traité par le serveur (max. 5 Mo).";
+                         break;
+                     case UPLOAD_ERR_PARTIAL:
+                         $erreur = "Le fichier n'a été que partiellement envoyé. Veuillez réessayer.";
+                         break;
+                     case UPLOAD_ERR_NO_TMP_DIR:
+                         $erreur = "Erreur serveur : Dossier temporaire manquant.";
+                         break;
+                     case UPLOAD_ERR_CANT_WRITE:
+                         $erreur = "Erreur serveur : Impossible d'écrire le fichier sur le disque.";
+                         break;
+                     default:
+                         $erreur = "Une erreur technique est survenue lors de l'envoi (Code : " . $_FILES['photo']['error'] . ").";
+                         break;
+                 }
              }
         }
 
