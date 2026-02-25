@@ -1,6 +1,75 @@
 {% extends "layout.html.twig" %}
 
 {% block title %}Scanner une tenue - SnapFit{% endblock %}
+{% block head %}
+    <!-- Cropper.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <style>
+        .cropper-container {
+            width: 100%;
+            height: 450px;
+            background-color: #f0f2f0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+        
+        /* Personnalisation Premium de Cropper.js */
+        .cropper-view-box,
+        .cropper-face {
+            border-radius: 4px;
+            outline: 2px solid #5a893a;
+            outline-color: rgba(90, 137, 58, 0.75);
+        }
+        .cropper-line { background-color: #5a893a; }
+        .cropper-point {
+            background-color: #5a893a;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .cropper-point.point-se {
+            width: 12px;
+            height: 12px;
+            opacity: 1;
+        }
+        .cropper-bg {
+            background-image: none !important;
+            background-color: #f8f9fa !important;
+        }
+        
+        /* Animations et Layout */
+        #preview-container {
+            animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn-scan {
+            background: linear-gradient(135deg, #5a893a 0%, #4a752e 100%);
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-scan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(90, 137, 58, 0.3);
+            color: white;
+        }
+        .btn-outline-custom {
+            border: 2px solid #e9ecef;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        .btn-outline-custom:hover {
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+    </style>
+{% endblock %}
 
 {% block content %}
 
@@ -48,13 +117,24 @@
                     </div>
 
                     <div id="preview-container" style="display: none;">
-                        <p class="text-success fw-bold"><i class="fas fa-check-circle"></i> Image prête à l'envoi !</p>
-                        <img src="" alt="Aperçu" class="preview-image" id="image-preview">
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <span class="badge rounded-pill px-3 py-2" style="background-color: rgba(90, 137, 58, 0.1); color: #5a893a;">
+                                <i class="fas fa-crop-alt me-1"></i> Optimisation de l'image
+                            </span>
+                        </div>
+                        <h5 class="fw-bold mb-2">Cadrez votre vêtement</h5>
+                        <p class="text-muted small mb-4">Ajustez la zone pour aider l'IA à identifier l'article précisément.</p>
                         
-                        <div class="mt-3">
-                            <button type="button" class="btn btn-outline-secondary me-2" id="btnReset">Choisir une autre</button>
-                            <button type="submit" class="btn px-5" style="background-color: #5a893a; border-color: #5a893a; color: #ffffff;">
-                                <i class="fas fa-camera"></i> Lancer l'analyse
+                        <div class="cropper-container">
+                            <img src="" alt="Aperçu" id="image-preview">
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <button type="button" class="btn btn-outline-custom px-4" id="btnReset">
+                                <i class="fas fa-undo me-2"></i> Changer de photo
+                            </button>
+                            <button type="submit" class="btn btn-scan px-5 py-2 fw-bold">
+                                <i class="fas fa-magic me-2"></i> Lancer l'analyse
                             </button>
                         </div>
                     </div>
@@ -65,39 +145,34 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. On récupère les éléments par leur ID
     const dropZone = document.getElementById("drop-zone");
     const inputElement = document.getElementById("photoInput");
     const previewContainer = document.getElementById("preview-container");
     const previewImage = document.getElementById("image-preview");
     const btnReset = document.getElementById("btnReset");
-    const form = document.getElementById("scanForm"); // Le formulaire
-    const submitBtn = form.querySelector("button[type='submit']"); // Le bouton envoyer
+    const form = document.getElementById("scanForm");
+    const submitBtn = form.querySelector("button[type='submit']");
+    
+    let cropper = null;
 
-    // 2. Clic sur la zone = Ouvre l'explorateur
-    dropZone.addEventListener("click", () => {
-        inputElement.click();
-    });
+    dropZone.addEventListener("click", () => inputElement.click());
 
-    // 3. Quand un fichier est choisi
     inputElement.addEventListener("change", () => {
         if (inputElement.files.length) {
             updateThumbnail(inputElement.files[0]);
         }
     });
 
-    // 4. Gestion visuelle du Drag & Drop
     dropZone.addEventListener("dragover", (e) => {
         e.preventDefault();
         dropZone.classList.add("drop-zone--over");
     });
 
     ["dragleave", "dragend"].forEach(type => {
-        dropZone.addEventListener(type, () => {
-            dropZone.classList.remove("drop-zone--over");
-        });
+        dropZone.addEventListener(type, () => dropZone.classList.remove("drop-zone--over"));
     });
 
     dropZone.addEventListener("drop", (e) => {
@@ -109,9 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 5. Fonction d'affichage de l'image
     function updateThumbnail(file) {
-        // Validation de la taille (5 Mo max)
         const maxSize = 5 * 1024 * 1024;
         if (file.size > maxSize) {
             alert("L'image est trop volumineuse (maximum 5 Mo).");
@@ -126,6 +199,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 previewImage.src = reader.result;
                 dropZone.style.display = "none";
                 previewContainer.style.display = "block";
+
+                // Initialiser Cropper.js
+                if (cropper) cropper.destroy();
+                cropper = new Cropper(previewImage, {
+                    viewMode: 1,
+                    dragMode: 'move',
+                    autoCropArea: 1,
+                    restore: false,
+                    guides: true,
+                    center: true,
+                    highlight: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false,
+                });
             };
         } else {
             alert("Veuillez sélectionner une image valide.");
@@ -133,24 +221,50 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // 6. Bouton Reset
     btnReset.addEventListener("click", () => {
         inputElement.value = "";
         dropZone.style.display = "flex";
         previewContainer.style.display = "none";
-        
-        // On remet le bouton comme avant (si on avait annulé un envoi)
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-camera"></i> Lancer l\'analyse';
+        submitBtn.innerHTML = '<i class="fas fa-magic me-2"></i> Lancer l\'analyse';
     });
 
-    // 7. C'EST ICI QUE CA MANQUAIT : L'animation au clic sur "Envoyer"
-    form.addEventListener("submit", () => {
-        // On change le texte du bouton et on le désactive pour éviter le double-clic
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Analyse en cours...';
-        submitBtn.disabled = true;
+    form.addEventListener("submit", (e) => {
+        e.preventDefault(); 
         
-        // Note : Pas besoin de bloquer l'envoi (e.preventDefault) car on veut que la page recharge
+        if (!cropper) return;
+
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Analyse en cours...';
+        submitBtn.disabled = true;
+
+        cropper.getCroppedCanvas({
+            maxWidth: 1024,
+            maxHeight: 1024,
+        }).toBlob((blob) => {
+            const formData = new FormData(form);
+            formData.set('photo', blob, 'cropped_image.jpg');
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    return response.text().then(html => {
+                        document.body.innerHTML = html;
+                    });
+                }
+            }).catch(() => {
+                alert("Erreur lors de l'envoi.");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-magic me-2"></i> Lancer l\'analyse';
+            });
+        }, 'image/jpeg', 0.9);
     });
 });
 </script>

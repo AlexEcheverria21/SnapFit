@@ -70,6 +70,15 @@
         </div>
         {% endfor %}
     </div>
+
+    <!-- Pied de page pour nouvelle recherche (masqué pendant l'analyse) -->
+    <div id="newSearchFooter" class="text-center mt-5 mb-5 d-none">
+        <hr class="mb-4">
+        <p class="text-muted">Pas convaincu par ces résultats ?</p>
+        <a href="index.php?controleur=article&methode=add" class="btn btn-lg px-4 shadow-sm" style="background-color: #5a893a; color: white;">
+            <i class="fas fa-camera"></i> Choisir une autre photo
+        </a>
+    </div>
 </div>
 
 <script>
@@ -108,6 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
             statusTitle.previousElementSibling.className = "fas fa-check-circle text-success";
             statusMessage.textContent = "Voici les articles que nous avons identifiés pour vous.";
             interruptionControl.classList.add('d-none');
+            document.getElementById('newSearchFooter').classList.remove('d-none');
 
             // Gestion des scams
             if (data.nbBloques > 0) {
@@ -208,6 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
             statusTitle.previousElementSibling.className = "fas fa-wifi text-danger";
             statusMessage.innerHTML = `<span class="text-danger fw-bold">${err.message}</span><br>Vérifiez votre connexion Internet et réessayez.`;
             resultsGrid.innerHTML = '';
+            document.getElementById('newSearchFooter').classList.remove('d-none');
             interruptionControl.innerHTML = '<a href="index.php?controleur=article&methode=add" class="btn btn-sm btn-acheter">Changer d\'image</a>';
         });
 });
