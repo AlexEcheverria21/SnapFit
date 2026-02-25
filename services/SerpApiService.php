@@ -21,13 +21,15 @@ class SerpApiService {
      * @return  array Liste des résultats (titre, source, prix, image).
      * @throws  Exception En cas de problème de connexion ou d'API.
      */
-    public function search(string $imageSource): array {
+     public function search(string $imageSource, string $country = 'fr', string $language = 'fr'): array {
         $ch = curl_init();
         
         $params = [
             'engine' => 'google_lens',
             'api_key' => $this->apiKey,
-            'url' => $imageSource
+            'url' => $imageSource,
+            'gl' => $country,
+            'hl' => $language
         ];
 
         $endpoint = "https://serpapi.com/search.json?" . http_build_query($params);
@@ -79,7 +81,8 @@ class SerpApiService {
                     'source' => $match['source'] ?? 'Source inconnue',
                     'image'  => $match['thumbnail'] ?? '',
                     'url'    => $match['link'] ?? '#',
-                    'prix'   => $match['price']['value'] ?? 'N/C'
+                    'prix'   => $match['price']['value'] ?? $match['price'] ?? 'N/C',
+                    'currency' => $match['price']['currency'] ?? ''
                 ];
                 $count++;
             }

@@ -12,7 +12,11 @@
         </div>
         <div class="col-md-10" id="searchHeader">
             <h3><i class="fas fa-spinner fa-spin text-primary"></i> <span id="statusTitle">Analyse en cours...</span></h3>
-            <p class="mb-0 text-muted" id="statusMessage">SnapFit identifie les articles pour vous. Cela peut prendre quelques secondes.</p>
+            <p class="mb-0 text-muted" id="statusMessage">
+                SnapFit identifie les articles pour vous 
+                (Zone : <strong>{{ pays|upper }}</strong>). 
+                Cela peut prendre quelques secondes.
+            </p>
             <div class="mt-2" id="interruptionControl">
                 <button id="btnInterrupt" class="btn btn-sm btn-outline-danger">
                     <i class="fas fa-stop-circle"></i> Interrompre la recherche
@@ -77,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Lancement de la recherche via AJAX
-    fetch('index.php?controleur=article&methode=api_results&scan={{ scanImage }}', { signal })
+    fetch('index.php?controleur=article&methode=api_results&scan={{ scanImage }}&pays={{ pays }}', { signal })
         .then(response => response.json())
         .then(data => {
             if (data.error) throw new Error(data.error);
@@ -107,6 +111,37 @@ document.addEventListener('DOMContentLoaded', function() {
                         </span>
                     ` : '';
 
+                    // Fonction de formatage du prix selon le pays choisi
+                    const displayPrice = (function(p, curr, country) {
+                        if (!p || p === 'N/C') return 'Prix N/C';
+                        
+                        // Nettoyage de base
+                        let val = p.replace('*', '').trim();
+                        let formatted = '';
+
+                        // Si le prix contient déjà un symbole monétaire, on le renvoie tel quel
+                        if (/[€$£]/.test(val)) {
+                            formatted = val;
+                        } else {
+                            // Sinon, on applique le symbole correspondant au pays
+                            const symbols = {
+                                'fr': ' €', 'es': ' €', 'de': ' €', 'it': ' €',
+                                'us': '$', 'gb': '£'
+                            };
+                            
+                            const symbol = symbols[country] || ' €';
+
+                            // Placement du symbole (avant pour $ et £, après pour €)
+                            if (country === 'us' || country === 'gb') {
+                                formatted = symbol + val;
+                            } else {
+                                formatted = val + symbol;
+                            }
+                        }
+                        
+                        return 'Env. ' + formatted;
+                    })(article.prix, article.currency, '{{ pays }}');
+
                     const cardHtml = `
                         <div class="col">
                             <div class="card h-100 shadow-sm border-0">
@@ -116,13 +151,13 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title text-truncate" title="${article.titre}">${article.titre}</h5>
-                                    <p class="card-text fw-bold text-primary">${article.prix.replace('*', '')}</p>
+                                    <p class="card-text fw-bold text-primary">${displayPrice}</p>
                                     <p class="card-text text-muted small"><i class="fas fa-globe"></i> ${domainName || domainFull}</p>
                                     <a href="${article.url}" target="_blank" class="btn w-100 mb-2 btn-acheter">
                                         <i class="fas fa-shopping-bag"></i> Acheter
                                     </a>
                                     {% if session.user %}
-                                    <button onclick="saveFavori(this, '${encodeURIComponent(article.url)}', '${encodeURIComponent(article.image)}', '${encodeURIComponent(article.titre)}', '${article.prix}')" class="btn btn-light w-100 text-danger">
+                                    <button onclick="saveFavori(this, '${encodeURIComponent(article.url)}', '${encodeURIComponent(article.image)}', '${encodeURIComponent(article.titre)}', '${encodeURIComponent(displayPrice)}')" class="btn btn-light w-100 text-danger">
                                         <i class="far fa-heart"></i> Sauvegarder
                                     </button>
                                     {% else %}

@@ -11,15 +11,37 @@
             <h1 class="mb-4">Scanner un vêtement <i class="fas fa-search"></i></h1>
             <p class="text-muted mb-4">Glissez une photo pour identifier un vêtement et vérifier sa fiabilité.</p>
 
+            {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i> {{ error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+
             <div class="card shadow-lg p-4">
                 
                 <form action="index.php?controleur=article&methode=add" method="post" enctype="multipart/form-data" id="scanForm">
+                    <!-- Limite de taille pour PHP (5 Mo) -->
+                    <input type="hidden" name="MAX_FILE_SIZE" value="5242880">
                 
+                    <div class="mb-4 text-start">
+                        <label for="paysSelect" class="form-label fw-bold"><i class="fas fa-globe-europe"></i> Zone de recherche :</label>
+                        <select name="pays" id="paysSelect" class="form-select shadow-sm">
+                            <option value="fr" selected>France (Recommandé)</option>
+                            <option value="us">États-Unis</option>
+                            <option value="gb">Royaume-Uni</option>
+                            <option value="es">Espagne</option>
+                            <option value="de">Allemagne</option>
+                            <option value="it">Italie</option>
+                        </select>
+                    </div>
+
                     <div class="drop-zone" id="drop-zone">
                         <span class="drop-zone__prompt">
                             <i class="fas fa-cloud-upload-alt fa-3x"></i><br>
                             <strong>Glissez votre photo ici</strong><br>
-                            <small class="text-muted">ou cliquez pour parcourir</small>
+                            <small class="text-muted">ou cliquez pour parcourir</small><br>
+                            <small class="text-secondary" style="font-size: 0.8rem;">JPG, PNG, WEBP (max. 5 Mo)</small>
                         </span>
                         
                         <input type="file" name="photo" id="photoInput" class="drop-zone__input" accept="image/*" required>
@@ -89,6 +111,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 5. Fonction d'affichage de l'image
     function updateThumbnail(file) {
+        // Validation de la taille (5 Mo max)
+        const maxSize = 5 * 1024 * 1024;
+        if (file.size > maxSize) {
+            alert("L'image est trop volumineuse (maximum 5 Mo).");
+            inputElement.value = "";
+            return;
+        }
+
         if (file.type.startsWith("image/")) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -99,6 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
             };
         } else {
             alert("Veuillez sélectionner une image valide.");
+            inputElement.value = "";
         }
     }
 

@@ -18,24 +18,60 @@ class ControllerArticle extends Controller {
      *          Si une image est envoyée, redirige vers les résultats.
      */
     public function add() {
+        $erreur = null;
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
              // Traitement de l'upload
              if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
-                 // 1. Sauvegarde de l'image
-                 $dossierUpload = 'public/uploads/';
-                 $extension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
-                 $nomFichier = uniqid('scan_') . '.' . $extension;
-                 $cheminComplet = $dossierUpload . $nomFichier;
                  
-                 move_uploaded_file($_FILES['photo']['tmp_name'], $cheminComplet);
+                 // 1. Validation de la taille (ex: 5 Mo max)
+                 $maxSize = 5 * 1024 * 1024; 
+                 if ($_FILES['photo']['size'] > $maxSize) {
+                     $erreur = "L'image est trop volumineuse (maximum 5 Mo).";
+                 } else {
+                     // 2. Validation du type MIME réel (plus sûr que l'extension)
+                     $finfo = new finfo(FILEINFO_MIME_TYPE);
+                     $mimeType = $finfo->file($_FILES['photo']['tmp_name']);
+                     $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
-                 // 2. Redirection vers les résultats
-                 header('Location: index.php?controleur=article&methode=result&scan=' . $nomFichier);
-                 exit;
+                     if (!in_array($mimeType, $allowedMimeTypes)) {
+                         $erreur = "Le fichier doit être une image valide (JPG, PNG, GIF ou WEBP).";
+                     } else {
+                         // 3. Sauvegarde de l'image si tout est ok
+                         $dossierUpload = 'public/uploads/';
+                         
+                         // On determine l'extension propre au type MIME pour eviter les injections
+                         $mappingExtensions = [
+                             'image/jpeg' => 'jpg',
+                             'image/png'  => 'png',
+                             'image/gif'  => 'gif',
+                             'image/webp' => 'webp'
+                         ];
+                         $extension = $mappingExtensions[$mimeType] ?? 'jpg';
+                         
+                         $nomFichier = uniqid('scan_') . '.' . $extension;
+                         $cheminComplet = $dossierUpload . $nomFichier;
+                         
+                         if (move_uploaded_file($_FILES['photo']['tmp_name'], $cheminComplet)) {
+                             // On récupère le pays choisi
+                             $pays = $_POST['pays'] ?? 'fr';
+                             
+                             // 2. Redirection vers les résultats avec le pays
+                             header('Location: index.php?controleur=article&methode=result&scan=' . $nomFichier . '&pays=' . $pays);
+                             exit;
+                         } else {
+                             $erreur = "Erreur lors du déplacement du fichier sur le serveur.";
+                         }
+                     }
+                 }
+             } elseif (isset($_FILES['photo']) && $_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
+                 $erreur = "Une erreur est survenue lors de l'envoi de l'image (code " . $_FILES['photo']['error'] . ").";
              }
         }
 
-        echo $this->twig->render('article/upload.html.twig', []);
+        echo $this->twig->render('article/upload.html.twig', [
+            'error' => $erreur
+        ]);
     }
 
     /**
@@ -44,9 +80,11 @@ class ControllerArticle extends Controller {
      */
     public function result() {
         $imageScan = $_GET['scan'] ?? null;
+        $pays = $_GET['pays'] ?? 'fr';
         
         echo $this->twig->render('article/result.html.twig', [
             'scanImage' => $imageScan,
+            'pays' => $pays,
             'articles' => [],
             'nbBloques' => 0
         ]);
@@ -60,6 +98,8 @@ class ControllerArticle extends Controller {
         header('Content-Type: application/json');
         
         $imageScan = $_GET['scan'] ?? null;
+        $pays = $_GET['pays'] ?? 'fr';
+        
         if (!$imageScan) {
             echo json_encode(['error' => 'Aucune image spécifiée']);
             exit;
@@ -83,9 +123,14 @@ class ControllerArticle extends Controller {
                 throw new Exception("L'upload temporaire a échoué sans erreur précise.");
             }
 
-            // Étape 2 : Appel SerpAPI (Nécessite Internet)
+            // Étape 2 : Appel SerpAPI
             $service = new SerpApiService($apiKey);
-            $rawResults = $service->search($urlImageApi);
+            
+            // Mapping simple pays -> langue
+            $langMapping = ['fr' => 'fr', 'us' => 'en', 'gb' => 'en', 'es' => 'es', 'de' => 'de', 'it' => 'it'];
+            $langue = $langMapping[$pays] ?? 'fr';
+
+            $rawResults = $service->search($urlImageApi, $pays, $langue);
             
             $pdo = Bd::getInstance()->getConnexion();
             $sqlScam = "SELECT url_racine FROM DOMAINE WHERE statut = 'scam'";
