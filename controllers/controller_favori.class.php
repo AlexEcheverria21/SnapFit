@@ -31,6 +31,30 @@ class ControllerFavori extends Controller {
     }
 
     /**
+     * @brief   Affiche le détail d'un favori (Public pour partage OG).
+     */
+    public function show() {
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            header('Location: index.php');
+            exit;
+        }
+
+        $pdo = Bd::getInstance()->getConnexion();
+        $articleDao = new ArticleDao($pdo);
+        $article = $articleDao->find($id);
+
+        if (!$article) {
+            echo "Article non trouvé.";
+            return;
+        }
+
+        echo $this->twig->render('favori/show.html.twig', [
+            'article' => $article
+        ]);
+    }
+
+    /**
      * @brief   Ajoute un article aux favoris (via POST depuis les résultats).
      */
     public function add() {
@@ -50,8 +74,7 @@ class ControllerFavori extends Controller {
             $article = new Article();
             $article->setUrl($url);
             $article->setImage($image);
-            // $article->setCategorie($titre); // Nettoyé : Non stocké en BDD
-            // $article->setMarque('Inconnue'); // Nettoyé : Non stocké en BDD
+            $article->setTitre($titre); 
 
             $pdo = Bd::getInstance()->getConnexion();
             $favoriDao = new FavoriDao($pdo);

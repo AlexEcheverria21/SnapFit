@@ -27,11 +27,20 @@
                             <a href="{{ article.url }}" target="_blank" class="btn btn-sm" style="background-color: #5a893a; border-color: #5a893a; color: #ffffff;">
                                 <i class="fas fa-external-link-alt"></i> Voir l'offre
                             </a>
-                            <a href="index.php?controleur=favori&methode=delete&id={{ article.id }}" 
-                               class="btn btn-outline-danger btn-sm"
-                               onclick="return confirm('Supprimer ce favori ?');">
-                                <i class="fas fa-trash"></i> Supprimer
-                            </a>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <a href="index.php?controleur=favori&methode=show&id={{ article.id }}" class="btn btn-outline-primary btn-sm w-100">
+                                        <i class="fas fa-share-alt"></i> Partager
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="index.php?controleur=favori&methode=delete&id={{ article.id }}" 
+                                       class="btn btn-outline-danger btn-sm w-100"
+                                       onclick="return confirm('Supprimer ce favori ?');">
+                                        <i class="fas fa-trash"></i> Suppr.
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

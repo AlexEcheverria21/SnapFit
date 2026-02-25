@@ -8,12 +8,12 @@
  * @date    2025-12-23
  */
 class favori {
-    private int|null $id_favori;
-    private string|null $url;
-    private string|null $image;
-    private string|null $date_fav;
+    private ?int $id_favori;
+    private ?string $url;
+    private ?string $image;
+    private ?string $date_fav;
 
-    public function __construct(?int $id_favori, ?string $url, ?string $image, ?string $date_fav) {
+    public function __construct(?int $id_favori = null, ?string $url = null, ?string $image = null, ?string $date_fav = null) {
         $this->id_favori = $id_favori;
         $this->url = $url;
         $this->image = $image;
@@ -93,5 +93,3 @@ class favori {
 
     }
 }
-
-?>

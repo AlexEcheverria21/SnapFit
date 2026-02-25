@@ -22,7 +22,7 @@ class ArticleDao {
      * @brief   Lit un Article par son ID.
      */
     public function find(int $id): ?Article {
-        $sql = "SELECT id_article as id, url, image, date_creation 
+        $sql = "SELECT id_article as id, url, image, titre, date_creation 
                 FROM ARTICLE WHERE id_article = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':id' => $id]);
@@ -35,7 +35,7 @@ class ArticleDao {
      * @brief   Liste tous les articles.
      */
     public function findAll(): array {
-        $sql = "SELECT id_article as id, url, image, date_creation 
+        $sql = "SELECT id_article as id, url, image, titre, date_creation 
                 FROM ARTICLE ORDER BY date_creation DESC";
         $stmt = $this->pdo->query($sql);
         return $this->hydrateMany($stmt->fetchAll(PDO::FETCH_ASSOC));
@@ -45,12 +45,13 @@ class ArticleDao {
      * @brief   Crée un nouvel article.
      */
     public function create(Article $article): bool {
-        $sql = "INSERT INTO ARTICLE (url, image, date_creation) 
-                VALUES (:url, :image, NOW())";
+        $sql = "INSERT INTO ARTICLE (url, image, titre, date_creation) 
+                VALUES (:url, :image, :titre, NOW())";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             ':url' => $article->getUrl(),
-            ':image' => $article->getImage()
+            ':image' => $article->getImage(),
+            ':titre' => $article->getTitre()
         ]);
     }
 
@@ -64,6 +65,7 @@ class ArticleDao {
             $ligne['id'] ?? null,
             $ligne['url'] ?? null,
             $ligne['image'] ?? null,
+            $ligne['titre'] ?? null,
             $ligne['date_creation'] ?? null
         );
     }

@@ -11,12 +11,14 @@ class Article {
     private ?int $id; // id_article en BDD
     private ?string $url;
     private ?string $image;
+    private ?string $titre;
     private ?string $dateCreation; // date_creation
 
-    public function __construct(?int $id = null, ?string $url = null, ?string $image = null, ?string $date = null) {
+    public function __construct(?int $id = null, ?string $url = null, ?string $image = null, ?string $titre = null, ?string $date = null) {
         $this->id = $id;
         $this->url = $url;
         $this->image = $image;
+        $this->titre = $titre;
         $this->dateCreation = $date;
     }
 
@@ -29,6 +31,9 @@ class Article {
 
     public function getImage(): ?string { return $this->image; }
     public function setImage(?string $image): void { $this->image = $image; }
+
+    public function getTitre(): ?string { return $this->titre; }
+    public function setTitre(?string $titre): void { $this->titre = $titre; }
 
     public function getDateCreation(): ?string { return $this->dateCreation; }
     public function setDateCreation(?string $date): void { $this->dateCreation = $date; }

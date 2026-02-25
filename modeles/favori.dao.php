@@ -22,7 +22,7 @@ class FavoriDao {
      * @return  Article[]
      */
     public function findAllByUser(int $idUtilisateur): array {
-        $sql = "SELECT A.id_article as id, A.url, A.image, A.date_creation 
+        $sql = "SELECT A.id_article as id, A.url, A.image, A.titre, A.date_creation 
                 FROM ARTICLE A
                 JOIN FAVORI F ON A.id_article = F.id_article
                 WHERE F.id_utilisateur = :id_u
@@ -31,20 +31,19 @@ class FavoriDao {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':id_u' => $idUtilisateur]);
 
-        // On réutilise l'hydratation de ArticleDao pour la cohérence,
-        // ou on le fait à la main ici car ArticleDao n'est pas statique.
-        // Simple : Hydratation manuelle ici pour éviter dépendance cyclique complexe.
         $articles = [];
         while ($ligne = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $articles[] = new Article(
                 $ligne['id'],
                 $ligne['url'],
                 $ligne['image'],
+                $ligne['titre'],
                 $ligne['date_creation']
             );
         }
         return $articles;
     }
+
 
     /**
      * @brief   Ajoute un article aux favoris de l'utilisateur.
