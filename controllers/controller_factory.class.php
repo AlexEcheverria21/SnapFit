@@ -1,40 +1,123 @@
 <?php
 /**
- * @file    controller_factory.class.php
- * @author  Team SnapFit
- * @brief   Fabrique de contrôleurs (Pattern Factory).
- * @version 1.0
- * @date    2025-12-23
+ * @file    controller_favori.class.php
+ * @author  Louis (Team SnapFit)
+ * @brief   Gère les favoris (Ajout, Liste, Suppression).
+ * @version 2.0
+ * @date    16/12/2025
  */
-
-class ControllerFactory{
+class ControllerFavori extends Controller {
+    
+    public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader) {
+        parent::__construct($twig, $loader);
+    }
 
     /**
-     * @brief   Crée et retourne une instance du contrôleur spécifié.
-     * @details Construit le nom de la classe du contrôleur en préfixant la chaîne fournie par "Controlleur".
-     * @param   string $controleur Nom du contrôleur (ex: "home" -> ControllerHome)
-     * @param   Twig\Loader\FilesystemLoader $loader Hérité de l'index
-     * @param   Twig\Environment $twig Hérité de l'index
-     * @return  Controller Instance du contrôleur
-     * @throws  Exception Si le fichier ou la classe n'existe pas
+     * @brief   Affiche la liste des favoris de l'utilisateur connecté.
      */
+    public function index() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: index.php?controleur=utilisateur&methode=login');
+            exit;
+        }
 
-    public static function getController($controleur, Twig\Loader\FilesystemLoader $loader, Twig\Environment $twig){
-        //Construit le nom de la classe
-        $controllerName = "Controller".ucfirst($controleur);
-        //Construit le nom du fichier
-        $fileName = "controller_" . strtolower($controleur) . ".class.php";
-        //Cherche le fichier et on l'inclut 
-        $filePath = __DIR__ . '/' . $fileName;
-        if (file_exists($filePath)) {
-            require_once $filePath;
-        } else {
-            // Si le fichier n'existe pas, on lance une erreur
-            throw new Exception("Le fichier du contrôleur '$fileName' est introuvable.");
+        $pdo = Bd::getInstance()->getConnexion();
+        $favoriDao = new FavoriDao($pdo);
+        $favoris = $favoriDao->findAllByUser($_SESSION['user_id']);
+
+        echo $this->twig->render('favori/index.html.twig', [
+            'favoris' => $favoris
+        ]);
+    }
+
+    /**
+     * @brief   Affiche le détail d'un favori (Public pour partage OG).
+     */
+    public function show() {
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            header('Location: index.php');
+            exit;
         }
-        if (!class_exists($controllerName)) {
-            throw new Exception("Le controlleur $controllerName n'existe pas");
+
+        $pdo = Bd::getInstance()->getConnexion();
+        $articleDao = new ArticleDao($pdo);
+        $article = $articleDao->find($id);
+
+        if (!$article) {
+            echo "Article non trouvé.";
+            return;
         }
-        return new $controllerName($twig, $loader);
+
+        echo $this->twig->render('favori/show.html.twig', [
+            'article' => $article
+        ]);
+    }
+
+    /**
+     * @brief   Ajoute un article aux favoris (via POST depuis les résultats).
+     */
+    public function add() {
+        if (!isset($_SESSION['user_id'])) {
+            // Si pas connecté, redirection login avec msg
+            header('Location: index.php?controleur=utilisateur&methode=login&msg=fav_login_required');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $url = $_POST['url'] ?? '';
+            $image = $_POST['image'] ?? '';
+            $titre = $_POST['titre'] ?? 'Article sans titre'; // Mapped a 'categorie' ou 'marque' selon dispo
+            $prix = $_POST['prix'] ?? ''; // Prix pas stocké en BDD V3 (simplification), ou concaténé dans titre
+
+            // Création de l'objet Article
+            $article = new Article();
+            $article->setUrl($url);
+            $article->setImage($image);
+            $article->setTitre($titre); 
+
+            $pdo = Bd::getInstance()->getConnexion();
+            $favoriDao = new FavoriDao($pdo);
+            
+            try {
+                if ($favoriDao->add($_SESSION['user_id'], $article)) {
+                    // Si c'est une requête AJAX, on renvoie du JSON
+                    if (isset($_GET['ajax'])) {
+                        header('Content-Type: application/json');
+                        echo json_encode(['success' => true]);
+                        exit;
+                    }
+
+                    // Sinon comportement classique (Redirection)
+                    header('Location: index.php?controleur=favori&methode=index&msg=added');
+                }
+            } catch (Exception $e) {
+                if (isset($_GET['ajax'])) {
+                    http_response_code(500);
+                    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+                    exit;
+                }
+                echo "Erreur lors de l'ajout : " . $e->getMessage();
+            }
+        }
+    }
+
+    /**
+     * @brief   Supprime un favori.
+     */
+    public function delete() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: index.php');
+            exit;
+        }
+
+        $idArticle = $_GET['id'] ?? null;
+        if ($idArticle) {
+            $pdo = Bd::getInstance()->getConnexion();
+            $favoriDao = new FavoriDao($pdo);
+            $favoriDao->delete($_SESSION['user_id'], $idArticle);
+        }
+        
+        header('Location: index.php?controleur=favori&methode=index&msg=deleted');
     }
 }
