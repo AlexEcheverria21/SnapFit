@@ -141,6 +141,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     const domainFull = article.url.split('//').pop().split('/')[0].replace('www.', '');
                     const domainName = domainFull.split('.').slice(0, -1).join('.').charAt(0).toUpperCase() + domainFull.split('.').slice(0, -1).join('.').slice(1);
                     
+                    // Sécurisation contre les caractères qui cassent le template literal (backticks, etc.)
+                    const safeTitre = (article.titre || '').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+                    const safeImage = (article.image || '').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+                    const safeUrl = (article.url || '').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+
                     const ecoBadge = article.label === 'eco' ? `
                         <span class="badge bg-success position-absolute top-0 start-0 m-2">
                             <i class="fas fa-leaf"></i> Eco-responsable 
@@ -150,31 +155,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Fonction de formatage du prix selon le pays choisi
                     const displayPrice = (function(p, curr, country) {
                         if (!p || p === 'N/C') return 'Prix N/C';
-                        
-                        // Nettoyage de base
                         let val = p.replace('*', '').trim();
                         let formatted = '';
-
-                        // Si le prix contient déjà un symbole monétaire, on le renvoie tel quel
                         if (/[€$£]/.test(val)) {
                             formatted = val;
                         } else {
-                            // Sinon, on applique le symbole correspondant au pays
-                            const symbols = {
-                                'fr': ' €', 'es': ' €', 'de': ' €', 'it': ' €',
-                                'us': '$', 'gb': '£'
-                            };
-                            
+                            const symbols = {'fr': ' €', 'es': ' €', 'de': ' €', 'it': ' €', 'us': '$', 'gb': '£'};
                             const symbol = symbols[country] || ' €';
-
-                            // Placement du symbole (avant pour $ et £, après pour €)
-                            if (country === 'us' || country === 'gb') {
-                                formatted = symbol + val;
-                            } else {
-                                formatted = val + symbol;
-                            }
+                            if (country === 'us' || country === 'gb') formatted = symbol + val;
+                            else formatted = val + symbol;
                         }
-                        
                         return 'Env. ' + formatted;
                     })(article.prix, article.currency, '{{ pays }}');
 
@@ -182,18 +172,24 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="col">
                             <div class="card h-100 shadow-sm border-0">
                                 <div class="position-relative" style="height: 250px; overflow: hidden;">
-                                    <img src="${article.image}" class="card-img-top w-100 h-100" style="object-fit: cover;" alt="${article.titre}">
+                                    <img src="${safeImage}" class="card-img-top w-100 h-100" style="object-fit: cover;" alt="">
                                     ${ecoBadge}
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title text-truncate" title="${article.titre}">${article.titre}</h5>
+                                    <h5 class="card-title text-truncate" title="${safeTitre.replace(/"/g, '&quot;')}">${safeTitre}</h5>
                                     <p class="card-text fw-bold text-primary">${displayPrice}</p>
                                     <p class="card-text text-muted small"><i class="fas fa-globe"></i> ${domainName || domainFull}</p>
-                                    <a href="${article.url}" target="_blank" class="btn w-100 mb-2 btn-acheter">
+                                    <a href="${safeUrl}" target="_blank" class="btn w-100 mb-2 btn-acheter">
                                         <i class="fas fa-shopping-bag"></i> Acheter
                                     </a>
                                     {% if session.user %}
-                                    <button onclick="saveFavori(this, '${encodeURIComponent(article.url)}', '${encodeURIComponent(article.image)}', '${encodeURIComponent(article.titre)}', '${encodeURIComponent(displayPrice)}')" class="btn btn-light w-100 text-danger">
+                                    <button 
+                                        data-url="${encodeURIComponent(article.url)}" 
+                                        data-image="${encodeURIComponent(article.image)}" 
+                                        data-titre="${encodeURIComponent(article.titre)}" 
+                                        data-prix="${encodeURIComponent(displayPrice)}"
+                                        onclick="saveFavori(this)" 
+                                        class="btn btn-light w-100 text-danger">
                                         <i class="far fa-heart"></i> Sauvegarder
                                     </button>
                                     {% else %}
@@ -223,16 +219,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 });
 
-// Fonction AJAX pour les favoris (puisqu'on génère les boutons en JS)
-function saveFavori(btn, urlEnc, imgEnc, titreEnc, prix) {
+// Fonction AJAX pour les favoris
+function saveFavori(btn) {
     const originalContent = btn.innerHTML;
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>...';
 
+    // Lecture des données depuis les attributs data-
+    const url = decodeURIComponent(btn.dataset.url);
+    const image = decodeURIComponent(btn.dataset.image);
+    const titre = decodeURIComponent(btn.dataset.titre);
+    const prix = decodeURIComponent(btn.dataset.prix);
+
     const formData = new FormData();
-    formData.append('url', decodeURIComponent(urlEnc));
-    formData.append('image', decodeURIComponent(imgEnc));
-    formData.append('titre', decodeURIComponent(titreEnc));
+    formData.append('url', url);
+    formData.append('image', image);
+    formData.append('titre', titre);
     formData.append('prix', prix);
 
     fetch('index.php?controleur=favori&methode=add&ajax=1', {
@@ -245,14 +247,16 @@ function saveFavori(btn, urlEnc, imgEnc, titreEnc, prix) {
             btn.className = "btn btn-outline-danger w-100";
             btn.innerHTML = '<i class="fas fa-heart"></i> Sauvegardé';
         } else {
-            alert("Erreur");
+            alert("Note : " + (data.error || "Impossible de sauvegarder l'article"));
             btn.disabled = false;
             btn.innerHTML = originalContent;
         }
     })
-    .catch(() => {
+    .catch((err) => {
+        console.error(err);
         btn.disabled = false;
         btn.innerHTML = originalContent;
+        alert("Erreur lors de la sauvegarde. Vérifiez si vous êtes toujours connecté.");
     });
 }
 </script>
