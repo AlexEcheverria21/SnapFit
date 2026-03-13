@@ -92,7 +92,7 @@ class FavoriDao {
             if ($this->pdo->inTransaction()) {
                 $this->pdo->rollBack();
             }
-            return false;
+            throw new Exception("Erreur BDD : " . $e->getMessage());
         }
     }
 
